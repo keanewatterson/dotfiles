@@ -1,4 +1,4 @@
-{{ if eq .instance.osid "linux-debian" "linux-raspbian" "linux-ubuntu" -}}
+{{ if eq .instance.os_distro "linux-debian" "linux-raspbian" "linux-ubuntu" -}}
 
 {{ $packages := list
      "bat"
@@ -12,7 +12,6 @@
      "openssh-server"
      "ripgrep"
      "shellcheck"
-     "starship"
      "units"
      "yq"
      "zoxide"
@@ -20,16 +19,15 @@
 {{ $snaps := list -}}
 {{ $classicSnaps := list -}}
 
-{{ if eq .instance.osid "linux-ubuntu" -}}
+{{ if eq .instance.os_distro "linux-ubuntu" -}}
 {{   $classicSnaps = mustAppend $classicSnaps "aws-cli" -}}
 {{ end -}}
 
-{{ if not .instance.headless -}}
+{{ if not .instance.is_machine_headless -}}
 {{   $snaps = mustAppend $snaps 
      "vivaldi" -}}
 {{   $classicSnaps = concat $classicSnaps (list
-     "alacritty"
-     "code") -}}
+     "alacritty") -}}
 {{ end -}}
 
 {{ $sudo := "sudo " -}}

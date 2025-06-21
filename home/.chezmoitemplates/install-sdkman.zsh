@@ -2,8 +2,8 @@
 
 set -eufo pipefail
 
-{{ template "helper-env.zsh" . }}
-{{ template "helper-functions.zsh" . -}}
+{{ template "init-env.zsh" . }}
+{{ template "util-log.zsh" . -}}
 
 export SDKMAN_DIR="${XDG_DATA_HOME}/sdkman"
 

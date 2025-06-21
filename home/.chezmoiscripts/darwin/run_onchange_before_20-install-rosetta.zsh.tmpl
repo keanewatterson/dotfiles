@@ -2,8 +2,8 @@
 
 set -eufo pipefail
 
-{{ template "helper-env.zsh" . }}
-{{ template "helper-functions.zsh" . -}}
+{{ template "init-env.zsh" . }}
+{{ template "util-log.zsh" . -}}
 
 if ! /usr/bin/pgrep oahd >/dev/null; then
     log_info "Instaling Rosetta"

@@ -1,8 +1,9 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
-.config/homebrew
+.chezmoidata/packages-darwin.toml
 {{ end }}
 
 {{ if ne .chezmoi.os "linux" }}
 .chezmoiscripts/linux/**
+.chezmoidata/packages-linux.toml
 {{ end }}

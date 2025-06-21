@@ -2,11 +2,12 @@
 
 set -eufo pipefail
 
-{{ template "helper-env.zsh" . }}
-{{ template "helper-functions.zsh" . -}}
+{{ template "init-env.zsh" . }}
+{{ template "util-log.zsh" . -}}
 
+base_url="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
 font_dir="${XDG_DATA_HOME}/fonts"
-font_version="latest"
+# font_version="latest"
 tmp_dir="$(mktemp -d)"
 
 fonts=(
@@ -22,16 +23,16 @@ mkdir -p "$font_dir"
 for font in "${fonts[@]}"; do
 
     archive="${font}.zip"
-    url="https://github.com/ryanoasis/nerd-fonts/releases/download/${font_version}/${archive}"
+    url="${base_url}/${archive}"
 
     log_info "Downloading: ${font} url: ${url}"
-    curl -fLo "${tmp_dir}/${archive}" --create-dirs "${url}"
+    curl -fsSLo "${tmp_dir}/${archive}" --create-dirs "${url}"
 
     log_info "Extracting: ${font}: at: ${tmp_dir}/${font}"
     unzip -oqq "${tmp_dir}/${archive}" -d "${tmp_dir}/${font}"
 
     log_info "Installing: ${font} to ${font_dir}"
-    find "${tmp_dir}/${font}" -name "*.ttf" -exec cp -v {} "${font_dir}/" \;
+    find "${tmp_dir}/${font}" -name "*.ttf" -exec cp {} "${font_dir}/" \;
 done
 
 rm -rf "$tmp_dir"

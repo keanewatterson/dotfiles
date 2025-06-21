@@ -2,18 +2,20 @@
 
 set -efo pipefail
 
-{{ template "helper-env.zsh" . }}
-{{ template "helper-functions.zsh" . -}}
-{{ template "sdkman-init.zsh" . -}}
+{{ template "init-env.zsh" . }}
+{{ template "util-log.zsh" . -}}
+{{ template "init-sdkman.zsh" . -}}
 
-log_info "Installing Java packages"
+log_info "Installing sdkman Java packages"
 
-{{ $java_distros := .packages.config.sdkman.java_distros }}
-distros=({{ range $i, $e := $java_distros }}"{{ $e }}" {{ end }})
+{{ $java_distros := .packages.config.sdkman.java_distros -}}
+
+distros=({{ range $i, $e := $java_distros }}"{{ $e }}" {{ end -}})
 
 # something in sdk indicates error and triggers termination
 set +e
 for distro in "${distros[@]}"; do
+
     ident="$(sdk list java | grep ${distro} | awk -F'|' '{print $6}' | tr -d ' ')"
     log_info "Install ${distro} ${ident}"
     sdk install java "${ident}"

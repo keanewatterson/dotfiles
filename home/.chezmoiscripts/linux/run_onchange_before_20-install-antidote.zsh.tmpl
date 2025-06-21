@@ -2,8 +2,8 @@
 
 set -eufo pipefail
 
-{{ template "helper-env.zsh" . }}
-{{ template "helper-functions.zsh" . -}}
+{{ template "init-env.zsh" . }}
+{{ template "util-log.zsh" . -}}
 
 if ! [[ -d "${ZDOTDIR}/.antidote" ]]; then
     log_info "Installing Antidote"

@@ -1,4 +1,4 @@
-# environment
+# >>> init-env.zsh
 XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
@@ -8,7 +8,9 @@ ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}"
 
 path=($path ${HOME}/.local/bin)
 
-_log_debug="${_log_debug:-false}"
-_log_module="${0:t}"
+{{ if eq .chezmoi.os "darwin" -}}
+path=($path /opt/homebrew/bin)
+{{ end -}}
 
 umask 077
+# <<< init-env.zsh

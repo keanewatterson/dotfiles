@@ -2,8 +2,8 @@
 
 set -eufo pipefail
 
-{{ template "helper-env.zsh" . }}
-{{ template "helper-functions.zsh" . }}
+{{ template "init-env.zsh" . }}
+{{ template "util-log.zsh" . }}
 
 _t0=$(date +%s.%N)
 
@@ -14,7 +14,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 {{ $packages := "desktop" -}}
 {{ if .instance.is_machine_virtual -}}
 {{   $packages = "desktop-slim" -}}
-{{ end }}
+{{ end -}}
 
 {{ $section := index .packages.darwin $packages -}}
 {{ $brews := $section.brews | sortAlpha | uniq -}}

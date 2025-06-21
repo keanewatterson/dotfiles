@@ -31,7 +31,7 @@
 {{     $is_machine_virtual = true }}
 {{   end -}}
 {{ else if eq .chezmoi.os "linux" }}
-{{   if not contains "none" (output "systemd-detect-virt") }}
+{{   if not (contains "none" (output "systemd-detect-virt")) }}
 {{     $is_machine_virtual = true }}
 {{   end -}}
 {{ end -}}

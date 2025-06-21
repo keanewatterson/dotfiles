@@ -11,7 +11,6 @@ apt = [
   "nvim",
   "ripgrep",
   "shellcheck",
-  "starship",
   "yq",
   "zoxide",
   "zsh"
@@ -34,7 +33,6 @@ apt = [
   "nvim",
   "ripgrep",
   "shellcheck",
-  "starship",
   "yq",
   "zoxide",
   "zsh"
@@ -43,6 +41,5 @@ snap = [
   "vivaldi"
 ]
 snap-classic = [
-  "aws-cli",
-  "code"
+  "aws-cli"
 ]
