@@ -22,9 +22,27 @@ snap-classic = [
 ]
 
 [packages.linux.ubuntu.desktop]
+apt = [
+  "bat",
+  "btop",
+  "build-essential",
+  "direnv",
+  "eza",
+  "fd-find",
+  "fzf",
+  "openssh-server",
+  "nvim",
+  "ripgrep",
+  "shellcheck",
+  "starship",
+  "yq",
+  "zoxide",
+  "zsh"
+]
 snap = [
   "vivaldi"
 ]
 snap-classic = [
+  "aws-cli",
   "code"
 ]

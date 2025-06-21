@@ -1,5 +1,3 @@
-{{ if eq .instance.osid "linux-debian" "linux-raspbian" "linux-ubuntu" -}}
-
 #!/bin/zsh
 
 set -eufo pipefail
@@ -7,29 +5,36 @@ set -eufo pipefail
 {{ template "helper-env.zsh" . }}
 {{ template "helper-functions.zsh" . -}}
 
-log_warn "This script is incomplete"
+font_dir="${XDG_DATA_HOME}/fonts"
+font_version="latest"
+tmp_dir="$(mktemp -d)"
 
-if ! fc-list | grep "nerd-font" >/dev/null 2>&1; then
+fonts=(
+    "Meslo"
+    "FiraCode"
+    "JetBrainsMono"
+)
 
-    log_info "Installing Nerd Fonts"
+log_info "Installing Nerd Fonts"
 
-    #[[ ! -d "${XDG_DATA_HOME}/fonts" ]] || mkdir -p "${XDG_DATA_HOME}/fonts"
+mkdir -p "$font_dir"
 
-    clone_dir="/tmp/nerd-fonts"
-    git clone --filter=blob:none \
-        --sparse https://github.com/ryanoasis/nerd-fonts.git "${clone_dir}"
+for font in "${fonts[@]}"; do
 
-    fonts=(FiraCode JetBrainsMono Meslo)
-    for font in "${fonts[@]}"; do
-        git --git-dir="${clone_dir}/.git" \
-            --work-tree="${clone_dir}" \
-            sparse-checkout add "patched-fonts/${font}"
-        echo "${clone_dir}/install.sh" "${clone_dir}/${font}"
-    done
+    archive="${font}.zip"
+    url="https://github.com/ryanoasis/nerd-fonts/releases/download/${font_version}/${archive}"
 
-    #rm -rf "${clone_dir}"
-else
-    log_info "Nerd Fonts are installed"
-fi
+    log_info "Downloading: ${font} url: ${url}"
+    curl -fLo "${tmp_dir}/${archive}" --create-dirs "${url}"
 
-{{ end -}}
+    log_info "Extracting: ${font}: at: ${tmp_dir}/${font}"
+    unzip -oqq "${tmp_dir}/${archive}" -d "${tmp_dir}/${font}"
+
+    log_info "Installing: ${font} to ${font_dir}"
+    find "${tmp_dir}/${font}" -name "*.ttf" -exec cp -v {} "${font_dir}/" \;
+done
+
+rm -rf "$tmp_dir"
+
+log_info "Updating font cache"
+fc-cache -f "$font_dir"
