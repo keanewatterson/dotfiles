@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+set -eufo pipefail
+
+{{ template "helper-env.zsh" . }}
+{{ template "helper-functions.zsh" . -}}
+
+bin_dir="${HOME}/.local/bin"
+
+if ! [[ -f "${bin_dir}/oh-my-posh" ]]; then
+    log_info "Installing Oh My Posh"
+
+    curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "${bin_dir}"
+else
+    log_info "Oh My Posh is installed"
+fi

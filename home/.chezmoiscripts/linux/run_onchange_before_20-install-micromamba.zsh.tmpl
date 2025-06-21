@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+set -eufo pipefail
+
+{{ template "helper-env.zsh" . }}
+{{ template "helper-functions.zsh" . -}}
+
+bin_dir="${HOME}/.local/bin"
+
+if ! [[ -f "${bin_dir}/micromamba" ]]; then
+    log_info "Installing Micromamba"
+
+    mkdir -p "${bin_dir}"
+
+    CONDA_FORGE_YES="yes" \
+        INIT_YES="N" \
+        MAMBA_ROOT_PREFIX="${XDG_DATA_HOME}/mamba" \
+        PREFIX_LOCATION="${XDG_DATA_HOME}/mamba" \
+        "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+else
+    log_info "Micromamba is installed"
+fi

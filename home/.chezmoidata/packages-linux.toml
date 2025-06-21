@@ -1,0 +1,30 @@
+[packages.linux.ubuntu.server]
+apt = [
+  "bat",
+  "btop",
+  "build-essential",
+  "direnv",
+  "eza",
+  "fd-find",
+  "fzf",
+  "openssh-server",
+  "nvim",
+  "ripgrep",
+  "shellcheck",
+  "starship",
+  "yq",
+  "zoxide",
+  "zsh"
+]
+snap = [ ]
+snap-classic = [
+  "aws-cli" 
+]
+
+[packages.linux.ubuntu.desktop]
+snap = [
+  "vivaldi"
+]
+snap-classic = [
+  "code"
+]

@@ -1,0 +1,35 @@
+{{ if eq .instance.osid "linux-debian" "linux-raspbian" "linux-ubuntu" -}}
+
+#!/bin/zsh
+
+set -eufo pipefail
+
+{{ template "helper-env.zsh" . }}
+{{ template "helper-functions.zsh" . -}}
+
+log_warn "This script is incomplete"
+
+if ! fc-list | grep "nerd-font" >/dev/null 2>&1; then
+
+    log_info "Installing Nerd Fonts"
+
+    #[[ ! -d "${XDG_DATA_HOME}/fonts" ]] || mkdir -p "${XDG_DATA_HOME}/fonts"
+
+    clone_dir="/tmp/nerd-fonts"
+    git clone --filter=blob:none \
+        --sparse https://github.com/ryanoasis/nerd-fonts.git "${clone_dir}"
+
+    fonts=(FiraCode JetBrainsMono Meslo)
+    for font in "${fonts[@]}"; do
+        git --git-dir="${clone_dir}/.git" \
+            --work-tree="${clone_dir}" \
+            sparse-checkout add "patched-fonts/${font}"
+        echo "${clone_dir}/install.sh" "${clone_dir}/${font}"
+    done
+
+    #rm -rf "${clone_dir}"
+else
+    log_info "Nerd Fonts are installed"
+fi
+
+{{ end -}}

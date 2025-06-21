@@ -1,0 +1,41 @@
+{{ if eq .chezmoi.os "darwin" }}
+clx_if_list() {
+  # list active network interfaces
+  # view default: route get default
+  # view order: networksetup -listnetworkserviceorder
+
+  if [[ $(uname -s) = "Darwin" ]]; then
+
+    local scope="${1:=active}"
+
+    local default=$(route get default | grep interface | awk '{print $2}')
+    printf "Default network interface: $default\n\n"
+
+    local interfaces=("${(@f)$(networksetup -listallhardwareports | \
+      paste - - - - | \
+      grep -v 'VLAN C' | tr '\t' '#' | sed 's/: /:/g')}")
+
+    local interface
+    for interface in ${interfaces[@]}
+    do
+      local tokens=(${(@s/#/)interface})
+      local label=(${(@s/:/)tokens[1]})
+      local device=(${(@s/:/)tokens[2]})
+
+      local info=$(ifconfig $device[2])
+
+      if [[ "$1" == "active" ]]; then
+        if [[ "${info}" =~ "status: inactive" ]]; then
+          continue
+        fi
+      fi
+
+      printf "----- $label[2] ----- \n"
+      printf "${info}\n"
+    done
+  else
+    printf "This function is supported only on macOS"
+    return 1
+  fi
+}
+{{ end -}}

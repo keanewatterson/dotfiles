@@ -1,0 +1,151 @@
+"$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
+version = 3
+console_title_template = '{{.HostName}}:{{.PWD}}'
+# final_space = true
+
+[upgrade]
+  source = 'cdn'
+  interval = '168h'
+  auto = true
+  # notice adds significant latency
+  notice = false
+
+[palette]
+  # https://hexdocs.pm/color_palette/ansi_color_codes.html
+  background        = '238'  # #444444 :outer_space
+  background-darker = '237'  # #3a3a3a :black_olive
+  red               = '88'   # #870000 :deep_red
+  yellow            = '184'  # #d7d700 :citrine
+
+[transient_prompt]
+  template = '❯ '
+  foreground = 'foreground'
+  background = 'transparent'
+  foreground_templates = [
+    '{{if gt .Code 0}}p:red{{end}}',
+    '{{if eq .Code 0}}foreground{{end}}'
+  ]
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+
+  [[blocks.segments]]
+    type = 'os'
+    template = '{{.Icon}}{{ if .WSL }} (WSL){{ end }}'
+    foreground = 'foreground'
+    background = 'p:background'
+    style = 'plain'
+
+  [[blocks.segments]]
+    type = 'root'
+    template = '  '
+    foreground = 'foreground'
+    background = 'p:background'
+    style = 'plain'
+
+  [[blocks.segments]]
+    type = 'path'
+    template = ' {{ .Path }} '
+    foreground = 'foreground'
+    background = 'p:background'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      style = 'full'
+
+  [[blocks.segments]]
+    template = ''
+    foreground = 'p:background-darker'
+    background = 'transparent'
+    type = 'text'
+    style = 'plain'
+    foreground_templates = [
+      "{{if contains \"Cyan\" .Env.ITERM_PROFILE}}p:background{{end}}",
+      "{{if contains \"White\" .Env.ITERM_PROFILE}}p:background{{end}}"
+    ]
+
+  [[blocks.segments]]
+    type = 'git'
+    template = ' {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }} *{{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'
+    foreground = 'foreground'
+    background = 'transparent'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      
+      branch_icon = ' '
+      fetch_status = true
+      fetch_upstream_icon = false
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'right'
+
+  [[blocks.segments]]
+    type = 'elixir'
+    foreground = 'p:yellow'
+    background = 'transparent'
+    template = '  {{ .Full }} '
+    style = 'plain'
+    
+    [blocks.segments.properties]
+      display_mode = 'files'
+
+  [[blocks.segments]]
+    type = 'node'
+    foreground = 'p:yellow'
+    background = 'transparent'
+    template = '  {{ .Full }} '
+    style = 'plain'
+    
+    [blocks.segments.properties]
+      display_mode = 'files'
+
+  [[blocks.segments]]
+    type = 'python'
+    template = ''
+    foreground = 'p:yellow'
+    background = 'transparent'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      display_mode = 'files'
+      fetch_version = true
+      fetch_virtual_env = true
+
+  [[blocks.segments]]
+    type = 'rust'
+    style = 'plain'
+    foreground = 'p:yellow'
+    background = 'transparent'
+    template = '  {{ .Full }} '
+  
+    [blocks.segments.properties]
+      display_mode = 'files'
+
+  [[blocks.segments]]
+    type = 'executiontime'
+    style = 'plain'
+    foreground = 'p:yellow'
+    background = 'transparent'
+    template = '{{ .FormattedMs }}'
+
+    [blocks.segments.properties]
+      threshold = 2500
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    type = 'status'
+    template = '❯ '
+    foreground = 'foreground'
+    background = 'transparent'
+    style = 'plain'
+    foreground_templates = ['{{ if gt .Code 0 }}p:red{{ end }}']
+
+    [blocks.segments.properties]
+      always_enabled = true

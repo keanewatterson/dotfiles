@@ -1,0 +1,15 @@
+clx_dd_name() {
+    # return a docker container name by first character or name
+
+    # required shell variables
+    #   _clxp_docker_dev_home - home of docker compose named files
+    #   _clxp_docker_dev_names - array of container letter/names for example ( a alpha o omega)
+    local _name="${_clxp_docker_dev_names[${1[1]}]}"
+
+    if [[ -n "${_name}" ]]; then
+        echo "${_name}"
+    else
+        >&2 printf "%s: unexpected argument: '%s'\n" "${funcstack[1]}" "$1"
+        >&2 printf "%s <letter|name>\n" "${funcstack[1]}"
+    fi
+}

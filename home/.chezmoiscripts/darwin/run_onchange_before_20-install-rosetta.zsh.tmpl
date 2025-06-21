@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+set -eufo pipefail
+
+{{ template "helper-env.zsh" . }}
+{{ template "helper-functions.zsh" . -}}
+
+if ! /usr/bin/pgrep oahd >/dev/null; then
+    log_info "Instaling Rosetta"
+    log_info "Root privilege is required"
+    softwareupdate --agree-to-license --install-rosetta
+else
+    log_info "Rosetta is installed"
+fi

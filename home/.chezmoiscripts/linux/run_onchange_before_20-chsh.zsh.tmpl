@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+set -eufo pipefail
+
+{{ template "helper-env.zsh" . }}
+{{ template "helper-functions.zsh" . -}}
+
+log_info "Setting login shell to zsh"
+
+chsh -s /usr/bin/zsh

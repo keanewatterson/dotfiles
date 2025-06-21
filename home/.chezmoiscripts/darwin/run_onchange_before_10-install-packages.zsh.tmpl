@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+set -eufo pipefail
+
+{{ template "helper-env.zsh" . }}
+{{ template "helper-functions.zsh" . }}
+
+log_info "Installing Homebrew packages"
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+{{ $packages := "desktop" -}}
+{{ if .instance.is_machine_virtual -}}
+{{   $packages = "desktop-slim" -}}
+{{ end }}
+
+{{ $section := index .packages.darwin $packages -}}
+{{ $brews := $section.brews | sortAlpha | uniq -}}
+{{ $casks := $section.casks | sortAlpha | uniq -}}
+
+brew command-not-found-init
+
+brew bundle --file=/dev/stdin <<EOF
+{{- range $brews }}
+brew "{{ . }}"
+{{- end }}
+
+{{- range $casks }}
+cask "{{ . }}"
+{{- end }}
+EOF
+
+# ensure no compinit security complaints
+chmod 755 /opt/homebrew/share

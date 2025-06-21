@@ -1,0 +1,17 @@
+clx_symbols() {
+    # print occasionally required symbols
+    printf "-- formula -----------------------------\n"
+    printf "AEQ:\t\t≈\n"
+    printf "Delta:\t\tΔ\n"
+    printf "Empty set:\t∅\n"
+    printf "GTE:\t\t≥\n"
+    printf "Infinity:\t∞\n"
+    printf "LTE:\t\t≤\n"
+    printf "Member:\t\t∈\n"
+    printf "Sigma:\t\t∑\tσ\n"
+    printf "Subtotal\t◊\n"
+
+    printf "-- other -------------------------------\n"
+    printf "Recycle:\t♺\n"
+    printf "Shrug:\t\t¯\_(ツ)_/¯\n"
+}

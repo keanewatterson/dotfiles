@@ -1,0 +1,5 @@
+clx_list_fold() { 
+    # reformat list content as a list of maximum width: lfold
+    # file name, character width arguments
+    cat "${1}" | sed -e "s/\',\'/\', \'/g" | fold -s -w "${2}" 
+}
