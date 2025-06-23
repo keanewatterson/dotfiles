@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -euo pipefail
+
+{{ template "init-env.sh" . }}
+{{ template "util-log.sh" . }}
+
+_t0=$(date +%s.%N)
+
+log_info "Installing linux packages"
+
+{{ $scope := "desktop" -}}
+{{ if .instance.is_machine_headless -}}
+{{   $scope = "server" -}}
+{{ end }}
+
+{{ $section := index .packages.linux.ubuntu $scope -}}
+{{ $apts := $section.apt | sortAlpha | uniq -}}
+{{ $snaps := $section.snap | sortAlpha | uniq -}}
+{{ $snaps_classic := index $section "snap-classic" | sortAlpha | uniq -}}
+
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+{{   $sudo = "" -}}
+{{ end }}
+
+# apt
+{{ $sudo }}apt-get update
+{{ $sudo }}apt-get install -y {{ $apts | join " " }}
+
+# snap
+{{  if lookPath "snap" -}}
+
+{{    range $snaps -}}
+(       snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install {{ . }}
+{{    end }}
+
+# snap classic
+{{    range $snaps_classic -}}
+(       snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install --classic {{ . }}
+{{    end -}}
+
+{{- end }}
+
+_t1=$(date +%s.%N)
+_sec=$(printf "%.3f" "$(echo "$_t1 - $_t0" | bc -l)")
+
+log_info "Linux packages completed: seconds: ${_sec}"

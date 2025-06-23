@@ -1,0 +1,71 @@
+# user identity
+{{ $identity_name := "" }}
+{{ if eq .chezmoi.os "darwin" }}
+{{   $identity_name = (trim (output "sh" "-c" "id -F")) -}}
+{{ else if eq .chezmoi.os "linux" }}
+{{   $identity_name = (trim (output "sh" "-c" "getent passwd $USER | awk -F: '{print $5}' | cut -d, -f1")) -}}
+{{ end -}}
+
+
+# operating system distro
+{{ $os_distro := .chezmoi.os -}}
+{{ if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+{{   $os_distro = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{ end -}}
+
+
+# is machine virtual
+{{ $is_machine_virtual :=  false -}}
+{{ if eq .chezmoi.os "darwin" }}
+{{   if contains "Virtual Machine" (output "system_profiler" "SPHardwareDataType") }}
+{{     $is_machine_virtual = true }}
+{{   end -}}
+{{ else if eq .chezmoi.os "linux" }}
+{{   if not (contains "none" (output "systemd-detect-virt")) }}
+{{     $is_machine_virtual = true }}
+{{   end -}}
+{{ end -}}
+
+
+# interactive
+{{ $is_machine_headless := false -}}
+{{ if eq .chezmoi.os "linux" -}}
+{{ if not (findOneExecutable (list "startx" "Xorg") (list "/usr/bin" "/bin" "/sbin")) -}}
+{{ $is_machine_headless = true }}
+{{ end -}}
+{{   $is_machine_headless = promptBoolOnce . "instance.is_machine_headless" "Machine headless" $is_machine_headless -}}
+{{ end -}}
+
+{{ $user_name := promptStringOnce . "instance.user_name" "User name" $identity_name -}}
+
+{{ $candidate_alias := $user_name | lower | replace " " "." -}}
+{{ $email_alias := promptStringOnce . "instance.email_alias" "User email alias" $candidate_alias -}}
+
+{{ $email_domains := list "olilo.io" "proton.me" -}}
+{{ $email_domain := promptChoiceOnce . "instance.email_domain" "Email domain" $email_domains "olilo.io" -}}
+
+{{ $aws_profiles := list "sandbox-iiot" -}}
+{{ $aws_profile := promptChoiceOnce . "instance.default_aws_profile" "Defalut AWS profile" $aws_profiles "sandbox-iiot" -}}
+
+
+umask = 0o077
+
+encryption = "age"
+
+[age]
+    identity = "~/.config/chezmoi/key-dotfiles.txt"
+    recipient = "age168xpfe8ypjgdqncm6eavqq8rwlu5scpacnpemgj6eed2743lw9ys7xysus"
+
+[data.instance]
+    os_distro = {{ $os_distro | quote }}
+    is_machine_headless = {{ $is_machine_headless }}
+    is_machine_virtual = {{ $is_machine_virtual }}
+    email_alias = {{ $email_alias | quote }}
+    email_domain = {{ $email_domain | quote }}
+    user_name = {{ $user_name | quote }}
+    user_email = {{ printf "%s@%s" $email_alias $email_domain | quote }}
+    default_aws_profile = {{ $aws_profile | quote }}
+
+[git]
+    autoCommit = false
+    autoPush = false

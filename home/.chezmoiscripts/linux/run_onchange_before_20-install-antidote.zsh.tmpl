@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+{{ template "init-env.sh" . }}
+{{ template "util-log.sh" . }}
+
+if ! [[ -d "${ZDOTDIR}/.antidote" ]]; then
+    log_info "Installing Antidote"
+    git clone --depth=1 https://github.com/mattmc3/antidote.git "${ZDOTDIR}/.antidote"
+else
+    log_info "Antidote is installed"
+fi

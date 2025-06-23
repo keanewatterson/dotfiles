@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+{{ template "init-env.sh" . }}
+{{ template "util-log.sh" . }}
+
+if ! [[ -f /opt/homebrew/bin/brew ]]; then
+
+    log_info "Installing Homebrew"
+    log_info "Root privilege is required"
+    sudo -v
+    NONINTERACTIVE=1 /bin/bash -lc "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+    log_info "Homebrew is installed"
+fi

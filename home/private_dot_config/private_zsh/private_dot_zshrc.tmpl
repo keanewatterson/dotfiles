@@ -1,0 +1,255 @@
+# -- .zshrc -------------------------------------------------------------------
+{{ $path_list := (list (joinPath .chezmoi.homeDir ".local" "bin") "/usr/local/bin" "/bin" "/opt/homebrew/bin" "/snap/bin") -}}
+
+# enable detailed profiling
+# zmodload zsh/zprof
+
+
+# -- environment --------------------------------------------------------------
+umask 077
+
+cdpath=(
+  $cdpath 
+  "${HOME}"
+  "${HOME}/Projects"
+)
+
+path=(
+  $path
+  "${HOME}/.local/bin"
+)
+
+export VISUAL="nvim"
+
+
+# -- zstyle --
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+zstyle ':completion:*:complete:*' use-cache 1
+
+
+# -- options
+setopt AUTO_CD
+setopt COMPLETE_IN_WORD
+setopt CORRECT
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
+setopt SHARE_HISTORY
+
+HISTSIZE=5000
+SAVEHIST=${HISTSIZE}
+HISTORY_IGNORE='(c3|cd|cd ..|cfd|cfs|gs|h|ls(| *)|ll(| *)|ps(| *)|pwd|u)'
+zshaddhistory() { [[ ${1%%$'\n'} != ${~HISTORY_IGNORE} ]] }
+
+
+# -- prompt -------------------------------------------------------------------
+{{ if findExecutable "oh-my-posh" $path_list -}}
+eval "$(oh-my-posh init zsh --config ${XDG_CONFIG_HOME}/oh-my-posh/clx.omp.toml)"
+{{- else -}}
+# -- none
+{{- end }}
+
+
+# -- plugins ------------------------------------------------------------------
+# -- antidote
+{{ if eq .chezmoi.os "linux" -}}
+export ANTIDOTE_HOME="${XDG_CACHE_HOME}/antidote"
+zstyle ':antidote:bundle' file ${ZDOTDIR}/zplugins.txt
+zstyle ':antidote:bundle' use-friendly-names 'yes'
+
+if [[ -f "${ZDOTDIR}/.antidote/antidote.zsh" ]]; then
+  source "${ZDOTDIR}/.antidote/antidote.zsh"
+  antidote load
+fi
+{{- else -}}
+# -- none
+{{- end }}
+
+
+{{ if eq .chezmoi.os "darwin" -}}
+# -- command-not-found
+HB_CNF_HANDLER="/opt/homebrew/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+if [ -f "$HB_CNF_HANDLER" ]; then
+  source "$HB_CNF_HANDLER";
+fi
+
+
+# -- zsh-autosuggestions
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+
+# -- zsh-completions
+fpath=($fpath /opt/homebrew/share/zsh-completions)
+
+
+# -- zsh-fast-syntax-highlighting
+source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+{{- end }}
+
+
+# -- direnv
+{{ if findExecutable "direnv" $path_list -}}
+eval "$(direnv hook zsh)"
+{{- else -}}
+# -- none
+{{- end }}
+
+
+# -- fzf
+{{ if findExecutable "fzf" $path_list -}}
+source <(fzf --zsh)
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --preview "rg --pretty --context 5 {q} {1} 2>/dev/null"'
+#export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+{{- else -}}
+# -- none
+{{- end }}
+
+
+# -- zoxide
+{{ if findExecutable "zoxide" $path_list -}}
+export _ZO_DATA_DIR="${XDG_DATA_HOME}/zoxide"
+_zoxide_init="${_ZO_DATA_DIR}/zoxide_init.zsh"
+
+if [[ ! -f "${_zoxide_init}" ]]; then
+  mkdir -p "${_ZO_DATA_DIR}"
+  zoxide init --cmd cd zsh > "${_zoxide_init}"
+fi
+
+source "${_zoxide_init}"
+unset _zoxide_init
+{{- else -}}
+# -- none
+{{- end }}
+
+
+# -- user functions -----------------------------------------------------------
+_zshfn_dir="${ZDOTDIR}/zshfn"
+if [[ -d "${_zshfn_dir}" ]]; then
+  fpath=($fpath  "${_zshfn_dir}")
+  autoload -Uz "${_zshfn_dir}"/*(:t)
+fi
+unset _zsfn_dir
+
+
+# -- aliases  -----------------------------------------------------------------
+alias c3='cal -3'
+alias cz='chezmoi'
+alias czhd='cd ${XDG_DATA_HOME}/chezmoi/home'
+alias czsd='cd ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
+alias czs='chezmoi status'
+alias gs='git status'
+alias gxip='curl checkip.amazonaws.com'
+alias h='history -200'
+alias ll='eza -aglF --git --time-style long-iso'
+alias ls='eza -aF'
+alias lt='eza -F --tree -L 3'
+alias s='ssh'
+alias u='uptime'
+alias vi='nvim'
+
+{{ if eq .chezmoi.os "darwin" -}}
+alias caf='clx_caffeinate'
+alias ifl='clx_if_list'
+alias lab='jupyter lab'
+alias -g sp='/tmp/.scratch-pad'
+alias spc='cat sp | pbcopy'
+alias spe='nvim sp'
+alias spn='spx; nvim sp'
+alias spu='spx; nvim sp; sort -du sp | pbcopy'
+alias spx='[[ -f sp ]] && rm sp'
+alias tohex='od -An -vtx1'
+alias toctl='od -An -vtu1'
+
+
+# -- applications
+alias bvr='open -a DBeaver'
+alias code='open -a Visual\ Studio\ Code'
+alias ds='open -a Docker'
+alias dx='osascript -e ''quit app "Docker"'''
+alias ffx='open -a Firefox'
+alias ggl='open -a Google\ Chrome'
+alias itj='open -a IntelliJ\ IDEA\ CE'
+alias p4m='open -a p4merge'
+alias spt='open -a Spotify'
+
+
+# -- file extensions
+alias -s csv='open -a Microsoft\ Excel'
+alias -s html='open -a Arc'
+alias -s xlsx='open -a Microsoft\ Excel'
+
+{{- else if eq .chezmoi.os "linux" -}}
+{{- end }}
+
+
+# -- aws-cli
+{{ if findExecutable "aws" $path_list -}}
+alias aws="aws --profile {{ .instance.default_aws_profile }}"
+alias awse="echo {{ .instance.default_aws_profile }}"
+alias awsl="aws sso login"
+{{- else -}}
+# -- none
+{{- end }}
+
+
+# -- docker 
+{{ if findExecutable "docker" $path_list -}}
+# docker run -it --name ubuntu-20.04 -h hadean ubuntu /bin/bash
+# docker scan --file Dockerfile aarch64/aws-iot-greengrass:2.5.3
+# docker run --init -h -p host:container -p x:y --add-host host:a.b.c.d
+# docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} \
+#   {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' d04f4dbeabdb
+
+alias dcl='docker container ls --all'
+alias ddf='docker system df'
+alias dil='docker image ls --all'
+alias dps='docker ps'
+{{- else -}}
+# -- none
+{{- end }}
+
+
+# -- micromamba
+{{ if findExecutable "micromamba" $path_list -}}
+alias mminit='clx_init_mamba'
+{{- else -}}
+# -- none
+{{- end }}
+
+
+# -- sdkman
+{{ if stat (joinPath .chezmoi.homeDir ".local" "share" "sdkman") -}}
+alias sdkinit='clx_init_sdkman'
+{{- else -}}
+# -- none
+{{- end }}
+
+
+{{ if eq .chezmoi.os "darwin" -}}
+# -- compinit -----------------------------------------------------------------
+autoload -Uz compinit
+compinit
+{{- end }}
+
+
+# output detailed profiling
+# zprof

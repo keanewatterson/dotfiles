@@ -1,0 +1,15 @@
+{{ if eq .chezmoi.os "darwin" }}
+clx_caffeinate() {
+	# extend display time with caffeinate
+
+	if [[ $(uname -s) = "Darwin" ]]; then
+		# pmset -g assertions; pmset -g assertionslog  # interactive
+		local min=${1:=15}
+		printf "Display sleep suspended ${min} minutes, until $(date -v +${min}M)\n"
+		caffeinate -d -t "$((${min} * 60))" &
+	else
+		printf "This function is supported only on macOS"
+		return 1
+	fi
+}
+{{ end -}}

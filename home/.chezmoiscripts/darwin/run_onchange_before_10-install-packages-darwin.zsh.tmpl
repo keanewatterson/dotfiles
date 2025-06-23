@@ -1,0 +1,40 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+{{ template "init-env.sh" . }}
+{{ template "util-log.sh" . }}
+
+_t0=$(date +%s.%N)
+
+log_info "Installing Homebrew packages"
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+{{ $scope := "desktop" -}}
+{{ if .instance.is_machine_virtual -}}
+{{   $scope = "desktop-slim" -}}
+{{ end -}}
+
+{{ $section := index .packages.darwin $scope -}}
+{{ $brews := $section.brew | sortAlpha | uniq -}}
+{{ $casks := $section.cask | sortAlpha | uniq -}}
+
+brew command-not-found-init
+
+brew bundle --file=/dev/stdin <<EOF
+{{- range $brews }}
+brew "{{ . }}"
+{{- end }}
+
+{{- range $casks }}
+cask "{{ . }}"
+{{- end }}
+EOF
+
+# ensure no compinit security complaints
+chmod 755 /opt/homebrew/share
+
+_t1=$(date +%s.%N)
+_sec=$(printf "%.3f" $((_t1 - _t0)))
+log_info "Homebrew packages completed: seconds: ${_sec}"

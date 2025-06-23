@@ -1,0 +1,42 @@
+{{ if not .instance.is_machine_headless -}}
+#!/bin/zsh
+
+set -euo pipefail
+
+{{ template "init-env.sh" . }}
+{{ template "util-log.sh" . }}
+
+base_url="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
+font_dir="${XDG_DATA_HOME}/fonts"
+tmp_dir="$(mktemp -d)"
+
+fonts=(
+    "Meslo"
+    "FiraCode"
+    "JetBrainsMono"
+)
+
+log_info "Installing Nerd Fonts"
+
+mkdir -p "$font_dir"
+
+for font in "${fonts[@]}"; do
+
+    archive="${font}.zip"
+    url="${base_url}/${archive}"
+
+    log_info "Downloading: ${font} url: ${url}"
+    curl -fsSLo "${tmp_dir}/${archive}" --create-dirs "${url}"
+
+    log_info "Extracting: ${font}: at: ${tmp_dir}/${font}"
+    unzip -oqq "${tmp_dir}/${archive}" -d "${tmp_dir}/${font}"
+
+    log_info "Installing: ${font} to ${font_dir}"
+    find "${tmp_dir}/${font}" -name "*.ttf" -exec cp {} "${font_dir}/" \;
+done
+
+rm -rf "$tmp_dir"
+
+log_info "Updating font cache"
+fc-cache -f "$font_dir"
+{{ end }}

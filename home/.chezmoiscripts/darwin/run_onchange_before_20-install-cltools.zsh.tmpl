@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+{{ template "init-env.sh" . }}
+{{ template "util-log.sh" . }}
+
+if ! pkgutil --pkg-info=com.apple.pkg.CLTools_Executables >/dev/null 2>&1; then
+
+    log_info "Installing Command Line Tools"
+    xcode-select --install
+else
+    log_info "Command Line Tools are installed"
+fi

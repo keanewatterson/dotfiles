@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+{{ template "init-env.sh" . }}
+{{ template "util-log.sh" . }}
+
+if ! /usr/bin/pgrep oahd >/dev/null; then
+    log_info "Instaling Rosetta"
+    log_info "Root privilege is required"
+    softwareupdate --agree-to-license --install-rosetta
+else
+    log_info "Rosetta is installed"
+fi

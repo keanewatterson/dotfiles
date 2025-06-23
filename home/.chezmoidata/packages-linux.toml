@@ -1,0 +1,47 @@
+[packages.linux.ubuntu.server]
+apt = [
+  "bat",
+  "btop",
+  "direnv",
+  "gdu",
+  "eza",
+  "fd-find",
+  "fzf",
+  "neovim",
+  "ripgrep",
+  "shellcheck",
+  "unzip",
+  "yq",
+  "zip",
+  "zoxide",
+  "zsh"
+]
+snap = [ ]
+snap-classic = [
+  "aws-cli" 
+]
+
+[packages.linux.ubuntu.desktop]
+apt = [
+  "bat",
+  "btop",
+  "direnv",
+  "gdu",
+  "eza",
+  "fd-find",
+  "fzf",
+  "neovim",
+  "ripgrep",
+  "shellcheck",
+  "unzip",
+  "yq",
+  "zip",
+  "zoxide",
+  "zsh"
+]
+snap = [
+  "vivaldi"
+]
+snap-classic = [
+  "aws-cli"
+]

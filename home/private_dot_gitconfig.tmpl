@@ -1,0 +1,29 @@
+[core]
+  autocrlf = input
+  editor = vi
+  excludesfile = {{ .chezmoi.homeDir -}}/.gitignore_global
+
+{{ if eq .chezmoi.os "darwin" -}}
+[merge]
+  tool = p4merge
+[diff]
+  tool = p4merge
+  submodule = log
+[difftool "p4merge"]
+  cmd = /Applications/p4merge.app/Contents/MacOS/p4merge $LOCAL $REMOTE
+[difftool]
+  prompt = false
+[mergetool "p4merge"]
+  cmd = /Applications/p4merge.app/Contents/MacOS/p4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
+  trustExitCode = false
+[mergetool]
+  keepBackup = false
+{{ end -}}
+
+[push]
+  default = simple
+[submodule]
+  recurse = true
+[user]
+    email = {{ .instance.user_email | quote }}
+    name = {{ .instance.user_name | quote }}

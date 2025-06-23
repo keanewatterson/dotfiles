@@ -1,0 +1,13 @@
+{{ template "init-mamba.zsh" . }}
+
+alias mm='micromamba'
+alias mma='mm activate'
+alias mmd='mm deactivate'
+alias mmi='mm install'
+alias mme='mm info --envs'
+alias mml='mm list'
+alias mms='mm search'
+alias mmrd='mm repoquery depends'
+alias mmrs='mm repoquery search'
+alias mmrw='mm repoquery whoneeds'
+mmrm() { mm remove --name "${1}" --all; }

@@ -1,0 +1,33 @@
+# environment management
+#   micromamba self-update
+#   micromamba env create -f mamba-clx.yaml
+#   micromamba env export --from-history
+#   micromamba env export
+
+name: clx
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python
+  - pip
+  - boto3
+  - diskcache
+  - geojson
+  - geopandas
+  - h3
+  - jupyterlab
+  - keplergl
+  - matplotlib
+  - nodejs
+  - pandas
+  - postgresql
+  - psycopg
+  - psycopg-c
+  - pyyaml
+  - requests
+  - scikit-learn
+  - sqlalchemy
+  - toml
+  - xonsh
+  - yarn
