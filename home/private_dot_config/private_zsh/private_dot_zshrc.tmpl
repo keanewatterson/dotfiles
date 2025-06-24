@@ -216,8 +216,6 @@ alias awsl="aws sso login"
 # docker run -it --name ubuntu-20.04 -h hadean ubuntu /bin/bash
 # docker scan --file Dockerfile aarch64/aws-iot-greengrass:2.5.3
 # docker run --init -h -p host:container -p x:y --add-host host:a.b.c.d
-# docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} \
-#   {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' d04f4dbeabdb
 
 alias dcl='docker container ls --all'
 alias ddf='docker system df'
