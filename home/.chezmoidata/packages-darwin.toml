@@ -10,9 +10,7 @@ brew = [
   "dockutil",
   "eza",
   "fd",
-  "fish",
   "fzf",
-  "gdu",
   "gnu-units",
   "jless",
   "jq",
@@ -35,7 +33,7 @@ brew = [
 cask = [
   "font-meslo-lg-nerd-font"
 ]
-cask-new-install = [
+cask-no-install = [
   "appcleaner",
   "arc",
   "balenaetcher",

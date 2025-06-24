@@ -39,9 +39,7 @@ apt = [
   "zoxide",
   "zsh"
 ]
-snap = [
-  "vivaldi"
-]
+snap = [ ]
 snap-classic = [
   "aws-cli"
 ]
