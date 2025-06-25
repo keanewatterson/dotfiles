@@ -23,8 +23,4 @@ log_message() {
     # printf "$(date +'%Y-%m-%d %H:%M:%S') [${(U)1}] ($_log_module) ${2}\n"
     printf "$(date +'%Y-%m-%d %H:%M:%S') [${1}] ($_log_module) ${2}\n"
 }
-
-# alias log_error="log_message 'ERROR'"
-# alias log_info="log_message 'INFO'"
-# alias log_warn="log_message 'WARN'"
 # <<< util-log.sh
