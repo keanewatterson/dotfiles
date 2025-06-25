@@ -256,7 +256,7 @@ alias sdkinit='clx_init_sdkman'
 
 
 # options enabled with unversioned .chezmoidata/instance-options.toml
-{{- if and (hasKey .instance.options "postggis_docker") (eq .instance.options.postggis_docker true) }}
+{{- if and (hasKey .instance.options "postgis_docker") (eq .instance.options.postgis_docker true) }}
 # -- postggis_docker
 alias depg='docker exec -it postgis /bin/bash'
 alias dspg='docker start postgis'
