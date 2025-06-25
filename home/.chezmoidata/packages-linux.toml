@@ -1,3 +1,25 @@
+[packages.linux.fedora.desktop]
+dnf = [
+  "bat",
+  "btop",
+  "direnv",
+  "gdu",
+  "git",
+  "fd-find",
+  "fzf",
+  "neovim",
+  "openssh-server",
+  "ripgrep",
+  "shellcheck",
+  "unzip",
+  "yq",
+  "zip",
+  "zoxide",
+  "zsh"
+]
+snap = [ ]
+snap-classic = [ ]
+
 [packages.linux.ubuntu.server]
 apt = [
   "bat",

@@ -159,15 +159,21 @@ alias czs='chezmoi status'
 alias gs='git status'
 alias gxip='curl checkip.amazonaws.com'
 alias h='history -200'
+{{ if findExecutable "eza" $path_list -}}
 alias ll='eza -aglF --git --time-style long-iso'
 alias ls='eza -aF'
 alias lt='eza -F --tree -L 3'
+{{ else -}}
+alias ls='ls -Fa'
+alias ll='ls -ahl'
+{{ end }}
 alias s='ssh'
 alias u='uptime'
 alias vi='nvim'
 
 {{ if eq .chezmoi.os "darwin" -}}
 alias caf='clx_caffeinate'
+alias gdu='gdu-go'
 alias ifl='clx_if_list'
 alias lab='jupyter lab'
 alias -g sp='/tmp/.scratch-pad'
