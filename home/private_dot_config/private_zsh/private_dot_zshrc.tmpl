@@ -150,6 +150,13 @@ fi
 unset _zsfn_dir
 
 
+{{ if eq .chezmoi.os "darwin" -}}
+# -- compinit -----------------------------------------------------------------
+autoload -Uz compinit
+compinit
+{{- end }}
+
+
 # -- aliases  -----------------------------------------------------------------
 alias c3='cal -3'
 alias cz='chezmoi'
@@ -248,11 +255,14 @@ alias sdkinit='clx_init_sdkman'
 {{- end }}
 
 
-{{ if eq .chezmoi.os "darwin" -}}
-# -- compinit -----------------------------------------------------------------
-autoload -Uz compinit
-compinit
+# options enabled with unversioned .chezmoidata/instance-options.toml
+{{- if and (hasKey .instance.options "postggis_docker") (eq .instance.options.postggis_docker true) }}
+# -- postggis_docker
+alias depg='docker exec -it postgis /bin/bash'
+alias dspg='docker start postgis'
+alias dxpg='docker stop postgis'
 {{- end }}
+# end
 
 
 # output detailed profiling
