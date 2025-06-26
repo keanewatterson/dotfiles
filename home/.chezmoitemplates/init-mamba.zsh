@@ -1,5 +1,5 @@
 # >>> init-mamba.zsh
-export MAMBA_EXE="$(whence -p micromamba)"
+export MAMBA_EXE="$(which micromamba)"
 export MAMBA_ROOT_PREFIX="${XDG_DATA_HOME}/mamba"
 
 __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
