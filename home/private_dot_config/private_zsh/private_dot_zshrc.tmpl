@@ -177,6 +177,7 @@ alias ll='ls -ahl'
 alias s='ssh'
 alias u='uptime'
 alias vi='nvim'
+alias view='nvim -R'
 
 {{ if eq .chezmoi.os "darwin" -}}
 alias caf='clx_caffeinate'
@@ -184,6 +185,7 @@ alias gdu='gdu-go'
 alias ifl='clx_if_list'
 alias lab='jupyter lab'
 alias -g sp='/tmp/.scratch-pad'
+alias pbc='pbcopy'
 alias spc='cat sp | pbcopy'
 alias spe='nvim sp'
 alias spn='spx; nvim sp'
@@ -256,11 +258,15 @@ alias sdkinit='clx_init_sdkman'
 
 
 # options enabled with unversioned .chezmoidata/instance-options.toml
+{{ if (hasKey .instance "options") -}}
+
 {{- if and (hasKey .instance.options "postgis_docker") (eq .instance.options.postgis_docker true) }}
-# -- postggis_docker
+# -- postgis_docker
 alias depg='docker exec -it postgis /bin/bash'
 alias dspg='docker start postgis'
 alias dxpg='docker stop postgis'
+{{- end }}
+
 {{- end }}
 # end
 

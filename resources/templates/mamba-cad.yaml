@@ -1,6 +1,6 @@
 # environment management
 #   micromamba self-update
-#   micromamba env create -f mamba-cad-template.yaml
+#   micromamba env create -f mamba-cad.yaml
 #   micromamba env export --from-history
 #   micromamba env export
 
@@ -10,30 +10,10 @@
 
 name: cad
 channels:
-  - cadquery
   - conda-forge
 dependencies:
-  - python=3.10
-  - cadquery=master
+  - python
   - pip
+  - jupyterlab
   - pip:
-    - svgwrite
-    - svgpathtools
-    - anytree
-    - scipy
-    - ipython
-    - trianglesolver
-    - ocp_tessellate
-    - webcolors==1.12
-    - numpy
-    - numpy-quaternion
-    - cachetools==5.2.0
-    - ocp_vscode
-    - requests
-    - orjson
-    - urllib3
-    - certifi
-    - numpy-stl
-    - py-lib3mf
-    - "svgpathtools>=1.5.1,<2"
-    - "svgelements>=1.9.1,<2"
+    - build123d

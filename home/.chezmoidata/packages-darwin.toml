@@ -15,6 +15,7 @@ brew = [
   "gnu-units",
   "jless",
   "jq",
+  "libpq",
   "mas",
   "micromamba",
   "mosh",
@@ -32,56 +33,20 @@ brew = [
   "zsh-fast-syntax-highlighting"
 ]
 cask = [
-  "font-meslo-lg-nerd-font"
-]
-cask-no-install = [
-  "appcleaner",
-  "arc",
-  "balenaetcher",
-  "bambu-studio",
-  "chatgpt",
-  "clocker",
-  "dbeaver-community",
-  "docker",
-  "font-fira-code-nerd-font",
   "font-jetbrains-mono-nerd-font",
-  "font-meslo-lg-nerd-font",
-  "garmin-basecamp",
-  "ghostty",
-  "gimp",
-  "google-earth-pro",
-  "inkscape",
-  "intellij-idea-ce",
-  "iterm2",
-  "microsoft-excel",
-  "microsoft-powerpoint",
-  "microsoft-word",
-  "notion",
-  "obsidian",
-  "omnigraffle",
-  "onedrive",
-  "p4v",
-  "parallels",
-  "postman",
-  "rode-connect",
-  "scapple",
-  "spotify",
-  "visual-studio-code",
-  "whatsapp"
+  "font-meslo-lg-nerd-font"
 ]
 
 [packages.darwin.desktop-slim]
 brew = [
   "age",
-  "awscli",
   "bat",
   "bitwarden-cli",
   "chezmoi",
   "direnv",
   "eza",
-  "fd",
   "fzf",
-  "jq",
+  "jless",
   "micromamba",
   "neovim",
   "oh-my-posh",
@@ -93,6 +58,8 @@ brew = [
 ]
 cask = [
   "appcleaner",
+  "font-fira-code-nerd-font",
+  "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
   "ghostty",
   "visual-studio-code"

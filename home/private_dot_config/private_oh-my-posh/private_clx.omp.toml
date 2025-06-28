@@ -104,7 +104,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
 
   [[blocks.segments]]
     type = 'python'
-    template = ''
+    template = ' {{ .Venv }} '
     foreground = 'p:yellow'
     background = 'transparent'
     style = 'plain'
