@@ -1,0 +1,21 @@
+clx_wanip() {
+
+  local protocol=""
+  local endpoint=""
+
+  for arg in "$@"; do
+    case "$arg" in
+      -4)
+        protocol="-4"
+        ;;
+      -6)
+        protocol="-6"
+        ;;
+      -json)
+        endpoint="/json"
+        ;;
+    esac
+  done
+
+  curl -s $protocol "https://ifconfig.co${endpoint}"
+}
