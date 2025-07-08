@@ -15,5 +15,6 @@ dependencies:
   - python
   - pip
   - jupyterlab
+  - xonsh
   - pip:
     - build123d
