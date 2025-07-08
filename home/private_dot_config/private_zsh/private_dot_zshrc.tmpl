@@ -267,6 +267,11 @@ alias dspg='docker start postgis'
 alias dxpg='docker stop postgis'
 {{- end }}
 
+{{- if and (hasKey .instance.options "julia") (eq .instance.options.julia true) }}
+# -- julia
+export path=($path ${HOME}/.juliaup/bin)
+{{- end }}
+
 {{- end }}
 # end
 

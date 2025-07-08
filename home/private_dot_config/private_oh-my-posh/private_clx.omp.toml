@@ -93,6 +93,16 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
       display_mode = 'files'
 
   [[blocks.segments]]
+    type = 'julia'
+    foreground = 'p:yellow'
+    background = 'transparent'
+    template = '  {{ .Full }} '
+    style = 'plain'
+
+    [blocks.segments.properties]
+      display_mode = 'files'
+  
+  [[blocks.segments]]
     type = 'node'
     foreground = 'p:yellow'
     background = 'transparent'
