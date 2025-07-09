@@ -1,5 +1,11 @@
 # -- .zshrc -------------------------------------------------------------------
-{{ $path_list := (list (joinPath .chezmoi.homeDir ".local" "bin") "/usr/local/bin" "/bin" "/opt/homebrew/bin" "/snap/bin") -}}
+{{ $path_list := (list
+  (joinPath .chezmoi.homeDir ".local" "bin")
+  "/usr/local/bin"
+  "/bin"
+  "/opt/homebrew/bin"
+  "/snap/bin")
+-}}
 
 # enable detailed profiling
 # zmodload zsh/zprof
@@ -19,6 +25,7 @@ path=(
   "${HOME}/.local/bin"
 )
 
+export LESS='-R --use-color -Dd+r$Du+b$'
 export VISUAL="nvim"
 
 
@@ -56,7 +63,7 @@ setopt SHARE_HISTORY
 
 HISTSIZE=5000
 SAVEHIST=${HISTSIZE}
-HISTORY_IGNORE='(c3|cd|cd ..|cfd|cfs|gs|h|ls(| *)|ll(| *)|ps(| *)|pwd|u)'
+HISTORY_IGNORE='(c3|cd|cd ..|gs|h|ls(| *)|ll(| *)|ps(| *)|pwd|u)'
 zshaddhistory() { [[ ${1%%$'\n'} != ${~HISTORY_IGNORE} ]] }
 
 
@@ -159,12 +166,18 @@ compinit
 
 # -- aliases  -----------------------------------------------------------------
 alias c3='cal -3'
+{{ if findExecutable "bat" $path_list -}}
+alias cat='bat'
+alias catnp='bat --show-all'
+{{ else -}}
+catnp='cat -ent'
+{{ end -}}
 alias cz='chezmoi'
 alias czhd='cd ${XDG_DATA_HOME}/chezmoi/home'
 alias czsd='cd ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
 alias czs='chezmoi status'
+alias grep='grep --color=auto'
 alias gs='git status'
-alias gxip='curl checkip.amazonaws.com'
 alias h='history -200'
 {{ if findExecutable "eza" $path_list -}}
 alias ll='eza -aglF --git --time-style long-iso'
@@ -173,11 +186,12 @@ alias lt='eza -F --tree -L 3'
 {{ else -}}
 alias ls='ls -Fa'
 alias ll='ls -ahl'
-{{ end }}
+{{ end -}}
 alias s='ssh'
 alias u='uptime'
 alias vi='nvim'
 alias view='nvim -R'
+alias wanip='clx_wanip'
 
 {{ if eq .chezmoi.os "darwin" -}}
 alias caf='clx_caffeinate'
@@ -257,19 +271,19 @@ alias sdkinit='clx_init_sdkman'
 {{- end }}
 
 
-# options enabled with unversioned .chezmoidata/instance-options.toml
+# options enabled with unmanaged, unversioned .chezmoidata/instance-options.toml
 {{ if (hasKey .instance "options") -}}
-
-{{- if and (hasKey .instance.options "postgis_docker") (eq .instance.options.postgis_docker true) }}
-# -- postgis_docker
-alias depg='docker exec -it postgis /bin/bash'
-alias dspg='docker start postgis'
-alias dxpg='docker stop postgis'
-{{- end }}
 
 {{- if and (hasKey .instance.options "julia") (eq .instance.options.julia true) }}
 # -- julia
 export path=($path ${HOME}/.juliaup/bin)
+{{- end }}
+
+{{ if and (hasKey .instance.options "postgis_docker") (eq .instance.options.postgis_docker true) }}
+# -- postgis_docker
+alias depg='docker exec -it postgis /bin/bash'
+alias dspg='docker start postgis'
+alias dxpg='docker stop postgis'
 {{- end }}
 
 {{- end }}
