@@ -258,6 +258,16 @@ alias dps='docker ps'
 # -- micromamba
 {{ if findExecutable "micromamba" $path_list -}}
 alias mminit='clx_init_mamba'
+alias mma='mm activate'
+alias mmd='mm deactivate'
+alias mmi='mm install'
+alias mme='mm info --envs'
+alias mml='mm list'
+alias mms='mm search'
+alias mmrd='mm repoquery depends'
+alias mmrs='mm repoquery search'
+alias mmrw='mm repoquery whoneeds'
+mmrm() { mm remove --name "${1}" --all; }
 {{- else -}}
 # -- none
 {{- end }}
