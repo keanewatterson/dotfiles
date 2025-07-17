@@ -66,7 +66,7 @@ setopt SHARE_HISTORY
 
 HISTSIZE=5000
 SAVEHIST=${HISTSIZE}
-HISTORY_IGNORE='(c3|cd|cd ..|gs|h|ls(| *)|ll(| *)|ps(| *)|pwd|u)'
+HISTORY_IGNORE='(..|...|c3|cd|cd ..|gs|h|ls(| *)|ll(| *)|lt(| *)|ps(| *)|pwd|u)'
 zshaddhistory() { [[ ${1%%$'\n'} != ${~HISTORY_IGNORE} ]] }
 
 
@@ -168,6 +168,9 @@ compinit
 
 
 # -- aliases  -----------------------------------------------------------------
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 alias c3='cal -3'
 {{ if findExecutable "bat" $path_list -}}
 alias cat='bat'
