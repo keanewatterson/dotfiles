@@ -13,21 +13,23 @@ dependencies:
   - pip
   - boto3
   - diskcache
+  - duckdb
   - geojson
   - geopandas
   - h3
   - jupyterlab
   - keplergl
   - matplotlib
-  - nodejs
+  - openpyxl
   - pandas
+  - polars
   - postgresql
   - psycopg
   - psycopg-c
+  - psycopg-pool
+  - pytest
   - pyyaml
   - requests
-  - scikit-learn
   - sqlalchemy
   - toml
   - xonsh
-  - yarn

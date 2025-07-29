@@ -291,6 +291,12 @@ alias sdkinit='clx_init_sdkman'
 # options enabled with unmanaged, unversioned .chezmoidata/instance-options.toml
 {{ if (hasKey .instance "options") -}}
 
+{{- if and (hasKey .instance.options "bun") (eq .instance.options.bun true) }}
+# -- bun
+export BUN_INSTALL="${HOME}/.bun"
+export path=($path $BUN_INSTALL/bin)
+{{- end }}
+
 {{- if and (hasKey .instance.options "julia") (eq .instance.options.julia true) }}
 # -- julia
 export path=($path ${HOME}/.juliaup/bin)
