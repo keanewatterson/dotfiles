@@ -3,19 +3,27 @@ version = 3
 console_title_template = '{{.HostName}}:{{.PWD}}'
 # final_space = true
 
+{{ if ne .chezmoi.os "darwin" -}}
 [upgrade]
   source = 'cdn'
   interval = '168h'
   auto = true
   # notice adds significant latency
   notice = false
+{{- end }}
 
 [palette]
   # https://hexdocs.pm/color_palette/ansi_color_codes.html
-  background        = '238'  # #444444 :outer_space
-  background-darker = '237'  # #3a3a3a :black_olive
-  red               = '88'   # #870000 :deep_red
-  yellow            = '184'  # #d7d700 :citrine
+  blue-french-sky     = '111'  # #87afff :french_sky_blue
+  blue-united-nations =  '68'  # #5f87d7 :united_nations_blue
+  gray-black-olive    = '237'  # #3a3a3a :black_olive
+  gray-outer_space    = '238'  # #444444 :outer_space
+  green-pewter        = '109'  # #87afaf :pewter_blue
+  red-deep            =  '88'  # #870000 :deep_red
+  yellow-citrine      = '184'  # #d7d700 :citrine
+
+  background          = 'p:gray-outer_space'
+  background-darker   = 'p:gray-black-olive'
 
 [transient_prompt]
   template = '❯ '
@@ -83,8 +91,18 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
   alignment = 'right'
 
   [[blocks.segments]]
+    type = 'bun'
+    foreground = 'foreground'
+    background = 'transparent'
+    template = '  {{ .Full }} '
+    style = 'plain'
+    
+    [blocks.segments.properties]
+      display_mode = 'context'
+  
+  [[blocks.segments]]
     type = 'elixir'
-    foreground = 'p:yellow'
+    foreground = 'foreground'
     background = 'transparent'
     template = '  {{ .Full }} '
     style = 'plain'
@@ -94,7 +112,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
 
   [[blocks.segments]]
     type = 'julia'
-    foreground = 'p:yellow'
+    foreground = 'foreground'
     background = 'transparent'
     template = '  {{ .Full }} '
     style = 'plain'
@@ -104,7 +122,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
   
   [[blocks.segments]]
     type = 'node'
-    foreground = 'p:yellow'
+    foreground = 'foreground'
     background = 'transparent'
     template = '  {{ .Full }} '
     style = 'plain'
@@ -115,7 +133,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
   [[blocks.segments]]
     type = 'python'
     template = ' {{ .Venv }} '
-    foreground = 'p:yellow'
+    foreground = 'foreground'
     background = 'transparent'
     style = 'plain'
 
@@ -127,7 +145,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
   [[blocks.segments]]
     type = 'rust'
     style = 'plain'
-    foreground = 'p:yellow'
+    foreground = 'foreground'
     background = 'transparent'
     template = '  {{ .Full }} '
   
@@ -137,7 +155,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
   [[blocks.segments]]
     type = 'executiontime'
     style = 'plain'
-    foreground = 'p:yellow'
+    foreground = 'p:blue-united-nations'
     background = 'transparent'
     template = '{{ .FormattedMs }}'
 
@@ -155,7 +173,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     foreground = 'foreground'
     background = 'transparent'
     style = 'plain'
-    foreground_templates = ['{{ if gt .Code 0 }}p:red{{ end }}']
+    foreground_templates = ['{{ if gt .Code 0 }}p:red-deep{{ end }}']
 
     [blocks.segments.properties]
       always_enabled = true
