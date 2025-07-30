@@ -90,7 +90,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     style = 'plain'
     
     [blocks.segments.properties]
-      display_mode = 'files'
+      display_mode = 'context'
 
   [[blocks.segments]]
     type = 'julia'
@@ -100,7 +100,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     style = 'plain'
 
     [blocks.segments.properties]
-      display_mode = 'files'
+      display_mode = 'context'
   
   [[blocks.segments]]
     type = 'node'
@@ -120,7 +120,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     style = 'plain'
 
     [blocks.segments.properties]
-      display_mode = 'files'
+      display_mode = 'environment'
       fetch_version = true
       fetch_virtual_env = true
 
