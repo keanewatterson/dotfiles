@@ -3,14 +3,12 @@ version = 3
 console_title_template = '{{.HostName}}:{{.PWD}}'
 # final_space = true
 
-{{ if ne .chezmoi.os "darwin" -}}
 [upgrade]
   source = 'cdn'
   interval = '168h'
   auto = true
   # notice adds significant latency
   notice = false
-{{- end }}
 
 [palette]
   # https://hexdocs.pm/color_palette/ansi_color_codes.html
