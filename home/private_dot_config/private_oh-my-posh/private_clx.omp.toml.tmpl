@@ -1,5 +1,4 @@
 # chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
-
 "$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
 version = 3
 console_title_template = '{{.HostName}}:{{.PWD}}'
@@ -104,6 +103,10 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     
     [blocks.segments.properties]
       display_mode = 'context'
+      extensions = [
+        'bun.lockb', 'bun.lock',
+        '*.js', '*.ts', 'package.json'
+      ]
   
   [[blocks.segments]]
     type = 'elixir'
@@ -125,15 +128,15 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     [blocks.segments.properties]
       display_mode = 'context'
   
-  [[blocks.segments]]
-    type = 'node'
-    foreground = 'foreground'
-    background = 'transparent'
-    template = '  {{ .Full }} '
-    style = 'plain'
+  # [[blocks.segments]]
+    # type = 'node'
+    # foreground = 'foreground'
+    # background = 'transparent'
+    # template = '  {{ .Full }} '
+    # style = 'plain'
     
-    [blocks.segments.properties]
-      display_mode = 'files'
+    # [blocks.segments.properties]
+      # display_mode = 'files'
 
   [[blocks.segments]]
     type = 'python'
@@ -155,7 +158,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     template = '  {{ .Full }} '
   
     [blocks.segments.properties]
-      display_mode = 'files'
+      display_mode = 'context'
 
   [[blocks.segments]]
     type = 'executiontime'
