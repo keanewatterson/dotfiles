@@ -20,7 +20,7 @@
 {{   if contains "Virtual Machine" (output "system_profiler" "SPHardwareDataType") }}
 {{     $is_machine_virtual = true }}
 {{   end -}}
-{{ else if eq .chezmoi.os "linux" }}
+{{ else if (and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "debian")) }}
 {{   if not (contains "none" (output "systemd-detect-virt")) }}
 {{     $is_machine_virtual = true }}
 {{   end -}}

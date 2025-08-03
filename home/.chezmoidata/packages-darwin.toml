@@ -9,6 +9,7 @@ brew = [
   "direnv",
   "dockutil",
   "duckdb",
+  "dust",
   "eza",
   "fd",
   "fzf",

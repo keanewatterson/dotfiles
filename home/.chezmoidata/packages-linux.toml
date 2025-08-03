@@ -1,12 +1,39 @@
+[packages.linux.debian.desktop]
+apt = [
+  "bat",
+  "btop",
+  "direnv",
+  "gdu",
+  "fd-find",
+  "libxcb-render0-dev",
+  "libxcb-shape0-dev",
+  "libxcb-xfixes0-dev",
+  "neovim",
+  "ripgrep",
+  "shellcheck",
+  "unzip",
+  "yq",
+  "zip",
+  "zsh"
+]
+cargo = [
+  "du-dust",
+  "eza",
+  "jless",
+  "zoxide --locked",
+]
+snap = [ ]
+snap-classic = [ ]
+
 [packages.linux.fedora.desktop]
 dnf = [
   "bat",
   "btop",
   "direnv",
-  "gdu",
-  "git",
   "fd-find",
   "fzf",
+  "git",
+  "gdu",
   "neovim",
   "openssh-server",
   "ripgrep",
@@ -25,10 +52,11 @@ apt = [
   "bat",
   "btop",
   "direnv",
-  "gdu",
+  "du-dust",
   "eza",
   "fd-find",
   "fzf",
+  "gdu",
   "neovim",
   "ripgrep",
   "shellcheck",
@@ -48,6 +76,7 @@ apt = [
   "bat",
   "btop",
   "direnv",
+  "du-dust",
   "gdu",
   "eza",
   "fd-find",

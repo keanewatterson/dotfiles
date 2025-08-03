@@ -10,13 +10,13 @@ sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "${HOME}/.local/bin" init --d
 
 sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "${HOME}/.local/bin" init --apply https://github.com/keanewatterson/dotfiles.git
 ```
-Use 
+
+### Ephemeral Settings
 
 Use ${XDG_CONFIG_HOME}/chezmoi/home/.chezmoidata/instance-options.toml to enable ephemeral or specific settings defined in .zshrc. The instance-options.toml file is not managed by chezmoi nor versioned.
 
 Example:
 ```sh
 [instance.options]
-julia=true
 postgis_docker=true
 ```

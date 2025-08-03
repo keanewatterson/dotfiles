@@ -1,10 +1,12 @@
 # -- .zshrc -------------------------------------------------------------------
 {{ $path_list := (list
-  (joinPath .chezmoi.homeDir ".local" "bin")
-  "/usr/local/bin"
   "/bin"
+  "/usr/local/bin"
   "/opt/homebrew/bin"
-  "/snap/bin")
+  "/snap/bin"
+  (joinPath .chezmoi.homeDir ".cargo" "bin")
+  (joinPath .chezmoi.homeDir ".local" "bin")
+  )
 -}}
 
 # enable detailed profiling
@@ -23,6 +25,9 @@ cdpath=(
 path=(
   $path
   "${HOME}/.local/bin"
+{{- if eq .instance.os_distro "linux-debian" }}
+  "${HOME}/.cargo/bin"
+{{- end }}
 )
 
 export LESS='-R --use-color -Dd+r$Du+b$'
@@ -128,7 +133,7 @@ eval "$(direnv hook zsh)"
 source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --preview "rg --pretty --context 5 {q} {1} 2>/dev/null"'
-#export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+# export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 {{- else -}}
 # -- none
 {{- end }}
@@ -182,6 +187,12 @@ alias cz='chezmoi'
 alias czhd='cd ${XDG_DATA_HOME}/chezmoi/home'
 alias czsd='cd ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
 alias czs='chezmoi status'
+{{ if findExecutable "dust" $path_list -}}
+alias dust='dust -Br'
+{{ end -}}
+{{ if findExecutable "gdu" $path_list -}}
+alias gdu='gdu -npc'
+{{ end -}}
 alias grep='grep --color=auto'
 alias gs='git status'
 alias h='history -200'
@@ -201,7 +212,7 @@ alias wanip='clx_wanip'
 
 {{ if eq .chezmoi.os "darwin" -}}
 alias caf='clx_caffeinate'
-alias gdu='gdu-go'
+alias gdu='gdu-go -npc'
 alias ifl='clx_if_list'
 alias lab='jupyter lab'
 alias -g sp='/tmp/.scratch-pad'
@@ -261,6 +272,22 @@ alias dps='docker ps'
 {{- end }}
 
 
+# -- bun
+{{ if stat (joinPath .chezmoi.homeDir ".bun" "bin") -}}
+export path=($path ${HOME}/.bun/bin)
+{{- else -}}
+# -- none
+{{- end }}
+
+
+# -- julia
+{{ if stat (joinPath .chezmoi.homeDir ".juliaup" "bin") -}}
+export path=($path ${HOME}/.juliaup/bin)
+{{- else -}}
+# -- none
+{{- end }}
+
+
 # -- micromamba
 {{ if findExecutable "micromamba" $path_list -}}
 alias mm='micromamba'
@@ -280,6 +307,14 @@ mmrm() { mm remove --name "${1}" --all; }
 {{- end }}
 
 
+# -- rust
+{{ if findExecutable "rustc" $path_list -}}
+export path=($path ${HOME}/.cargo/bin)
+{{- else -}}
+# -- none
+{{- end }}
+
+
 # -- sdkman
 {{ if stat (joinPath .chezmoi.homeDir ".local" "share" "sdkman") -}}
 alias sdkinit='clx_init_sdkman'
@@ -288,19 +323,8 @@ alias sdkinit='clx_init_sdkman'
 {{- end }}
 
 
-# options enabled with unmanaged, unversioned .chezmoidata/instance-options.toml
+# settings enabled with unmanaged, unversioned .chezmoidata/instance-options.toml
 {{ if (hasKey .instance "options") -}}
-
-{{- if and (hasKey .instance.options "bun") (eq .instance.options.bun true) }}
-# -- bun
-export BUN_INSTALL="${HOME}/.bun"
-export path=($path $BUN_INSTALL/bin)
-{{- end }}
-
-{{- if and (hasKey .instance.options "julia") (eq .instance.options.julia true) }}
-# -- julia
-export path=($path ${HOME}/.juliaup/bin)
-{{- end }}
 
 {{ if and (hasKey .instance.options "postgis_docker") (eq .instance.options.postgis_docker true) }}
 # -- postgis_docker
