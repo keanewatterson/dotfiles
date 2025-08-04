@@ -20,7 +20,7 @@ log_info "Installing cargo"
 {{ $crates := "" -}}
 
 # -- darwin
-{{ if eq .instance.os_distro "darwin" -}}
+{{ if eq .instance.os_distro "darwin" $scope -}}
 {{   $section = index .packages.linux.darwin $scope -}}
 # -- ubuntu
 {{ else if eq .instance.os_distro "linux-ubuntu" -}}
