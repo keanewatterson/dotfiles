@@ -8,7 +8,6 @@ apt = [
   "libxcb-render0-dev",
   "libxcb-shape0-dev",
   "libxcb-xfixes0-dev",
-  "neovim",
   "ripgrep",
   "shellcheck",
   "unzip",
@@ -44,6 +43,7 @@ dnf = [
   "zoxide",
   "zsh"
 ]
+cargo = [ ]
 snap = [ ]
 snap-classic = [ ]
 
@@ -66,6 +66,7 @@ apt = [
   "zoxide",
   "zsh"
 ]
+cargo = [ ]
 snap = [ ]
 snap-classic = [
   "aws-cli" 
@@ -90,6 +91,7 @@ apt = [
   "zoxide",
   "zsh"
 ]
+cargo = [ ]
 snap = [ ]
 snap-classic = [
   "aws-cli"
