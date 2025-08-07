@@ -20,7 +20,7 @@ log_info "Installing cargo"
 
 {{ $crates := $section.cargo | sortAlpha | uniq -}}
 {{ range $crates -}}
-    cargo install {{ . }}
+    ${HOME}/.cargo/bin/cargo install {{ . }}
 {{ end -}}
 
 _t1=$(date +%s.%N)
