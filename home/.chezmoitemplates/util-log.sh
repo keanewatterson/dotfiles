@@ -1,6 +1,5 @@
 # >>> util-log.sh
 _log_debug="${_log_debug:-false}"
-#_log_module="${0:t}"
 _log_module=$(basename $0)
 
 log_debug() {
@@ -20,7 +19,6 @@ log_warn() {
 }
 
 log_message() {
-    # printf "$(date +'%Y-%m-%d %H:%M:%S') [${(U)1}] ($_log_module) ${2}\n"
     printf "$(date +'%Y-%m-%d %H:%M:%S') [${1}] ($_log_module) ${2}\n"
 }
 # <<< util-log.sh
