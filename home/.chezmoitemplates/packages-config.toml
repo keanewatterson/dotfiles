@@ -1,12 +1,12 @@
-[packages.config]
+[data.instance.packages.config]
 template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates"
 
-[packages.config.mamba]
+[data.instance.packages.config.mamba]
 environments = [
   "clx"
 ]
 
-[packages.config.sdkman]
+[data.instance.packages.config.sdkman]
 java_distros = [
   "Corretto"
 ]

@@ -1,0 +1,23 @@
+[data.instance.packages.debian-rpi.desktop]
+apt = [
+  "bat",
+  "btop",
+  "direnv",
+  "fd-find",
+  "libxcb-render0-dev",
+  "libxcb-shape0-dev",
+  "libxcb-xfixes0-dev",
+  "ripgrep",
+  "shellcheck",
+  "unzip",
+  "zip",
+  "zsh"
+]
+cargo = [
+  "du-dust",
+  "eza",
+  "jless",
+  "zoxide --locked",
+]
+snap = [ ]
+snap-classic = [ ]

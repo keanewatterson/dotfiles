@@ -1,4 +1,4 @@
-[packages.darwin.desktop]
+[data.instance.packages.darwin.desktop]
 brew = [
   "age",
   "awscli",
@@ -13,7 +13,6 @@ brew = [
   "eza",
   "fd",
   "fzf",
-  "gdu",
   "gnu-units",
   "jless",
   "jq",
@@ -29,7 +28,6 @@ brew = [
   "starship",
   "xsv",
   "xz",
-  "yq",
   "zoxide",
   "zsh-autosuggestions",
   "zsh-completions",
@@ -45,9 +43,9 @@ cargo = [ ]
 brew = [
   "age",
   "bat",
-  "bitwarden-cli",
   "chezmoi",
   "direnv",
+  'dust',
   "eza",
   "fzf",
   "jless",

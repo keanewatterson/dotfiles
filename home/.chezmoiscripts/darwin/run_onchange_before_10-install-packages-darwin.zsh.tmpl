@@ -16,7 +16,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 {{   $scope = "desktop-slim" -}}
 {{ end -}}
 
-{{ $section := index .packages.darwin $scope -}}
+{{ $section := index .instance.packages.darwin $scope -}}
 {{ $brews := $section.brew | sortAlpha | uniq -}}
 {{ $casks := $section.cask | sortAlpha | uniq -}}
 

@@ -1,0 +1,45 @@
+[data.instance.packages.ubuntu.server]
+apt = [
+  "bat",
+  "btop",
+  "direnv",
+  "du-dust",
+  "eza",
+  "fd-find",
+  "fzf",
+  "neovim",
+  "ripgrep",
+  "shellcheck",
+  "unzip",
+  "zip",
+  "zoxide",
+  "zsh"
+]
+cargo = [ ]
+snap = [ ]
+snap-classic = [
+  "aws-cli" 
+]
+
+[data.instance.packages.ubuntu.desktop]
+apt = [
+  "bat",
+  "btop",
+  "direnv",
+  "du-dust",
+  "eza",
+  "fd-find",
+  "fzf",
+  "neovim",
+  "ripgrep",
+  "shellcheck",
+  "unzip",
+  "zip",
+  "zoxide",
+  "zsh"
+]
+cargo = [ ]
+snap = [ ]
+snap-classic = [
+  "aws-cli"
+]

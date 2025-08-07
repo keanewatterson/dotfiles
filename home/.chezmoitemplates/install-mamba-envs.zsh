@@ -8,11 +8,11 @@ set -euo pipefail
 
 printf "Installing mamba environments\n"
 
-{{ $config_envs := .packages.config.mamba.environments -}}
+{{ $config_envs := .instance.packages.config.mamba.environments -}}
 
 env_names=({{ range $i, $e := $config_envs }}"{{ $e }}" {{ end -}})
 
-template_dir={{ .packages.config.template_dir }}
+template_dir={{ .instance.packages.config.template_dir }}
 
 for env_name in "${env_names[@]}"; do
 

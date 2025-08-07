@@ -1,10 +1,7 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
-.chezmoidata/packages-darwin.toml
-encrypted_private_dot_pgpass.age
 {{ end }}
 
 {{ if ne .chezmoi.os "linux" }}
 .chezmoiscripts/linux/**
-.chezmoidata/packages-linux.toml
 {{ end }}

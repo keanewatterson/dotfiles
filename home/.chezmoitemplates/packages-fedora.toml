@@ -1,0 +1,20 @@
+[data.instance.packages.fedora.desktop]
+dnf = [
+  "bat",
+  "btop",
+  "direnv",
+  "fd-find",
+  "fzf",
+  "git",
+  "neovim",
+  "openssh-server",
+  "ripgrep",
+  "shellcheck",
+  "unzip",
+  "zip",
+  "zoxide",
+  "zsh"
+]
+cargo = [ ]
+snap = [ ]
+snap-classic = [ ]

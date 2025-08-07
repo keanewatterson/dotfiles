@@ -16,28 +16,12 @@ log_info "Installing cargo"
 {{   $scope = "server" -}}
 {{ end -}}
 
-{{ $section := "" -}}
-{{ $crates := "" -}}
-
-# -- darwin
-{{ if eq .instance.os_distro "darwin" -}}
-{{   $section = index .packages.darwin $scope -}}
-# -- ubuntu
-{{ else if eq .instance.os_distro "linux-ubuntu" -}}
-{{   $section = index .packages.linux.ubuntu $scope -}}
-# -- fedora
-{{ else if eq .instance.os_distro "linux-fedora" -}}
-{{   $section = index .packages.linux.fedora $scope -}}
-# -- debian (raspbian)
-{{ else if eq .instance.os_distro "linux-debian" -}}
-{{   $section = index .packages.linux.debian $scope -}}
-{{ end }}
-
+{{ $section := index .instance.packages .instance.os_distro $scope -}}
 
 {{ $crates := $section.cargo | sortAlpha | uniq -}}
-{{   range $crates -}}
+{{ range $crates -}}
     cargo install {{ . }}
-{{   end }}
+{{ end -}}
 
 _t1=$(date +%s.%N)
 _sec=$(printf "%.3f" "$(echo "$_t1 - $_t0" | bc -l)")

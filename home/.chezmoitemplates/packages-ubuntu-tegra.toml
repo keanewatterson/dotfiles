@@ -1,0 +1,18 @@
+[data.instance.packages.ubuntu-tegra.desktop]
+apt = [
+  "direnv",
+  "jq",
+  "shellcheck",
+  "zoxide",
+  "zsh"
+]
+cargo = [
+  "du-dust",
+  "eza",
+  "jless",
+  "zoxide --locked",
+]
+snap = [ ]
+snap-classic = [
+  "aws-cli"
+]

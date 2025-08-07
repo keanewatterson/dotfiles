@@ -25,7 +25,7 @@ cdpath=(
 path=(
   $path
   "${HOME}/.local/bin"
-{{- if eq .instance.os_distro "linux-debian" }}
+{{- if eq .instance.os_distro "debian-rpi" }}
   "${HOME}/.cargo/bin"
 {{- end }}
 )
@@ -71,7 +71,7 @@ setopt SHARE_HISTORY
 
 HISTSIZE=5000
 SAVEHIST=${HISTSIZE}
-HISTORY_IGNORE='(..|...|c3|cd|cd ..|gs|h|ls(| *)|ll(| *)|lt(| *)|ps(| *)|pwd|u)'
+HISTORY_IGNORE='(..|...|c3|cd|cd ..|gs|h|ls|ll|lt(| *)|ps(| *)|pwd|u)'
 zshaddhistory() { [[ ${1%%$'\n'} != ${~HISTORY_IGNORE} ]] }
 
 

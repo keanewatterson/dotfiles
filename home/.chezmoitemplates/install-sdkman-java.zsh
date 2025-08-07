@@ -8,7 +8,7 @@ set -efo pipefail
 
 log_info "Installing sdkman Java packages"
 
-{{ $java_distros := .packages.config.sdkman.java_distros -}}
+{{ $java_distros := .instance.packages.config.sdkman.java_distros -}}
 
 distros=({{ range $i, $e := $java_distros }}"{{ $e }}" {{ end -}})
 
