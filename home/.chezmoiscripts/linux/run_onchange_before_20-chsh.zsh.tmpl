@@ -5,6 +5,9 @@ set -euo pipefail
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
 
+{{ if not (contains "zsh" (output "sh" "-c" "getent passwd $USER | awk -F: '{print $7}'")) -}}
 log_info "Setting login shell to zsh"
-
 chsh -s /usr/bin/zsh
+{{ else }}
+log_info "Login shell is set to zsh"
+{{ end }}

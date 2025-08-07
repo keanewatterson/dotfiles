@@ -11,28 +11,38 @@ font_dir="${XDG_DATA_HOME}/fonts"
 tmp_dir="$(mktemp -d)"
 
 fonts=(
-    "Meslo"
     "FiraCode"
     "JetBrainsMono"
+    "Meslo"
 )
 
-log_info "Installing Nerd Fonts (monospace only)"
+installed=$(fc-list | grep -i "Mono" | awk '{print $2}' | awk -F: '{print $1}'| sort -du)
+
+log_info "Installing monospace Nerd fonts"
 
 mkdir -p "$font_dir"
 
 for font in "${fonts[@]}"; do
 
+    # check if the font family is already installed
+    if echo ${installed} | grep -qi "${font}"; then
+        log_info "Mono font is installed: ${font}"
+        continue
+    fi
+
     archive="${font}.zip"
+    target_dir="${font_dir}/${font}"
     url="${base_url}/${archive}"
 
-    log_info "Downloading: ${font} url: ${url}"
+    log_info "Downloading: ${font} from ${url}"
     curl -fsSLo "${tmp_dir}/${archive}" --create-dirs "${url}"
 
-    log_info "Extracting: ${font}: at: ${tmp_dir}/${font}"
+    log_info "Extracting: ${font} into: ${tmp_dir}/${font}"
     unzip -oqq "${tmp_dir}/${archive}" -d "${tmp_dir}/${font}"
 
-    log_info "Installing monospace fonts from ${font} to ${font_dir}"
-    find "${tmp_dir}/${font}" -type f -iname "*Mono*.ttf" -exec cp {} "${font_dir}/" \;
+    log_info "Installing monospace fonts from ${font} to ${target_dir}"
+    mkdir -p "${target_dir}"
+    find "${tmp_dir}/${font}" -type f -iname "*Mono*.ttf" -exec cp {} "${target_dir}/" \;
 done
 
 rm -rf "$tmp_dir"
