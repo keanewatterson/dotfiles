@@ -1,3 +1,5 @@
+
+# jetson nano
 [data.instance.packages.ubuntu-tegra.desktop]
 apt = [
   "direnv",
@@ -13,6 +15,4 @@ cargo = [
   "zoxide --locked",
 ]
 snap = [ ]
-snap-classic = [
-  "aws-cli"
-]
+snap-classic = [ ]

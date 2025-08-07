@@ -39,7 +39,10 @@ apt = [
   "zsh"
 ]
 cargo = [ ]
-snap = [ ]
+snap = [
+  "vivaldi"
+]
 snap-classic = [
-  "aws-cli"
+  "aws-cli",
+  "code"
 ]

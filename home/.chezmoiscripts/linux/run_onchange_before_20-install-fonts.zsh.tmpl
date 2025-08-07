@@ -16,7 +16,7 @@ fonts=(
     "JetBrainsMono"
 )
 
-log_info "Installing Nerd Fonts"
+log_info "Installing Nerd Fonts (monospace only)"
 
 mkdir -p "$font_dir"
 
@@ -31,8 +31,8 @@ for font in "${fonts[@]}"; do
     log_info "Extracting: ${font}: at: ${tmp_dir}/${font}"
     unzip -oqq "${tmp_dir}/${archive}" -d "${tmp_dir}/${font}"
 
-    log_info "Installing: ${font} to ${font_dir}"
-    find "${tmp_dir}/${font}" -name "*.ttf" -exec cp {} "${font_dir}/" \;
+    log_info "Installing monospace fonts from ${font} to ${font_dir}"
+    find "${tmp_dir}/${font}" -type f -iname "*Mono*.ttf" -exec cp {} "${font_dir}/" \;
 done
 
 rm -rf "$tmp_dir"

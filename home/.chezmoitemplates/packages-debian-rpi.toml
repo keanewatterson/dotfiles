@@ -1,3 +1,4 @@
+# raspberry pi
 [data.instance.packages.debian-rpi.desktop]
 apt = [
   "bat",
