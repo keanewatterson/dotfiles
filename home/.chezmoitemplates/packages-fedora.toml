@@ -3,6 +3,7 @@ dnf = [
   "bat",
   "btop",
   "direnv",
+  "du-dust",
   "fd-find",
   "fzf",
   "git",

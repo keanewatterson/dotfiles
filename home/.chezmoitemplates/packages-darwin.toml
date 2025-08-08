@@ -39,10 +39,11 @@ cask = [
 ]
 cargo = [ ]
 
-[packages.darwin.desktop-slim]
+[data.instance.packages.darwin.desktop-slim]
 brew = [
   "age",
   "bat",
+  "btop",
   "chezmoi",
   "direnv",
   'dust',
