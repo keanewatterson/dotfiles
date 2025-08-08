@@ -5,14 +5,20 @@ apt = [
   "direnv",
   "jq",
   "shellcheck",
-  "zoxide",
   "zsh"
 ]
 cargo = [
+  "--locked bat",
   "du-dust",
   "eza",
+  "fd-find",
   "jless",
+  "ripgrep",
   "zoxide --locked",
 ]
-snap = [ ]
-snap-classic = [ ]
+snap = [ 
+  "btop"
+]
+snap-classic = [ 
+  "aws-cli"
+]

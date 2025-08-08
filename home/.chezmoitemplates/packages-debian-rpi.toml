@@ -16,7 +16,7 @@ cargo = [
   "du-dust",
   "eza",
   "jless",
-  "zoxide --locked",
+  "--locked zoxide",
 ]
 snap = [ ]
 snap-classic = [ ]
