@@ -44,5 +44,4 @@ snap = [
 ]
 snap-classic = [
   "aws-cli",
-  "code"
 ]

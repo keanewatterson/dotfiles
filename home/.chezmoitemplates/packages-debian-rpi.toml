@@ -10,8 +10,6 @@ apt = [
   "libxcb-xfixes0-dev",
   "ripgrep",
   "shellcheck",
-  "unzip",
-  "zip",
   "zsh"
 ]
 cargo = [

@@ -206,8 +206,10 @@ alias ll='ls -ahl'
 {{ end -}}
 alias s='ssh'
 alias u='uptime'
+{{ if findExecutable "nvim" $path_list -}}
 alias vi='nvim'
 alias view='nvim -R'
+{{ end -}}
 alias wanip='clx_wanip'
 
 {{ if eq .chezmoi.os "darwin" -}}
