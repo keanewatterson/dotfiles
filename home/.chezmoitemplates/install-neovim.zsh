@@ -1,4 +1,4 @@
-{{ if or (eq .instance.os_distro "debian-rpi") (eq .instance.os_distro "ubuntu-tegra") -}}
+{{ if eq .instance.os_distro "debian-rpi" -}}
 #!/bin/zsh
 
 set -euo pipefail

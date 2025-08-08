@@ -16,9 +16,7 @@ cargo = [
   "ripgrep",
   "zoxide --locked",
 ]
-snap = [ 
-  "btop"
-]
+snap = [ ]
 snap-classic = [ 
   "aws-cli"
 ]
