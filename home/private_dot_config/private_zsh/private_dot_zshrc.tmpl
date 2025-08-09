@@ -337,8 +337,11 @@ alias dxpg='docker stop postgis'
 {{- end }}
 
 {{- end }}
-# end
 
+{{ if eq .instance.os_distro "ubuntu-tegra" -}}
+# tegra anomaly
+unset LESS
+{{- end}}
 
 # output detailed profiling
 # zprof

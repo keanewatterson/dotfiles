@@ -4,6 +4,7 @@
 apt = [
   "direnv",
   "jq",
+  "neovim",
   "shellcheck",
   "zsh"
 ]
@@ -15,6 +16,9 @@ cargo = [
   "jless",
   "ripgrep",
   "zoxide --locked",
+]
+ppa = [
+  "ppa:neovim-ppa/stable"
 ]
 snap = [ ]
 snap-classic = [ 

@@ -23,29 +23,38 @@ log_info "Installing linux packages"
 {{ $packages := "" -}}
 
 {{ if or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian") }}
+
+{{   if hasKey $section "ppa" -}}
+{{     $ppa := $section.ppa | sortAlpha | uniq -}}
+{{     range $ppa -}}
+{{       $sudo }} add-apt-repository -y {{ . }}
+{{     end }}
+{{-  end }}
+
 {{   $packages = $section.apt | sortAlpha | uniq -}}
 {{   $sudo }}apt-get update
 {{   $sudo }}apt-get install -y {{ $packages | join " " }}
+
 {{ else if eq .chezmoi.osRelease.id "fedora" }}
 {{   $packages = $section.dnf | sortAlpha | uniq -}}
 {{   $sudo }}dnf update -y
 {{   $sudo }}dnf install -y {{ $packages | join " " }}
-{{ end }}
+{{- end }}
 
 
-{{ if lookPath "snap" -}}
-{{   $snaps := $section.snap | sortAlpha | uniq -}}
+{{   if lookPath "snap" -}}
+{{     $snaps := $section.snap | sortAlpha | uniq -}}
 # -- snap
-{{   range $snaps -}}
-(      snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install {{ . }}
-{{   end }}
+{{     range $snaps -}}
+       ( snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install {{ . }}
+{{-  end }}
 
 # -- snap classic
-{{   $snaps_classic := index $section "snap-classic" | sortAlpha | uniq -}}
-{{   range $snaps_classic -}}
-(      snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install --classic {{ . }}
-{{   end -}}
-{{- end }}
+{{     $snaps_classic := index $section "snap-classic" | sortAlpha | uniq -}}
+{{     range $snaps_classic -}}
+         ( snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install --classic {{ . }}
+{{     end -}}
+{{-  end }}
 
 _t1=$(date +%s.%N)
 _sec=$(printf "%.3f" "$(echo "$_t1 - $_t0" | bc -l)")
