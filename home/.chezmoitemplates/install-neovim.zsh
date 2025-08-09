@@ -1,4 +1,4 @@
-{{ if or ((eq .instance.os_distro "debian-rpi") (eq .instance.os_distro "ubuntu-tegra")) -}}
+{{   if eq .instance.os_distro "debian-rpi" -}}
 #!/bin/zsh
 
 set -euo pipefail
@@ -16,8 +16,6 @@ set -euo pipefail
 
 
 {{ if not (findExecutable "nvim" $path_list) -}}
-
-{{ if eq .instance.os_distro "debian-rpi" -}}
      log_info "Installing Neovim AppImage"
      curl -fsSL "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.appimage" \
        -o "${HOME}/.local/bin/nvim.appimage"
