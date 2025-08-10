@@ -8,15 +8,16 @@ apt = [
   "libxcb-render0-dev",
   "libxcb-shape0-dev",
   "libxcb-xfixes0-dev",
+  "mosh",
   "ripgrep",
   "shellcheck",
   "zsh"
 ]
 cargo = [
+  "--locked zoxide",
   "du-dust",
   "eza",
-  "jless",
-  "--locked zoxide",
+  "jless"
 ]
 snap = [ ]
 snap-classic = [ ]

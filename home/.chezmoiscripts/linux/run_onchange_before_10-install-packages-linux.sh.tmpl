@@ -42,19 +42,19 @@ log_info "Installing linux packages"
 {{- end }}
 
 
-{{   if lookPath "snap" -}}
-{{     $snaps := $section.snap | sortAlpha | uniq -}}
-# -- snap
-{{     range $snaps -}}
-       ( snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install {{ . }}
-{{-  end }}
+{{ if lookPath "snap" -}}
+{{   if hasKey $section "snap" -}}
+{{     $snap := $section.snap | sortAlpha | uniq -}}
+{{     range $snap -}}
+         ( snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install {{ . }}
+{{-    end }}
 
-# -- snap classic
-{{     $snaps_classic := index $section "snap-classic" | sortAlpha | uniq -}}
-{{     range $snaps_classic -}}
+{{   if hasKey $section "snap-classic" -}}
+{{     $snap_classic := index $section "snap-classic" | sortAlpha | uniq -}}
+{{     range $snap_classic -}}
          ( snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install --classic {{ . }}
 {{     end -}}
-{{-  end }}
+{{- end }}
 
 _t1=$(date +%s.%N)
 _sec=$(printf "%.3f" "$(echo "$_t1 - $_t0" | bc -l)")

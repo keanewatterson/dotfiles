@@ -17,17 +17,17 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 {{ end -}}
 
 {{ $section := index .instance.packages.darwin $scope -}}
-{{ $brews := $section.brew | sortAlpha | uniq -}}
-{{ $casks := $section.cask | sortAlpha | uniq -}}
+{{ $brew := $section.brew | sortAlpha | uniq -}}
+{{ $cask := $section.cask | sortAlpha | uniq -}}
 
 brew command-not-found-init
 
 brew bundle --file=/dev/stdin <<EOF
-{{- range $brews }}
+{{- range $brew }}
 brew "{{ . }}"
 {{- end }}
 
-{{- range $casks }}
+{{- range $cask }}
 cask "{{ . }}"
 {{- end }}
 EOF
@@ -37,4 +37,5 @@ chmod 755 /opt/homebrew/share
 
 _t1=$(date +%s.%N)
 _sec=$(printf "%.3f" $((_t1 - _t0)))
+
 log_info "Homebrew packages completed: seconds: ${_sec}"

@@ -6,7 +6,9 @@ set -euo pipefail
 {{ template "util-log.sh" . }}
 {{ template "init-mamba.zsh" . }}
 
-printf "Installing mamba environments\n"
+_t0=$(date +%s.%N)
+
+log_info "Installing mamba environments"
 
 {{ $config_envs := .instance.packages.config.mamba.environments -}}
 
@@ -25,3 +27,8 @@ for env_name in "${env_names[@]}"; do
         log_info "Environment installed: ${env_name}"
     fi
 done
+
+_t1=$(date +%s.%N)
+_sec=$(printf "%.3f" "$(echo "$_t1 - $_t0" | bc -l)")
+
+log_info "mamba environments completed: seconds: ${_sec}"

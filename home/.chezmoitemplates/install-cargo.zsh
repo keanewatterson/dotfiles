@@ -20,6 +20,7 @@ log_info "Installing cargo"
 
 {{ $crates := $section.cargo | sortAlpha | uniq -}}
 {{ range $crates -}}
+    log_info "Installing crate: {{ . }}"
     ${HOME}/.cargo/bin/cargo install {{ . }}
 {{ end -}}
 

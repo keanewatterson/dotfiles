@@ -3,19 +3,21 @@
 [data.instance.packages.ubuntu-tegra.desktop]
 apt = [
   "direnv",
+  "htop",
   "jq",
+  "mosh",
   "neovim",
   "shellcheck",
   "zsh"
 ]
 cargo = [
   "--locked bat",
+  "--locked zoxide",
   "du-dust",
   "eza",
   "fd-find",
   "jless",
-  "ripgrep",
-  "zoxide --locked",
+  "ripgrep"
 ]
 ppa = [
   "ppa:neovim-ppa/stable"
