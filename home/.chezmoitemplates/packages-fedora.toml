@@ -16,6 +16,3 @@ dnf = [
   "zoxide",
   "zsh"
 ]
-cargo = [ ]
-snap = [ ]
-snap-classic = [ ]

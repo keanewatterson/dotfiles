@@ -22,7 +22,6 @@ cargo = [
 ppa = [
   "ppa:neovim-ppa/stable"
 ]
-snap = [ ]
 snap-classic = [ 
   "aws-cli"
 ]

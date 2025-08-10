@@ -19,5 +19,3 @@ cargo = [
   "eza",
   "jless"
 ]
-snap = [ ]
-snap-classic = [ ]

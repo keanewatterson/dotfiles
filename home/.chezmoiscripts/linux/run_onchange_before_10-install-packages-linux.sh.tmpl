@@ -28,7 +28,7 @@ log_info "Installing linux packages"
 {{     $ppa := $section.ppa | sortAlpha | uniq -}}
 {{     range $ppa -}}
 {{       $sudo }} add-apt-repository -y {{ . }}
-{{     end }}
+{{-    end }}
 {{-  end }}
 
 {{   $packages = $section.apt | sortAlpha | uniq -}}
@@ -43,17 +43,21 @@ log_info "Installing linux packages"
 
 
 {{ if lookPath "snap" -}}
+
 {{   if hasKey $section "snap" -}}
 {{     $snap := $section.snap | sortAlpha | uniq -}}
 {{     range $snap -}}
          ( snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install {{ . }}
 {{-    end }}
+{{-  end }}
 
 {{   if hasKey $section "snap-classic" -}}
 {{     $snap_classic := index $section "snap-classic" | sortAlpha | uniq -}}
 {{     range $snap_classic -}}
          ( snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install --classic {{ . }}
-{{     end -}}
+{{-     end }}
+{{-  end}}
+
 {{- end }}
 
 _t1=$(date +%s.%N)

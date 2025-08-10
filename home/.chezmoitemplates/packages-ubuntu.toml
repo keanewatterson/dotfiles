@@ -7,7 +7,6 @@ apt = [
   "eza",
   "fd-find",
   "fzf",
-  "neovim",
   "ripgrep",
   "shellcheck",
   "unzip",
@@ -30,7 +29,6 @@ apt = [
   "eza",
   "fd-find",
   "fzf",
-  "neovim",
   "ripgrep",
   "shellcheck",
   "unzip",
@@ -43,5 +41,5 @@ snap = [
   "vivaldi"
 ]
 snap-classic = [
-  "aws-cli",
+  "aws-cli"
 ]

@@ -37,7 +37,6 @@ cask = [
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font"
 ]
-cargo = [ ]
 
 [data.instance.packages.darwin.desktop-slim]
 brew = [
@@ -67,4 +66,3 @@ cask = [
   "ghostty",
   "visual-studio-code"
 ]
-cargo = [ ]
