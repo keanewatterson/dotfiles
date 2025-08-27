@@ -71,7 +71,6 @@ encryption = "age"
     user_email = {{ printf "%s@%s" $email_alias $email_domain | quote }}
     default_aws_profile = {{ $aws_profile | quote }}
 
-    {{ include ".chezmoitemplates/packages-config.toml" }}
     {{ include (printf ".chezmoitemplates/packages-%s.toml" $os_distro) }}
 
 [git]
