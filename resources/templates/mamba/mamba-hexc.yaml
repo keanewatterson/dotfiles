@@ -4,7 +4,7 @@
 #   micromamba env export --from-history
 #   micromamba env export
 
-name: hexapod
+name: hexc
 channels:
   - conda-forge
   - nodefaults
