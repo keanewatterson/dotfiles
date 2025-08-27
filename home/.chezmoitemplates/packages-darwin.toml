@@ -38,6 +38,7 @@ cask = [
   "font-meslo-lg-nerd-font"
 ]
 
+
 [data.instance.packages.darwin.desktop-slim]
 brew = [
   "age",
@@ -45,6 +46,7 @@ brew = [
   "btop",
   "chezmoi",
   "direnv",
+  "dockutil",
   'dust',
   "eza",
   "fzf",
@@ -64,5 +66,19 @@ cask = [
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
   "ghostty",
+  "iTerm2",
   "visual-studio-code"
+]
+
+
+[data.instance.packages.config.mamba]
+environments = [
+  "clx"
+]
+template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
+
+
+[data.instance.packages.config.sdkman]
+java_distros = [
+  "Corretto"
 ]

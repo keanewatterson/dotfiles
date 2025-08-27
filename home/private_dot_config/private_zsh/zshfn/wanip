@@ -1,4 +1,4 @@
-clx_wanip() {
+wanip() {
 
   local protocol=""
   local endpoint=""
@@ -16,7 +16,7 @@ clx_wanip() {
         ;;
       *)
         printf "$0: [-4|-6] [-json]\n"
-        break
+        return
         ;;
     esac
   done

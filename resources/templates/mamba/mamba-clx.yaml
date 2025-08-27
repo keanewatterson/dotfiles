@@ -27,6 +27,7 @@ dependencies:
   - psycopg
   - psycopg-c
   - psycopg-pool
+  - pyarrow
   - pytest
   - pyyaml
   - requests

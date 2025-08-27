@@ -1,4 +1,4 @@
-clx_dd_exec() {
+dd_exec() {
     # execute a docker exec command within a project container
 
     # interactive shell - $1 = project name, $2 = user, $3 = shell, $4 = dir

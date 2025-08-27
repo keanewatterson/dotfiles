@@ -14,7 +14,7 @@ log_info "Installing mamba environments"
 
 env_names=({{ range $i, $e := $config_envs }}"{{ $e }}" {{ end -}})
 
-template_dir={{ .instance.packages.config.template_dir }}
+template_dir={{ .instance.packages.config.mamba.template_dir }}
 
 for env_name in "${env_names[@]}"; do
 

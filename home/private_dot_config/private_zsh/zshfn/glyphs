@@ -1,4 +1,4 @@
-clx_symbols() {
+symbols() {
     # print occasionally required symbols
     printf "-- formula -----------------------------\n"
     printf "AEQ:\t\t≈\n"

@@ -94,6 +94,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
   type = 'prompt'
   alignment = 'right'
 
+#{{ if eq .chezmoi.os "darwin" -}}#
   [[blocks.segments]]
     type = 'bun'
     foreground = 'foreground'
@@ -127,7 +128,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
 
     [blocks.segments.properties]
       display_mode = 'context'
-  
+
   # [[blocks.segments]]
     # type = 'node'
     # foreground = 'foreground'
@@ -137,6 +138,7 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     
     # [blocks.segments.properties]
       # display_mode = 'files'
+  #{{- end -}}#
 
   [[blocks.segments]]
     type = 'python'
@@ -185,4 +187,3 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
 
     [blocks.segments.properties]
       always_enabled = true
-

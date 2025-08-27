@@ -5,18 +5,33 @@ apt = [
   "btop",
   "direnv",
   "fd-find",
+  "i2c-tools",
   "libxcb-render0-dev",
   "libxcb-shape0-dev",
   "libxcb-xfixes0-dev",
-  "locales",
+  "locales-all",
   "mosh",
+  "python3-smbus",
   "ripgrep",
   "shellcheck",
+  "speedtest-cli",
   "zsh"
 ]
 cargo = [
+  "--locked bat",
   "--locked zoxide",
   "du-dust",
   "eza",
   "jless"
 ]
+
+
+[data.instance.packages.config.mamba]
+environments = [
+  "rpi"
+]
+template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
+
+
+[data.instance.packages.config.sdkman]
+java_distros = [ ]

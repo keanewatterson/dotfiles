@@ -1,5 +1,5 @@
 {{ if eq .chezmoi.os "darwin" }}
-clx_if_list() {
+if_list() {
   # list active network interfaces
   # view default: route get default
   # view order: networksetup -listnetworkserviceorder

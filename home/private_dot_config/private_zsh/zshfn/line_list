@@ -1,4 +1,4 @@
-clx_line_list() {
+line_list() {
     # reformat file content as a list of one token per line: llist
     # file name argument
     cat "${1}" | tr ' ' '\n' | awk '{$1=$1};1' 

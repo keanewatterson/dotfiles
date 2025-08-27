@@ -1,0 +1,23 @@
+# environment management
+#   micromamba self-update
+#   micromamba env create -f mamba-hexc.yaml
+#   micromamba env export --from-history
+#   micromamba env export
+
+name: hexapod
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python
+  - pip
+  - opencv=4.5.0
+  - pandas
+  - pillow
+  - pyqt
+  - pyqt5-sip
+  - pytest
+  - pyyaml
+  - requests
+  - setuptools
+  - wheel

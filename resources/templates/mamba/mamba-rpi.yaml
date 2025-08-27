@@ -1,0 +1,17 @@
+# environment management
+#   micromamba self-update
+#   micromamba env create -f mamba-rpi.yaml
+#   micromamba env export --from-history
+#   micromamba env export
+
+name: rpi
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python
+  - pip
+  - pytest
+  - requests
+  - pip:
+    -smbus3

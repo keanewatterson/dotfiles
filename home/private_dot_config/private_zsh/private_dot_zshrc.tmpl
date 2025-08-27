@@ -25,15 +25,20 @@ cdpath=(
 
 export path=(
   $path
+  "/usr/sbin"
   "${HOME}/.local/bin"
-{{ if findExecutable "cargo" $path_list -}}
+{{- if findExecutable "cargo" $path_list }}
   "${HOME}/.cargo/bin"
-{{- end }}
+{{ end -}}
 )
 
 export LESS='-R --use-color -Dd+r$Du+b$'
 export EDITOR="vi"
+{{ if findExecutable "nvim" $path_list -}}
 export VISUAL="nvim"
+{{- else -}}
+export VISUAL="vi"
+{{ end -}}
 
 bindkey -e
 
@@ -191,9 +196,6 @@ alias czs='chezmoi status'
 {{ if findExecutable "dust" $path_list -}}
 alias dust='dust -Br'
 {{ end -}}
-{{ if findExecutable "gdu" $path_list -}}
-alias gdu='gdu -npc'
-{{ end -}}
 alias grep='grep --color=auto'
 alias gs='git status'
 alias h='history -200'
@@ -206,25 +208,23 @@ alias ls='ls -Fa'
 alias ll='ls -ahl'
 {{ end -}}
 alias s='ssh'
+alias spc='cat sp | pbcopy'
+alias spe='${VISUAL} sp'
+alias spn='spx; ${VISUAL} sp'
+alias spx='[[ -f sp ]] && rm sp'
 alias u='uptime'
 {{ if findExecutable "nvim" $path_list -}}
 alias vi='nvim'
 alias view='nvim -R'
 {{ end -}}
-alias wanip='clx_wanip'
 
 {{ if eq .chezmoi.os "darwin" -}}
-alias caf='clx_caffeinate'
-alias gdu='gdu-go -npc'
-alias ifl='clx_if_list'
+alias caf='caffeinate'
+alias ifl='if_list'
 alias lab='jupyter lab'
 alias -g sp='/tmp/.scratch-pad'
 alias pbc='pbcopy'
-alias spc='cat sp | pbcopy'
-alias spe='nvim sp'
-alias spn='spx; nvim sp'
-alias spu='spx; nvim sp; sort -du sp | pbcopy'
-alias spx='[[ -f sp ]] && rm sp'
+alias spu='spx; ${VISUAL} sp; sort -du sp | pbcopy'
 alias tohex='od -An -vtx1'
 alias toctl='od -An -vtu1'
 
@@ -293,18 +293,18 @@ export path=($path ${HOME}/.juliaup/bin)
 
 # -- micromamba
 {{ if findExecutable "micromamba" $path_list -}}
-alias mm='micromamba'
-alias mma='mm activate'
-alias mmd='mm deactivate'
-alias mmi='mm install'
-alias mme='mm info --envs'
-alias mml='mm list'
-alias mms='mm search'
-alias mmrd='mm repoquery depends'
-alias mmrs='mm repoquery search'
-alias mmrw='mm repoquery whoneeds'
-alias mminit='clx_init_mamba'
-mmrm() { mm remove --name "${1}" --all; }
+alias m='micromamba'
+alias ma='m activate'
+alias md='m deactivate'
+alias mi='m install'
+alias me='m info --envs'
+alias ml='m list'
+alias ms='m search'
+alias mrd='m repoquery depends'
+alias mrs='m repoquery search'
+alias mrw='m repoquery whoneeds'
+alias minit='init_mamba'
+merm() { m remove --name "${1}" --all; }
 {{- else -}}
 # -- none
 {{- end }}
@@ -320,7 +320,7 @@ export path=($path ${HOME}/.cargo/bin)
 
 # -- sdkman
 {{ if stat (joinPath .chezmoi.homeDir ".local" "share" "sdkman") -}}
-alias sdkinit='clx_init_sdkman'
+alias sdkinit='init_sdkman'
 {{- else -}}
 # -- none
 {{- end }}

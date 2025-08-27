@@ -1,7 +1,0 @@
-clx_fzfrg() {
-    # content search using fzf and ripgrep
-    local file
-    file=$(rg --no-heading --line-number --color=always "$@" |
-    fzf --ansi --preview 'bat --style=numbers --color=always --line-range :500 {1}' \
-        --bind "enter:execute(nvim +{2} {1})") || return
-}

@@ -1,4 +1,4 @@
-clx_line_csv() {
+line_csv() {
     # concatenate lines as a quoted, comma-delimited line
     # file name argument
     cat "${1}" | awk '{ print "'\''" $0 "'\''" }' | paste -sd, - ; 

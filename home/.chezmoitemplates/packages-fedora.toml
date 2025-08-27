@@ -16,3 +16,16 @@ dnf = [
   "zoxide",
   "zsh"
 ]
+
+
+[data.instance.packages.config.mamba]
+environments = [
+  "clx"
+]
+template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
+
+
+[data.instance.packages.config.sdkman]
+java_distros = [
+  "Corretto"
+]

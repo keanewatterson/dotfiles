@@ -1,4 +1,4 @@
-clx_dd_start_stop() {
+dd_start_stop() {
     # start or stop a container by name - $1 = name, $2 = project name
 
     # docker compose -f docker-compose-greengrass-archean.yml \
