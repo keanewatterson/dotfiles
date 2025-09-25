@@ -1,12 +1,12 @@
 {{ if eq .instance.os_distro "debian-rpi" }}
 rpi_status() {
-	gpu_s=$(vcgencmd measure_temp)
+	local gpu_s=$(vcgencmd measure_temp)
 	printf "GPU: %s\n" "${gpu_s//[^0-9.]} C"
 
-	cpu_r=$(cat /sys/class/thermal/thermal_zone0/temp)
+	local cpu_r=$(cat /sys/class/thermal/thermal_zone0/temp)
 	printf "CPU: %.1f C\n" $((cpu_r/1000.0))
 
-	core_v=$(vcgencmd measure_volts core)
+	local core_v=$(vcgencmd measure_volts core)
 	printf "Core: %s\n" "${core_v//[^0-9.]} V"
 
 	rpi_get_throttle

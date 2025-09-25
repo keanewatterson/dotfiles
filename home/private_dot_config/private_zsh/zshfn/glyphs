@@ -1,9 +1,11 @@
-symbols() {
+glyphs() {
     # print occasionally required symbols
-    printf "-- formula -----------------------------\n"
+    printf "-- common ------------------------------\n"
     printf "AEQ:\t\t≈\n"
+    printf "Check:\t\t✓\n"
     printf "Delta:\t\tΔ\n"
     printf "Empty set:\t∅\n"
+    printf "Euro:\t\t€\n"
     printf "GTE:\t\t≥\n"
     printf "Infinity:\t∞\n"
     printf "LTE:\t\t≤\n"

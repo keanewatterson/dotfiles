@@ -1,5 +1,5 @@
 {{ if eq .instance.os_distro "debian-rpi" }}
-function rpi_get_throttle() {
+rpi_get_throttle() {
     local result=$(vcgencmd get_throttled)
     local hex_value=${result#*=}
     local decimal_value=$((hex_value))

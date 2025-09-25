@@ -49,7 +49,7 @@
 {{ $email_domains := list "olilo.io" "proton.me" -}}
 {{ $email_domain := promptChoiceOnce . "instance.email_domain" "Email domain" $email_domains "olilo.io" -}}
 
-{{ $aws_profiles := list "sandbox-iiot" -}}
+{{ $aws_profiles := list "sandbox-iiot" "" -}}
 {{ $aws_profile := promptChoiceOnce . "instance.default_aws_profile" "Defalut AWS profile" $aws_profiles "sandbox-iiot" -}}
 
 
