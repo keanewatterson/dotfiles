@@ -1,0 +1,3 @@
+mkcd() {
+    builtin cd "$@" && ls -l
+}
