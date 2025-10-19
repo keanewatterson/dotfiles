@@ -30,4 +30,4 @@ for path_rm in "${paths_rm[@]}"; do
     fi
 done
 
-mkdir -p "${HOME}/Projects
+mkdir -p "${HOME}/Projects"
