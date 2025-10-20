@@ -180,9 +180,9 @@ compinit
 
 
 # -- aliases  -----------------------------------------------------------------
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
+alias ..='cdl -s ..'
+alias ...='cdl -s ../..'
+alias ....='cdl -s ../../..'
 alias c3='cal -3'
 {{ if findExecutable "bat" $path_list -}}
 alias cat='bat'
@@ -190,6 +190,9 @@ alias catnp='bat --show-all'
 {{ else -}}
 catnp='cat -ent'
 {{ end -}}
+alias cl='cdl -l'
+alias cs='cdl -s'
+alias ct='cdl -t'
 alias cz='chezmoi'
 alias czhd='cd ${XDG_DATA_HOME}/chezmoi/home'
 alias czsd='cd ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'

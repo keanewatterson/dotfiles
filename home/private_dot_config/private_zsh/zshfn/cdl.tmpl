@@ -10,9 +10,50 @@
 -}}
 
 cdl() {
-{{ if findExecutable "eza" $path_list -}}
-    builtin cd "$@" && eza -aglF --git --time-style long-iso 
-{{ else -}}
-    builtin cd "$@" && ls -ahl
-{{ end -}}
+
+    local ls_arg="-s"
+    local target_dir
+
+    if (( $# >= 2 )); then
+      ls_arg="$1"
+      target_dir="$2"
+    elif (( $# == 1 )); then
+        target_dir="${1}"
+    else
+        target_dir="${HOME}"
+    fi
+  
+{{ if findExecutable "eza" $path_list }}
+    case "$ls_arg" in
+      -s)
+        builtin cd "$target_dir" && eza -aF
+        ;;
+      -l)
+        builtin cd "${target_dir}" && eza -aglF --git --time-style long-iso
+        ;;
+      -t)
+        builtin cd "${target_dir}" && eza -F --tree -L 3
+        ;;
+      *)
+        print "Usage: cdl [-l|-s|-t] [directory]\n" >&2
+        return 1
+        ;;
+    esac
+
+{{- else }}
+
+    case "$ls_arg" in
+      -s)
+        builtin cd "$target_dir" && ls -aF
+        ;;
+      -l)
+        builtin cd "${target_dir}" && ls -ahl
+        ;;
+      *)
+        print "Usage: cdl [-l|-s|] [directory]\n" >&2
+        return 1
+        ;;
+    esac
+
+{{ end }}
 }
