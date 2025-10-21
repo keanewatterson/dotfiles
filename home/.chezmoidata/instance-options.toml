@@ -1,0 +1,6 @@
+# Use ${XDG_DATA_HOME}/chezmoi/home/.chezmoidata/instance-options.toml to enable or disable specific settings, perhaps similar to feature flags, without source control versioning.
+
+# Key-value pairs defined as instance.options may be evaluated in .zshrc for scenario-specific or ephemeral behavior.
+
+[instance.options]
+# postgis_docker=true
