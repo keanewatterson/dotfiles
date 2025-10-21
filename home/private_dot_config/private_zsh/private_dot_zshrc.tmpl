@@ -331,7 +331,7 @@ alias sdkinit='init_sdkman'
 {{- end }}
 
 
-# settings enabled with unmanaged, unversioned .chezmoidata/instance-options.toml
+# settings enabled with ${XDG_DATA_HOME}/chezmoi/home/.chezmoidata/instance-options.toml
 {{ if (hasKey .instance "options") -}}
 
 {{ if and (hasKey .instance.options "postgis_docker") (eq .instance.options.postgis_docker true) }}
