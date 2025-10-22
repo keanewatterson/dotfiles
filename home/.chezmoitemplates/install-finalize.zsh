@@ -8,10 +8,6 @@ set -euo pipefail
 log_info "Configure chezmoi repository for ssh protocol\n"
 git -C "${XDG_DATA_HOME}/chezmoi" remote set-url origin git@github.com:keanewatterson/dotfiles.git
 
-# show skipped: git ls-files -v . | grep ^S
-# reverse with --no-skip-worktree
-git -C "${XDG_DATA_HOME}/chezmoi" update-index --skip-worktree -- home/.chezmoidata/instance-options.toml
-
 {{ if eq .chezmoi.os "darwin" -}}
 path_tmp="${HOME}/.local/bin/chezmoi"
 if [[ -f "/opt/homebrew/bin/chezmoi" && -f "${path_tmp}" ]]; then
