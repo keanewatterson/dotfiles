@@ -1,9 +1,19 @@
-# Use ${XDG_DATA_HOME}/chezmoi/home/.chezmoidata/instance-options.toml to enable 
-# or disable specific settings, perhaps similar to feature flags, without source
-# control versioning.
+# Use .chezmoidata/instance-options.toml to enable specific-case or ephemeral
+# settings without chezmoi management or source control
 
-# Key-value pairs defined as instance.options may be evaluated in .zshrc for 
-# scenario-specific or ephemeral behavior.
 
 [instance.options]
-# postgis_docker=true
+# include-zshrc = ["docker-postgis"]
+
+docker-postgis = [
+  "# -- postgis-docker",
+  "alias depg='docker exec -it postgis /bin/bash'",
+  "alias dspg='docker start postgis'",
+  "alias dxpg='docker stop postgis'"
+]
+
+serial-console = [
+  "# -- serial-console",
+  "alias s96='screen /dev/ttyUSB0 9600'",
+  "alias s115='screen /dev/ttyUSB0 115200'"
+]

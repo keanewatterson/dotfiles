@@ -8,6 +8,12 @@ set -euo pipefail
 log_info "Configure chezmoi repository for ssh protocol\n"
 git -C "${XDG_DATA_HOME}/chezmoi" remote set-url origin git@github.com:keanewatterson/dotfiles.git
 
+if ! [[ -f "{{ .chezmoi.sourceDir }}/.chezmoidata/instance-options.toml "]]; then
+    mkdir -p "{{ .chezmoi.sourceDir }}/.chezmoidata"
+    cp "{{ .chezmoi.workingTree }}/resources/templates/instance-options.toml" \
+        "{{ .chezmoi.sourceDir }}/.chezmoidata/instance-options.toml"
+fi
+
 {{ if eq .chezmoi.os "darwin" -}}
 path_tmp="${HOME}/.local/bin/chezmoi"
 if [[ -f "/opt/homebrew/bin/chezmoi" && -f "${path_tmp}" ]]; then

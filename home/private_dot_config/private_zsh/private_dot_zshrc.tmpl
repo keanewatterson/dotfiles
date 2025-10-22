@@ -331,22 +331,30 @@ alias sdkinit='init_sdkman'
 {{- end }}
 
 
-# settings enabled with ${XDG_DATA_HOME}/chezmoi/home/.chezmoidata/instance-options.toml
-{{ if (hasKey .instance "options") -}}
+# -- .instance.options
+{{- $instance := index . "instance" | default dict -}}
+{{- $options := index $instance "options"   | default dict -}}
 
-{{ if and (hasKey .instance.options "postgis_docker") (eq .instance.options.postgis_docker true) }}
-# -- postgis_docker
-alias depg='docker exec -it postgis /bin/bash'
-alias dspg='docker start postgis'
-alias dxpg='docker stop postgis'
-{{- end }}
+{{- if and $options (hasKey $options "include-zshrc") -}}
+  {{- $include := index $options "include-zshrc" -}}
+  {{- range $section := $include -}}
+    {{- $block := index $options $section -}}
+    {{- if $block -}}
+      {{- range $line := $block }}
+{{ $line }}
+      {{- end }}
+    {{- end -}}
+  {{- end -}}
+{{- else }}
+# -- none
+{{- end -}}
 
-{{- end }}
 
 {{ if eq .instance.os_distro "ubuntu-tegra" -}}
 # tegra anomaly
 unset LESS
 {{- end}}
+
 
 # output detailed profiling
 # zprof
