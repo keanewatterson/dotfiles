@@ -13,7 +13,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 {{ $scope := "desktop" -}}
 {{ if .instance.is_machine_virtual -}}
-{{   $scope = "desktop-slim" -}}
+{{   $scope = "ephemeral" -}}
 {{ end -}}
 
 {{ $section := index .instance.packages.darwin $scope -}}

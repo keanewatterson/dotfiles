@@ -127,20 +127,20 @@ source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-high
 {{- end }}
 
 
-# -- direnv
-{{ if findExecutable "direnv" $path_list -}}
-eval "$(direnv hook zsh)"
-{{- else -}}
-# -- none
-{{- end }}
-
-
 # -- fzf
 {{ if findExecutable "fzf" $path_list -}}
 source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --preview "rg --pretty --context 5 {q} {1} 2>/dev/null"'
 # export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+{{- else -}}
+# -- none
+{{- end }}
+
+
+# -- mise
+{{ if findExecutable "mise" $path_list -}}
+eval "$(mise activate zsh)"
 {{- else -}}
 # -- none
 {{- end }}
@@ -318,14 +318,6 @@ merm() { m remove --name "${1}" --all; }
 # -- rust
 {{ if findExecutable "rustc" $path_list -}}
 export path=($path ${HOME}/.cargo/bin)
-{{- else -}}
-# -- none
-{{- end }}
-
-
-# -- sdkman
-{{ if stat (joinPath .chezmoi.homeDir ".local" "share" "sdkman") -}}
-alias sdkinit='init_sdkman'
 {{- else -}}
 # -- none
 {{- end }}

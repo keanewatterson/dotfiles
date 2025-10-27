@@ -3,7 +3,6 @@
 apt = [
   "bat",
   "btop",
-  "direnv",
   "fd-find",
   "i2c-tools",
   "libxcb-render0-dev",
@@ -27,9 +26,7 @@ cargo = [
 
 
 [data.instance.packages.config.mamba]
-environments = [
-  "rpi"
-]
+environments = [ ]
 template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
 
 

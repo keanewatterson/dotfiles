@@ -10,13 +10,12 @@ XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
 typeset -a path_list=(
     ${XDG_CACHE_HOME}/nvim
     ${XDG_CACHE_HOME}/oh-my-posh
+    ${XDG_CACHE_HOME}/uv
     ${XDG_CONFIG_HOME}/chezmoi
-    ${XDG_CONFIG_HOME}/direnv
     ${XDG_CONFIG_HOME}/nvim
     ${XDG_CONFIG_HOME}/oh-my-posh
     ${XDG_CONFIG_HOME}/zsh
     ${XDG_DATA_HOME}/chezmoi
-    ${XDG_DATA_HOME}/direnv
     ${XDG_DATA_HOME}/nvim
     ${XDG_DATA_HOME}/mamba
     ${XDG_DATA_HOME}/sdkman

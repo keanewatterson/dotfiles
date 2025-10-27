@@ -2,7 +2,6 @@
 apt = [
   "bat",
   "btop",
-  "direnv",
   "du-dust",
   "eza",
   "fd-find",
@@ -25,7 +24,6 @@ snap-classic = [
 apt = [
   "bat",
   "btop",
-  "direnv",
   "du-dust",
   "eza",
   "fd-find",
@@ -54,6 +52,4 @@ template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
 
 
 [data.instance.packages.config.sdkman]
-java_distros = [
-  "Corretto"
-]
+java_distros = [ ]

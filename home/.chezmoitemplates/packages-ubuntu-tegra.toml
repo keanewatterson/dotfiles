@@ -2,7 +2,6 @@
 # jetson nano
 [data.instance.packages.ubuntu-tegra.desktop]
 apt = [
-  "direnv",
   "htop",
   "jq",
   "mosh",

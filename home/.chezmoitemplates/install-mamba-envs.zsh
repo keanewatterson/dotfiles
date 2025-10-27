@@ -1,5 +1,11 @@
 #!/bin/zsh
 
+# enable mamba environment installations in packages-name.toml, for example:
+#   [data.instance.packages.config.mamba]
+#   environments = [
+#     "clx"
+#   ]
+
 set -euo pipefail
 
 {{ template "init-env.sh" . }}

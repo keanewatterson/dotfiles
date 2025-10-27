@@ -1,8 +1,8 @@
 [data.instance.packages.fedora.desktop]
+cargo = [ ]
 dnf = [
   "bat",
   "btop",
-  "direnv",
   "du-dust",
   "fd-find",
   "fzf",
@@ -19,13 +19,9 @@ dnf = [
 
 
 [data.instance.packages.config.mamba]
-environments = [
-  "clx"
-]
+environments = [ ]
 template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
 
 
 [data.instance.packages.config.sdkman]
-java_distros = [
-  "Corretto"
-]
+java_distros = [ ]

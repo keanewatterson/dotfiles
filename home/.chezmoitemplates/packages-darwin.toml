@@ -7,7 +7,6 @@ brew = [
   "bitwarden-cli",
   "btop",
   "chezmoi",
-  "direnv",
   "duckdb",
   "dust",
   "eza",
@@ -19,6 +18,7 @@ brew = [
   "libpq",
   "mas",
   "micromamba",
+  "mise",
   "mosh",
   "nushell",
   "neovim",
@@ -26,7 +26,7 @@ brew = [
   "oh-my-posh",
   "ripgrep",
   "shellcheck",
-  "starship",
+  "uv",
   "xsv",
   "xz",
   "zoxide",
@@ -40,22 +40,23 @@ cask = [
 ]
 
 
-[data.instance.packages.darwin.desktop-slim]
+[data.instance.packages.darwin.ephemeral]
 brew = [
   "age",
   "bat",
   "btop",
   "chezmoi",
-  "direnv",
-  'dust',
+  "dust",
   "eza",
   "fzf",
   "jless",
   "micromamba",
+  "mise",
   "neovim",
   "node",
   "oh-my-posh",
   "ripgrep",
+  "uv",
   "zoxide",
   "zsh-autosuggestions",
   "zsh-completions",
@@ -67,19 +68,16 @@ cask = [
   "font-meslo-lg-nerd-font",
   "ghostty",
   "iTerm2",
-  'obsidian',
-  "visual-studio-code"
+  "obsidian",
+  "visual-studio-code",
+  "vivaldi"
 ]
 
 
 [data.instance.packages.config.mamba]
-environments = [
-  "clx"
-]
+environments = [ ]
 template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
 
 
 [data.instance.packages.config.sdkman]
-java_distros = [
-  "Corretto"
-]
+java_distros = [ ]

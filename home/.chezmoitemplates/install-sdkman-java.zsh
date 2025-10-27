@@ -1,5 +1,11 @@
 #!/bin/zsh
 
+# enable sdkman java installations in packages-name.toml, for example:
+#   [data.instance.packages.config.sdkman]
+#   java_distros = [
+#    "Corretto"
+#   ]
+
 set -efo pipefail
 
 {{ template "init-env.sh" . }}
