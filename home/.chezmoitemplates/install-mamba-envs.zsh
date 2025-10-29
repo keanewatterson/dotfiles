@@ -1,10 +1,15 @@
 #!/bin/zsh
 
-# enable mamba environment installations in packages-name.toml, for example:
+# enable mamba environment installations in packages-os.toml, for example
+# in packages-darwwin.toml:
 #   [data.instance.packages.config.mamba]
 #   environments = [
-#     "clx"
+#     "clx", "hexc"
 #   ]
+#   template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
+
+# initialize an enviroment, for example:
+#   source ${ZDOTDIR}/zshfn/init_mamba && init_mamba clx 
 
 set -euo pipefail
 

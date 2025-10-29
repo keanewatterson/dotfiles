@@ -1,10 +1,14 @@
 #!/bin/zsh
 
-# enable sdkman java installations in packages-name.toml, for example:
+# enable sdkman java installations in packages-name.toml, for example
+# in packages-darwwin.toml:
 #   [data.instance.packages.config.sdkman]
 #   java_distros = [
 #    "Corretto"
 #   ]
+
+# initialize for example:
+#   init-sdkman
 
 set -efo pipefail
 
