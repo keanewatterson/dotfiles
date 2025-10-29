@@ -280,14 +280,6 @@ alias dps='docker ps'
 {{- end }}
 
 
-# -- bun
-{{ if stat (joinPath .chezmoi.homeDir ".bun" "bin") -}}
-export path=($path ${HOME}/.bun/bin)
-{{- else -}}
-# -- none
-{{- end }}
-
-
 # -- julia
 {{ if stat (joinPath .chezmoi.homeDir ".juliaup" "bin") -}}
 export path=($path ${HOME}/.juliaup/bin)
