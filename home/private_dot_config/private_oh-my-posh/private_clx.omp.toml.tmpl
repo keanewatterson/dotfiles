@@ -95,19 +95,15 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
   alignment = 'right'
 
 #{{ if eq .chezmoi.os "darwin" -}}#
-  [[blocks.segments]]
-    type = 'bun'
-    foreground = 'foreground'
-    background = 'transparent'
-    template = '  {{ .Full }} '
-    style = 'plain'
+  # [[blocks.segments]]
+    # type = 'bun'
+    # foreground = 'foreground'
+    # background = 'transparent'
+    # template = '  {{ .Full }} '
+    # style = 'plain'
     
-    [blocks.segments.properties]
-      display_mode = 'context'
-      extensions = [
-        'bun.lockb', 'bun.lock',
-        '*.js', '*.ts', 'package.json'
-      ]
+    # [blocks.segments.properties]
+      # display_mode = 'context'
   
   [[blocks.segments]]
     type = 'elixir'
@@ -133,16 +129,16 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     # type = 'node'
     # foreground = 'foreground'
     # background = 'transparent'
-    # template = '  {{ .Full }} '
+    # template = '  {{ .Major }}.{{ .Minor }} '
     # style = 'plain'
     
     # [blocks.segments.properties]
-      # display_mode = 'files'
+      # display_mode = 'context'
   #{{- end }}#
 
   [[blocks.segments]]
     type = 'python'
-    template = ' {{ .Venv }} '
+    template = ' {{ .Major }}.{{ .Minor }} '
     foreground = 'foreground'
     background = 'transparent'
     style = 'plain'
@@ -150,8 +146,8 @@ console_title_template = '{{.HostName}}:{{.PWD}}'
     [blocks.segments.properties]
       display_mode = 'environment'
       fetch_version = true
-      fetch_virtual_env = true
-      home_enabled = true
+      fetch_virtual_env = false
+      home_enabled = false
 
   [[blocks.segments]]
     type = 'rust'
