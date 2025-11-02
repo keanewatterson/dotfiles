@@ -278,14 +278,6 @@ alias dps='docker ps'
 {{- end }}
 
 
-# -- julia
-{{ if stat (joinPath .chezmoi.homeDir ".juliaup" "bin") -}}
-export path=($path ${HOME}/.juliaup/bin)
-{{- else -}}
-# -- none
-{{- end }}
-
-
 # -- micromamba
 {{ if findExecutable "micromamba" $path_list -}}
 alias m='micromamba'
