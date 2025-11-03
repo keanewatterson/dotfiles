@@ -1,5 +1,7 @@
 [data.instance.packages.fedora.desktop]
-cargo = [ ]
+cargo = [
+  "eza",
+]
 dnf = [
   "bat",
   "btop",
