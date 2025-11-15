@@ -1,5 +1,23 @@
 #!/bin/zsh
 
+# -- micromamba
+# {{ if findExecutable "micromamba" $path_list -}}
+# alias m='micromamba'
+# alias ma='m activate'
+# alias md='m deactivate'
+# alias mi='m install'
+# alias me='m info --envs'
+# alias ml='m list'
+# alias ms='m search'
+# alias mrd='m repoquery depends'
+# alias mrs='m repoquery search'
+# alias mrw='m repoquery whoneeds'
+# alias minit='init_mamba'
+# merm() { m remove --name "${1}" --all; }
+# {{- else -}}
+# # -- none
+# {{- end }}
+
 set -euo pipefail
 
 {{ template "init-env.sh" . }}

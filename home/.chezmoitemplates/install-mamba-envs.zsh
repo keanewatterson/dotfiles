@@ -6,7 +6,7 @@
 #   environments = [
 #     "clx", "hexc"
 #   ]
-#   template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
+#   template_dir = "${XDG_DATA_HOME}/chezmoi/resources/mamba"
 
 # initialize an enviroment, for example:
 #   source ${ZDOTDIR}/zshfn/init_mamba && init_mamba clx 

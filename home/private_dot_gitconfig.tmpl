@@ -1,29 +1,83 @@
-[core]
-  autocrlf = input
-  editor = vi
-  excludesfile = {{ .chezmoi.homeDir -}}/.gitignore_global
+[user]
+    name = {{ .instance.user_name | quote }}
+    email = {{ .instance.user_email_git | quote }}
+    signingkey = {{ .instance.user_sign_key_git | quote }}
 
-{{ if eq .chezmoi.os "darwin" -}}
-[merge]
-  tool = p4merge
-[diff]
-  tool = p4merge
-  submodule = log
-[difftool "p4merge"]
-  cmd = /Applications/p4merge.app/Contents/MacOS/p4merge $LOCAL $REMOTE
-[difftool]
-  prompt = false
-[mergetool "p4merge"]
-  cmd = /Applications/p4merge.app/Contents/MacOS/p4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
-  trustExitCode = false
-[mergetool]
-  keepBackup = false
-{{ end -}}
+[gpg]
+    format = ssh
+
+[commit]
+    gpgsign = true
+
+[tag]
+    gpgsign = true
+
+[core]
+    editor = code --wait
+    pager = delta
+    autocrlf = input
+    whitespace = fix,-indent-with-non-tab,trailing-space
+    excludesfile = {{ }}
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+    ff = only
+
+[rebase]
+    autoStash = true
 
 [push]
-  default = simple
-[submodule]
-  recurse = true
-[user]
-    email = {{ .instance.user_email | quote }}
-    name = {{ .instance.user_name | quote }}
+    default = simple
+    autoSetupRemote = true
+
+[credential]
+    helper = osxkeychain
+
+[color]
+    ui = auto
+
+[diff]
+    tool = delta
+    colormoved = default
+
+[delta]
+    navigate = true
+    line-numbers = true
+    side-by-side = true
+    syntax-theme = None
+    whitespace-error-style = 22 reverse
+
+[merge]
+    conflictstyle = zdiff3
+
+[log]
+    abbrevCommit = true
+    decorate = short
+
+[help]
+    autocorrect = prompt
+
+[alias]
+    st = status -sb
+    co = checkout
+    br = branch
+    ci = commit
+    ca = commit -a
+    amend = commit --amend --no-edit
+    undo = reset HEAD~
+    unstage = reset HEAD --
+    last = log -1 --stat
+    lg = log --graph --pretty=format:'%C(auto)%h%d %s %C(black)%cr' --abbrev-commit
+    lga = log --graph --decorate --all --pretty=format:'%C(auto)%h%d %s %C(black)%cr' --abbrev-commit
+    s = status
+    d = diff
+    ds = diff --staged
+    fixup = commit --fixup
+    squash = commit --squash
+    pr = pull --rebase
+    root = rev-parse --show-toplevel
+    ours = "!f() { git checkout --ours -- \"$@\"; }; f"
+    theirs = "!f() { git checkout --theirs -- \"$@\"; }; f"

@@ -1,0 +1,54 @@
+# polyglot
+
+repo/
+├── apps/                      # Deployed applications/services
+│   ├── api-gateway/
+│   ├── user-service/
+│   ├── ingestion-worker/
+│   └── web-frontend/
+│
+├── libs/                      # Shared libraries (versionless)
+│   ├── python/
+│   │   └── utilities/
+│   ├── typescript/
+│   │   └── data-models/
+│   ├── java/
+│   │   └── common/
+│   └── julia/
+│       └── math-tools/
+│
+├── tools/                     # Developer tools, scripts, CLI utilities
+│   ├── python/
+│   ├── dev-scripts/
+│   └── codegen/
+│
+├── infra/                     # Infrastructure-as-code
+│   ├── terraform/
+│   ├── kubernetes/
+│   └── docker/
+│
+├── configs/                   # Central configuration
+│   ├── linting/               # ruff, eslint, scalafmt, etc.
+│   ├── ci/                    # CI workflows
+│   ├── codeowners/            # CODEOWNERS files
+│   └── build/                 # Pants/Bazel/Turborepo configs
+│
+├── docs/
+│   ├── architecture/
+│   └── runbooks/
+│
+├── scripts/                   # Repo-level helper scripts
+│
+└── package.json / pyproject.toml / pants.toml / WORKSPACE (depending on build system)
+
+
+# lightweigth
+repo/
+├── services/
+│   ├── backend/
+│   └── frontend/
+├── shared/
+│   ├── python/
+│   └── ts/
+├── infra/
+└── docs/
