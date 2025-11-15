@@ -1,7 +1,6 @@
 #!/bin/zsh
 
 # -- micromamba
-# {{ if findExecutable "micromamba" $path_list -}}
 # alias m='micromamba'
 # alias ma='m activate'
 # alias md='m deactivate'
@@ -14,9 +13,6 @@
 # alias mrw='m repoquery whoneeds'
 # alias minit='init_mamba'
 # merm() { m remove --name "${1}" --all; }
-# {{- else -}}
-# # -- none
-# {{- end }}
 
 set -euo pipefail
 

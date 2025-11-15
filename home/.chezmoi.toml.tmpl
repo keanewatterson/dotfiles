@@ -50,7 +50,8 @@
 # {{ $email_domain := promptChoiceOnce . "instance.email_domain" "Email domain" $email_domains "olilo.io" -}}
 
 {{ $email_git := promptStringOnce . "instance.user_email_git" "Git email" "1178773+keanewatterson@users.noreply.github.com" -}}
-{{ $sign_key_git := promptChoiceOnce . "instance.user_sign_key_git" "Git signing key" "dev-olilo.pub" "id_ed25519.pub" -}}
+{{ $sign_keys := list "dev-olilo.pub" "id_ed25519.pub" -}}
+{{ $sign_key_git := promptChoiceOnce . "instance.user_sign_key_git" "Git signing key" $sign_keys "dev-olilo.pub" -}}
 
 {{ $aws_profiles := list "sandbox-iiot" "" -}}
 {{ $aws_profile := promptChoiceOnce . "instance.default_aws_profile" "Defalut AWS profile" $aws_profiles "sandbox-iiot" -}}
