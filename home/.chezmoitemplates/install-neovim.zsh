@@ -11,7 +11,7 @@ set -euo pipefail
 {{ template "util-log.sh" . }}
 
 
-{{ if not (findExecutable "nvim" $$pathList) -}}
+{{ if not (findExecutable "nvim" $pathList) -}}
      log_info "Installing Neovim AppImage"
      curl -fsSL "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.appimage" \
        -o "${HOME}/.local/bin/nvim.appimage"
