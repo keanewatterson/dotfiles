@@ -43,18 +43,20 @@
 # interactive
 {{ $user_name := promptStringOnce . "instance.user_name" "User name" $identity_name -}}
 
-# {{ $candidate_alias := $user_name | lower | replace " " "." -}}
-# {{ $email_alias := promptStringOnce . "instance.email_alias" "User email alias" $candidate_alias -}}
+{{/*
+{{ $candidate_alias := $user_name | lower | replace " " "." -}}
+{{ $email_alias := promptStringOnce . "instance.email_alias" "User email alias" $candidate_alias -}}
 
-# {{ $email_domains := list "olilo.io" "proton.me" -}}
-# {{ $email_domain := promptChoiceOnce . "instance.email_domain" "Email domain" $email_domains "olilo.io" -}}
+{{ $email_domains := list "olilo.io" "proton.me" -}}
+{{ $email_domain := promptChoiceOnce . "instance.email_domain" "Email domain" $email_domains (index $email_domains 0) -}}
+*/}}
 
 {{ $email_git := promptStringOnce . "instance.user_email_git" "Git email" "1178773+keanewatterson@users.noreply.github.com" -}}
-{{ $sign_keys := list "dev-olilo.pub" "id_ed25519.pub" -}}
-{{ $sign_key_git := promptChoiceOnce . "instance.user_sign_key_git" "Git signing key" $sign_keys "dev-olilo.pub" -}}
+{{ $sign_keys_git := list "dev-olilo.pub" "id_ed25519.pub" -}}
+{{ $sign_key_git := promptChoiceOnce . "instance.user_sign_key_git" "Git signing key" $sign_keys_git (index $sign_keys_git 0) -}}
 
-{{ $aws_profiles := list "sandbox-iiot" "" -}}
-{{ $aws_profile := promptChoiceOnce . "instance.default_aws_profile" "Defalut AWS profile" $aws_profiles "sandbox-iiot" -}}
+{{ $aws_profiles := list "sandbox-iiot" "none" -}}
+{{ $aws_profile := promptChoiceOnce . "instance.default_aws_profile" "Default AWS profile" $aws_profiles (index $aws_profiles 0) -}}
 
 
 umask = 0o077
@@ -69,12 +71,16 @@ encryption = "age"
     os_distro = {{ $os_distro | quote }}
     is_machine_headless = {{ $is_machine_headless }}
     is_machine_virtual = {{ $is_machine_virtual }}
-    # email_alias = {{ $email_alias | quote }}
-    # email_domain = {{ $email_domain | quote }}
-    user_name = {{ $user_name | quote }}
-    # user_email = {{ printf "%s@%s" $email_alias $email_domain | quote }}
+
+    {{/*
+    email_alias = {{ $email_alias | quote }}
+    email_domain = {{ $email_domain | quote }}
+    user_email = {{ printf "%s@%s" $email_alias $email_domain | quote }}
+    */}}
     user_email_git = {{ $email_git | quote }}
+    user_name = {{ $user_name | quote }}
     user_sign_key_git = {{ printf "~/.ssh/%s" $sign_key_git | quote }}
+
     default_aws_profile = {{ $aws_profile | quote }}
 
     {{ include (printf ".chezmoitemplates/packages-%s.toml" $os_distro) }}

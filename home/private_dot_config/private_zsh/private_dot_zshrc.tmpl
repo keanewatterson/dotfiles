@@ -259,7 +259,7 @@ alias spu='spx; ${VISUAL} sp; sort -du sp | xsel --clipboard --input'
 
 
 # -- aws-cli
-{{ if findExecutable "aws" $path_list -}}
+{{ if (and (findExecutable "aws" $path_list) (ne .instance.default_aws_profile "none")) -}}
 alias aws="aws --profile {{ .instance.default_aws_profile }}"
 alias awse="echo {{ .instance.default_aws_profile }}"
 alias awsl="aws sso login"
