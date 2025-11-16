@@ -9,6 +9,7 @@ dnf = [
   "fd-find",
   "fzf",
   "git",
+  "git-delta",
   "neovim",
   "openssh-server",
   "ripgrep",

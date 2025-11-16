@@ -11,6 +11,7 @@ brew = [
   "eza",
   "fd",
   "fzf",
+  "git-delta",
   "gnu-units",
   "jless",
   "jq",
@@ -46,6 +47,7 @@ brew = [
   "eza",
   "fd",
   "fzf",
+  "git-delta",
   "jless",
   "mise",
   "neovim",
@@ -71,7 +73,7 @@ cask = [
 
 [data.instance.packages.config.mamba]
 environments = [ ]
-template_dir = "${XDG_DATA_HOME}/chezmoi/resources/templates/mamba"
+template_dir = "${XDG_DATA_HOME}/chezmoi/resources/mamba"
 
 
 [data.instance.packages.config.sdkman]
