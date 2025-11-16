@@ -1,0 +1,15 @@
+{{- /*
+Populate the provided Vars map with shared PATH entries so that callers can
+include list rather than duplicating it.
+*/ -}}
+{{- $vars := .Vars -}}
+{{- $root := .Root -}}
+{{- $_ := set $vars "path_list" (list
+  "/bin"
+  "/usr/bin"
+  "/usr/local/bin"
+  "/opt/homebrew/bin"
+  "/snap/bin"
+  (joinPath $root.chezmoi.homeDir ".cargo" "bin")
+  (joinPath $root.chezmoi.homeDir ".local" "bin")
+) -}}

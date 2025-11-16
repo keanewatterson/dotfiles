@@ -1,13 +1,6 @@
-{{ $path_list := (list
-  "/bin"
-  "/usr/bin"
-  "/usr/local/bin"
-  "/opt/homebrew/bin"
-  "/snap/bin"
-  (joinPath .chezmoi.homeDir ".cargo" "bin")
-  (joinPath .chezmoi.homeDir ".local" "bin")
-  )
--}}
+{{- $pathVars := dict -}}
+{{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
+{{- $path_list := index $pathVars "path_list" -}}
 
 {{ if findExecutable "micromamba" $path_list }}
 

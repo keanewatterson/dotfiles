@@ -1,13 +1,6 @@
-{{ $path_list := (list
-  "/bin"
-  "/usr/bin"
-  "/usr/local/bin"
-  "/opt/homebrew/bin"
-  "/snap/bin"
-  (joinPath .chezmoi.homeDir ".cargo" "bin")
-  (joinPath .chezmoi.homeDir ".local" "bin")
-  )
--}}
+{{- $pathVars := dict -}}
+{{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
+{{- $path_list := index $pathVars "path_list" -}}
 
 # -- .zshrc -------------------------------------------------------------------
 # enable detailed profiling
@@ -108,9 +101,9 @@ fi
 
 {{ if eq .chezmoi.os "darwin" -}}
 # -- command-not-found
-HB_CNF_HANDLER="/opt/homebrew/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-if [ -f "$HB_CNF_HANDLER" ]; then
-  source "$HB_CNF_HANDLER";
+HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
+if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
+  source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
 fi
 
 
@@ -186,22 +179,21 @@ alias ....='cdl -s ../../..'
 alias c3='cal -3'
 {{ if findExecutable "bat" $path_list -}}
 alias cat='bat'
-alias catnp='bat --show-all'
+alias catsa='bat --show-all'
 {{ else -}}
-catnp='cat -ent'
+alias catsa='cat -ent'
 {{ end -}}
 alias cl='cdl -l'
 alias cs='cdl -s'
 alias ct='cdl -t'
 alias cz='chezmoi'
-alias czhd='cd ${XDG_DATA_HOME}/chezmoi/home'
-alias czsd='cd ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
+alias czhd='cdl -s ${XDG_DATA_HOME}/chezmoi/home'
+alias czsd='cdl -s ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
 alias czs='chezmoi status'
 {{ if findExecutable "dust" $path_list -}}
 alias dust='dust -Br'
 {{ end -}}
 alias grep='grep --color=auto'
-alias gs='git status'
 alias h='history -200'
 {{ if findExecutable "eza" $path_list -}}
 alias ll='eza -aglF --git --time-style long-iso'
@@ -225,7 +217,6 @@ alias view='nvim -R'
 {{ if eq .chezmoi.os "darwin" -}}
 alias caf='caffeinate'
 alias ifl='if_list'
-alias jlab='jupyter lab'
 alias obsd="cd ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
 alias pbc='pbcopy'
 alias pbp='pbpaste'
@@ -240,8 +231,6 @@ alias dbv='open -a DBeaver'
 alias code='open -a Visual\ Studio\ Code'
 alias ds='open -a Docker'
 alias dx='osascript -e ''quit app "Docker"'''
-alias itj='open -a IntelliJ\ IDEA\ CE'
-alias p4m='open -a p4merge'
 alias spt='open -a Spotify'
 
 
@@ -310,7 +299,7 @@ export path=($path ${HOME}/.cargo/bin)
 {{- end }}
 
 
-# -- .instance.options
+# -- instance-options.toml
 {{- $instance := index . "instance" | default dict -}}
 {{- $options := index $instance "options"   | default dict -}}
 
