@@ -3,19 +3,15 @@
 
 set -euo pipefail
 
+{{- $pathVars := dict -}}
+{{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
+{{- $pathList := index $pathVars "pathList" -}}
+
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
 
-{{ $path_list := (list
-  "/bin"
-  "/usr/bin"
-  "/usr/local/bin"
-  (joinPath .chezmoi.homeDir ".local" "bin")
-  )
--}}
 
-
-{{ if not (findExecutable "nvim" $path_list) -}}
+{{ if not (findExecutable "nvim" $$pathList) -}}
      log_info "Installing Neovim AppImage"
      curl -fsSL "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.appimage" \
        -o "${HOME}/.local/bin/nvim.appimage"

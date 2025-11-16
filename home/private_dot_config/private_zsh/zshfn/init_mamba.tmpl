@@ -1,8 +1,8 @@
 {{- $pathVars := dict -}}
 {{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
-{{- $path_list := index $pathVars "path_list" -}}
+{{- $pathList := index $pathVars "pathList" -}}
 
-{{ if findExecutable "micromamba" $path_list }}
+{{ if findExecutable "micromamba" $pathList }}
 
 init_mamba() {
 

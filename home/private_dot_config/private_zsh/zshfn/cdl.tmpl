@@ -1,6 +1,6 @@
 {{- $pathVars := dict -}}
 {{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
-{{- $path_list := index $pathVars "path_list" -}}
+{{- $pathList := index $pathVars "pathList" -}}
 
 cdl() {
 
@@ -16,7 +16,7 @@ cdl() {
         dir_path="${HOME}"
     fi
   
-{{ if findExecutable "eza" $path_list }}
+{{ if findExecutable "eza" $pathList }}
   case "${ls_fmt}" in
       -s) builtin cd "$dir_path" && eza -aF ;;
       -l) builtin cd "${dir_path}" && eza -aglF --git --time-style long-iso ;;
