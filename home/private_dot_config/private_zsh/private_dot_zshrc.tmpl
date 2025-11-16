@@ -1,6 +1,6 @@
 {{- $pathVars := dict -}}
 {{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
-{{- $path_list := index $pathVars "path_list" -}}
+{{- $pathList := index $pathVars "pathList" -}}
 
 # -- .zshrc -------------------------------------------------------------------
 # enable detailed profiling
@@ -20,14 +20,14 @@ export path=(
   $path
   "/usr/sbin"
   "${HOME}/.local/bin"
-{{- if findExecutable "cargo" $path_list }}
+{{- if findExecutable "cargo" $pathList }}
   "${HOME}/.cargo/bin"
 {{ end -}}
 )
 
 export LESS='-R --use-color -Dd+r$Du+b$'
 export EDITOR="vi"
-{{ if findExecutable "nvim" $path_list -}}
+{{ if findExecutable "nvim" $pathList -}}
 export VISUAL="nvim"
 {{- else -}}
 export VISUAL="vi"
@@ -76,7 +76,7 @@ zshaddhistory() { [[ ${1%%$'\n'} != ${~HISTORY_IGNORE} ]] }
 
 
 # -- prompt -------------------------------------------------------------------
-{{ if findExecutable "oh-my-posh" $path_list -}}
+{{ if findExecutable "oh-my-posh" $pathList -}}
 eval "$(oh-my-posh init zsh --config ${XDG_CONFIG_HOME}/oh-my-posh/clx.omp.toml)"
 {{- else -}}
 # -- none
@@ -121,7 +121,7 @@ source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-high
 
 
 # -- fzf
-{{ if findExecutable "fzf" $path_list -}}
+{{ if findExecutable "fzf" $pathList -}}
 source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --preview "rg --pretty --context 5 {q} {1} 2>/dev/null"'
@@ -132,7 +132,7 @@ export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --preview "rg --
 
 
 # -- mise
-{{ if findExecutable "mise" $path_list -}}
+{{ if findExecutable "mise" $pathList -}}
 eval "$(mise activate zsh)"
 {{- else -}}
 # -- none
@@ -140,7 +140,7 @@ eval "$(mise activate zsh)"
 
 
 # -- zoxide
-{{ if findExecutable "zoxide" $path_list -}}
+{{ if findExecutable "zoxide" $pathList -}}
 export _ZO_DATA_DIR="${XDG_DATA_HOME}/zoxide"
 _zoxide_init="${_ZO_DATA_DIR}/zoxide_init.zsh"
 
@@ -177,7 +177,7 @@ alias ..='cdl -s ..'
 alias ...='cdl -s ../..'
 alias ....='cdl -s ../../..'
 alias c3='cal -3'
-{{ if findExecutable "bat" $path_list -}}
+{{ if findExecutable "bat" $pathList -}}
 alias cat='bat'
 alias catsa='bat --show-all'
 {{ else -}}
@@ -190,12 +190,12 @@ alias cz='chezmoi'
 alias czhd='cdl -s ${XDG_DATA_HOME}/chezmoi/home'
 alias czsd='cdl -s ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
 alias czs='chezmoi status'
-{{ if findExecutable "dust" $path_list -}}
+{{ if findExecutable "dust" $pathList -}}
 alias dust='dust -Br'
 {{ end -}}
 alias grep='grep --color=auto'
 alias h='history -200'
-{{ if findExecutable "eza" $path_list -}}
+{{ if findExecutable "eza" $pathList -}}
 alias ll='eza -aglF --git --time-style long-iso'
 alias ls='eza -aF'
 alias lt='eza -F --tree -L 3'
@@ -209,7 +209,7 @@ alias spe='${VISUAL} sp'
 alias spn='spx; ${VISUAL} sp'
 alias spx='[[ -f sp ]] && rm sp'
 alias u='uptime'
-{{ if findExecutable "nvim" $path_list -}}
+{{ if findExecutable "nvim" $pathList -}}
 alias vi='nvim'
 alias view='nvim -R'
 {{ end -}}
@@ -248,7 +248,7 @@ alias spu='spx; ${VISUAL} sp; sort -du sp | xsel --clipboard --input'
 
 
 # -- aws-cli
-{{ if (and (findExecutable "aws" $path_list) (ne .instance.default_aws_profile "none")) -}}
+{{ if (and (findExecutable "aws" $pathList) (ne .instance.default_aws_profile "none")) -}}
 alias aws="aws --profile {{ .instance.default_aws_profile }}"
 alias awse="echo {{ .instance.default_aws_profile }}"
 alias awsl="aws sso login"
@@ -258,7 +258,7 @@ alias awsl="aws sso login"
 
 
 # -- docker 
-{{ if findExecutable "docker" $path_list -}}
+{{ if findExecutable "docker" $pathList -}}
 # docker run -it --name ubuntu-20.04 -h hadean ubuntu /bin/bash
 # docker scan --file Dockerfile aarch64/aws-iot-greengrass:2.5.3
 # docker run --init -h -p host:container -p x:y --add-host host:a.b.c.d
@@ -273,7 +273,7 @@ alias dps='docker ps'
 
 
 # -- micromamba
-{{ if findExecutable "micromamba" $path_list -}}
+{{ if findExecutable "micromamba" $pathList -}}
 alias m='micromamba'
 alias ma='m activate'
 alias md='m deactivate'
@@ -292,7 +292,7 @@ merm() { m remove --name "${1}" --all; }
 
 
 # -- rust
-{{ if findExecutable "rustc" $path_list -}}
+{{ if findExecutable "rustc" $pathList -}}
 export path=($path ${HOME}/.cargo/bin)
 {{- else -}}
 # -- none
