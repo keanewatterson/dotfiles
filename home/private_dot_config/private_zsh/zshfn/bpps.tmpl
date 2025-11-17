@@ -1,0 +1,27 @@
+{{ if eq .chezmoi.os "darwin" }}
+bpps() {
+    # basic python project scaffold
+
+    local project
+
+    if (( $# == 1 )); then
+        project="$1"
+
+        # initialize uv environment
+        uv init --package --app "${project}"
+                
+        cp -R "${XDG_DATA_HOME}/chezmoi/resources/template-project-python/." "${project}"
+
+        rm  "${project}/structure-example.txt"
+        sed -i '' -e "s/\[year\]/$(date +%Y)/g" -e "s/\[fullname\]/$(git config --global user.name)/g" "${project}/LICENSE"
+        sed -i '' -e "s/\[project\]/${project}/g" "${project}/src/main.py"
+        touch "${project}/src/core.py"
+        touch "${project}/tests/test_core.py" 
+
+        cd "${project}" && uv add --dev mypy pytest pytest.cov ruff
+    else
+        printf "Usage: $0 project-name\n" >&2
+        exit 1
+    fi
+}
+{{ end -}}
