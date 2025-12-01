@@ -205,9 +205,10 @@ alias ll='ls -ahl'
 {{ end -}}
 alias s='ssh'
 alias -g sp='/tmp/.scratchpad'
-alias spe='${VISUAL} sp'
-alias spn='spx; ${VISUAL} sp'
-alias spx='[[ -f sp ]] && rm sp'
+alias ss='sx; ${VISUAL} sp; sort -du sp'
+alias se='${VISUAL} sp'
+alias sn='sx; ${VISUAL} sp'
+alias sx='[[ -f sp ]] && rm sp'
 alias u='uptime'
 {{ if findExecutable "nvim" $pathList -}}
 alias vi='nvim'
@@ -220,8 +221,7 @@ alias ifl='if_list'
 alias obsd="cd ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
 alias pbc='pbcopy'
 alias pbp='pbpaste'
-alias spc='cat sp | pbcopy'
-alias spu='spx; ${VISUAL} sp; sort -du sp | pbcopy'
+alias sc='cat sp | pbcopy'
 alias tohex='od -An -vtx1'
 alias toctl='od -An -vtu1'
 
@@ -242,8 +242,7 @@ alias -s xlsx='open -a Microsoft\ Excel'
 {{- else if eq .chezmoi.os "linux" -}}
 alias pbc='xsel --clipboard --input'
 alias pbp='xsel --clipboard --output'
-alias spc='cat sp | xsel --clipboard --input'
-alias spu='spx; ${VISUAL} sp; sort -du sp | xsel --clipboard --input'
+alias sc='cat sp | xsel --clipboard --input'
 {{- end }}
 
 
