@@ -50,11 +50,14 @@
 {{ $email_domains := list "olilo.io" "proton.me" -}}
 {{ $email_domain := promptChoiceOnce . "instance.email_domain" "Email domain" $email_domains (index $email_domains 0) -}}
 
-{{ $sign_keys_git := list "dev-olilo.pub" "id_ed25519.pub" -}}
+{{ $sign_keys_git := list "dev-olilo.pub" "id_ed25519.pub" "none" -}}
 {{ $sign_key_git := promptChoiceOnce . "instance.user_sign_key_git" "Git signing key" $sign_keys_git (index $sign_keys_git 0) -}}
 
 {{ $aws_profiles := list "sandbox-iiot" "none" -}}
 {{ $aws_profile := promptChoiceOnce . "instance.user_aws_profile" "Default AWS profile" $aws_profiles (index $aws_profiles 0) -}}
+
+{{- $update_choices := list "yes" "no" -}}
+{{- $system_update := promptChoiceOnce . "instance.update_choices" "Enable system updates" $update_choices (index $update_choices 0) -}}
 
 
 umask = 0o077
@@ -69,6 +72,8 @@ encryption = "age"
     os_distro = {{ $os_distro | quote }}
     is_machine_headless = {{ $is_machine_headless }}
     is_machine_virtual = {{ $is_machine_virtual }}
+
+    enable_system_update = {{ eq $system_update "yes" }}
 
     user_aws_profile = {{ $aws_profile | quote }}
     user_email_git = {{ printf "%s@%s" $email_alias $email_domain | quote }}

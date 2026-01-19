@@ -5,6 +5,7 @@ set -euo pipefail
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
 
+{{ if .instance.enable_system_update }}
 _t0=$(date +%s.%N)
 
 log_info "Installing linux packages"
@@ -64,3 +65,8 @@ _t1=$(date +%s.%N)
 _sec=$(printf "%.3f" "$(echo "$_t1 - $_t0" | bc -l)")
 
 log_info "Linux packages completed: seconds: ${_sec}"
+
+{{- else -}}
+log_info "System updates are not enabled. Downstream dependendencies may not be available."
+
+{{- end -}}
