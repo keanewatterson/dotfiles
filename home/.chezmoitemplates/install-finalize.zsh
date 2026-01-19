@@ -32,24 +32,6 @@ done
 mkdir -p "${HOME}/Projects"
 
 
-# linux specific
-{{ if eq .chezmoi.os "linux" -}}
-
-    # fedora
-    {{ if eq .chezmoi.osRelease.id "fedora" -}}
-
-        {{ if .instance.enable_system_update }}
-            {{ if lookPath "sshd" -}}
-                log_info "Enable sshd\n"
-                sudo systemctl enable --now sshd
-            {{ end -}}
-        {{- end -}}
-
-    {{- end }}
-
-{{- end }}
-
-
 # macos specific
 {{ if eq .chezmoi.os "darwin" -}}
 path_tmp="${HOME}/.local/bin/chezmoi"

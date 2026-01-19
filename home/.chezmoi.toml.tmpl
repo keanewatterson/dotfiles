@@ -1,10 +1,23 @@
-{{/* user identity */}}
-{{ $identity_name := "" }}
-{{ if eq .chezmoi.os "darwin" }}
-{{   $identity_name = (trim (output "sh" "-c" "id -F")) -}}
-{{ else if eq .chezmoi.os "linux" }}
-{{   $identity_name = (trim (output "sh" "-c" "getent passwd $USER | awk -F: '{print $5}' | cut -d, -f1")) -}}
+{{/* is machine headless */}}
+{{ $is_machine_headless := false -}}
+{{ if eq .chezmoi.os "linux" -}}
+{{   if not (findOneExecutable (list "startx" "Xorg") (list "/usr/bin" "/bin" "/sbin")) -}}
+{{     $is_machine_headless = true }}
+{{   end -}}
 {{ end -}}
+
+
+{{/* is machine virtual */}}
+{{ $is_machine_virtual :=  false -}}
+{{ if eq .chezmoi.os "darwin" }}
+{{   if contains "Virtual Machine" (output "system_profiler" "SPHardwareDataType") }}
+{{     $is_machine_virtual = true }}
+{{   end -}}
+{{ else if eq .chezmoi.os "linux" }}
+{{   if contains "Virtualization" (output "hostnamectl") }}
+{{     $is_machine_virtual = true }}
+{{   end -}}
+{{- end -}}
 
 
 {{/* operating system distro */}}
@@ -19,25 +32,12 @@
 {{ end -}}
 
 
-{{/* is machine headless */}}
-{{ $is_machine_headless := false -}}
-{{ if eq .chezmoi.os "linux" -}}
-{{   if not (findOneExecutable (list "startx" "Xorg") (list "/usr/bin" "/bin" "/sbin")) -}}
-{{     $is_machine_headless = true }}
-{{   end -}}
-{{ end -}}
-
-
-{{/* is virtual machine */}}
-{{ $is_machine_virtual :=  false -}}
+{{/* user identity */}}
+{{ $identity_name := "" }}
 {{ if eq .chezmoi.os "darwin" }}
-{{   if contains "Virtual Machine" (output "system_profiler" "SPHardwareDataType") }}
-{{     $is_machine_virtual = true }}
-{{   end -}}
+{{   $identity_name = (trim (output "sh" "-c" "id -F")) -}}
 {{ else if eq .chezmoi.os "linux" }}
-{{   if contains "Virtualization" (output "hostnamectl") }}
-{{     $is_machine_virtual = true }}
-{{   end -}}
+{{   $identity_name = (trim (output "sh" "-c" "getent passwd $USER | awk -F: '{print $5}' | cut -d, -f1")) -}}
 {{ end -}}
 
 
@@ -56,9 +56,8 @@
 {{ $aws_profiles := list "sandbox-iiot" "none" -}}
 {{ $aws_profile := promptChoiceOnce . "instance.user_aws_profile" "Default AWS profile" $aws_profiles (index $aws_profiles 0) -}}
 
-{{- $update_choices := list "yes" "no" -}}
-{{- $system_update := promptChoiceOnce . "instance.update_choices" "Enable system updates" $update_choices (index $update_choices 0) -}}
-
+{{ $system_updates := list "yes" "no" -}}
+{{ $system_update := promptChoiceOnce . "instance.system_updates" "Enable system updates" $system_updates (index $system_updates 0) -}}
 
 umask = 0o077
 
@@ -69,17 +68,21 @@ encryption = "age"
     recipient = "age168xpfe8ypjgdqncm6eavqq8rwlu5scpacnpemgj6eed2743lw9ys7xysus"
 
 [data.instance]
-    os_distro = {{ $os_distro | quote }}
+    enable_system_update = {{ eq $system_update "yes" }}
+
     is_machine_headless = {{ $is_machine_headless }}
     is_machine_virtual = {{ $is_machine_virtual }}
-
-    enable_system_update = {{ eq $system_update "yes" }}
+    os_distro = {{ $os_distro | quote }}
 
     user_aws_profile = {{ $aws_profile | quote }}
     user_email_git = {{ printf "%s@%s" $email_alias $email_domain | quote }}
     user_github_account = {{ $user_name | lower | replace " " "" | quote }}
     user_name = {{ $user_name | quote }}
+    {{ if ne $sign_key_git "none" }}
     user_sign_key_git = {{ printf "~/.ssh/%s" $sign_key_git | quote }}
+    {{ else }}
+    user_sign_key_git = "none"
+    {{ end }}
 
     {{ include (printf ".chezmoitemplates/packages-%s.toml" $os_distro) }}
 

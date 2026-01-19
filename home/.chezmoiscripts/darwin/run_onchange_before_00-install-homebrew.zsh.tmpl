@@ -5,6 +5,8 @@ set -euo pipefail
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
 
+{{ if .instance.enable_system_update -}}
+
 if ! [[ -f /opt/homebrew/bin/brew ]]; then
 
     log_info "Installing Homebrew"
@@ -14,3 +16,7 @@ if ! [[ -f /opt/homebrew/bin/brew ]]; then
 else
     log_info "Homebrew is installed"
 fi
+
+{{ else }}
+log_info "System packages are not enabled for installation"
+{{- end }}

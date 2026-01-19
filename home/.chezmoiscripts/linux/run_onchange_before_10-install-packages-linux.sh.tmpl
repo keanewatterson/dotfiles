@@ -5,10 +5,13 @@ set -euo pipefail
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
 
-{{ if .instance.enable_system_update }}
+
+{{ if .instance.enable_system_update -}}
+
 _t0=$(date +%s.%N)
 
 log_info "Installing linux packages"
+log_info "Root privilege is required"
 
 {{ $sudo := "sudo " -}}
 {{ if eq .chezmoi.username "root" -}}
@@ -23,6 +26,8 @@ log_info "Installing linux packages"
 {{ $section := index .instance.packages .instance.os_distro $scope -}}
 {{ $packages := "" -}}
 
+
+{{/* debian */}}
 {{ if or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian") }}
 
 {{   if hasKey $section "ppa" -}}
@@ -36,13 +41,21 @@ log_info "Installing linux packages"
 {{   $sudo }}apt-get update
 {{   $sudo }}apt-get install -y {{ $packages | join " " }}
 
+
+{{/* fedora */}}
 {{ else if eq .chezmoi.osRelease.id "fedora" }}
 {{   $packages = $section.dnf | sortAlpha | uniq -}}
 {{   $sudo }}dnf update -y
 {{   $sudo }}dnf install -y {{ $packages | join " " }}
+
+{{  if lookPath "sshd" -}}
+    log_info "Enable sshd daemon"
+    sudo systemctl enable --now sshd
+{{- end }}
 {{- end }}
 
 
+{{/* any */}}
 {{ if lookPath "snap" -}}
 
 {{   if hasKey $section "snap" -}}
@@ -66,7 +79,6 @@ _sec=$(printf "%.3f" "$(echo "$_t1 - $_t0" | bc -l)")
 
 log_info "Linux packages completed: seconds: ${_sec}"
 
-{{- else -}}
-log_info "System updates are not enabled. Downstream dependendencies may not be available."
-
-{{- end -}}
+{{ else }}
+log_info "System packages are not enabled for installation"
+{{- end }}

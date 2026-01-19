@@ -5,6 +5,8 @@ set -euo pipefail
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
 
+{{ if .instance.enable_system_update -}}
+
 _t0=$(date +%s.%N)
 
 log_info "Installing Homebrew packages"
@@ -39,3 +41,7 @@ _t1=$(date +%s.%N)
 _sec=$(printf "%.3f" $((_t1 - _t0)))
 
 log_info "Homebrew packages completed: seconds: ${_sec}"
+
+{{ else }}
+log_info "System packages are not enabled for installation"
+{{- end }}
