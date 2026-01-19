@@ -13,7 +13,7 @@ sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "${HOME}/.local/bin" init --a
 Evaluate template modifications based on chezmoi mode.
 ```sh
 # initialization
-chezmoi init --source . --config /tmp//test-chezmoi-init.toml
+chezmoi init --source . --config /tmp/test-chezmoi-init.toml
 
 # general case
 chezmoi execute-template < test.tmpl > /tmp/test.txt
