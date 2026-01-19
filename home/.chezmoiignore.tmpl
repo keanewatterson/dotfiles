@@ -1,9 +1,9 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
+.pgpass
+.ssh/id_ed25519*
 {{ end }}
 
 {{ if ne .chezmoi.os "linux" }}
-.pgpass
 .chezmoiscripts/linux/**
-private_dot_ssh/id_ed25519*
 {{ end }}
