@@ -203,6 +203,7 @@ alias lt='eza -F --tree -L 3'
 alias ls='ls -Fa'
 alias ll='ls -ahl'
 {{ end -}}
+alias ppi='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-python.git"'
 alias s='ssh'
 alias -g sp='/tmp/.scratchpad'
 alias ss='sx; ${VISUAL} sp; sort -du sp'
@@ -247,9 +248,9 @@ alias sc='cat sp | xsel --clipboard --input'
 
 
 # -- aws-cli
-{{ if (and (findExecutable "aws" $pathList) (ne .instance.default_aws_profile "none")) -}}
-alias aws="aws --profile {{ .instance.default_aws_profile }}"
-alias awse="echo {{ .instance.default_aws_profile }}"
+{{ if (and (findExecutable "aws" $pathList) (ne .instance.user_aws_profile "none")) -}}
+alias aws="aws --profile {{ .instance.user_aws_profile }}"
+alias awse="echo {{ .instance.user_aws_profile }}"
 alias awsl="aws sso login"
 {{- else -}}
 # -- none

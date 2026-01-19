@@ -32,8 +32,10 @@ brew = [
   "zsh-fast-syntax-highlighting"
 ]
 cask = [
+  "codex",
   "font-jetbrains-mono-nerd-font",
-  "font-meslo-lg-nerd-font"
+  "font-meslo-lg-nerd-font",
+  "font-stardos-stencil"
 ]
 
 
@@ -61,6 +63,9 @@ brew = [
 ]
 cask = [
   "appcleaner",
+  "codex",
+  "font-charis",
+  "font-gentium",
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
   "ghostty",

@@ -1,6 +1,7 @@
 [data.instance.packages.fedora.desktop]
 cargo = [
   "eza",
+  "jless"
 ]
 dnf = [
   "bat",
@@ -10,6 +11,7 @@ dnf = [
   "fzf",
   "git",
   "git-delta",
+  "libxcb-devel.aarch64",
   "neovim",
   "openssh-server",
   "ripgrep",
