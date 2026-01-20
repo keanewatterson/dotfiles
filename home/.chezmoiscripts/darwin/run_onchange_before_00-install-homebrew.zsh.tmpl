@@ -9,10 +9,15 @@ set -euo pipefail
 
 if ! [[ -f /opt/homebrew/bin/brew ]]; then
 
+    umask 022
+
     log_info "Installing Homebrew"
     log_info "Root privilege is required"
     sudo -v
     NONINTERACTIVE=1 /bin/bash -lc "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    sudo chmod -R u+rwX,go+rX /opt/homebrew
+
 else
     log_info "Homebrew is installed"
 fi

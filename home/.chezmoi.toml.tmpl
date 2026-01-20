@@ -57,7 +57,7 @@
 {{ $aws_profile := promptChoiceOnce . "instance.user_aws_profile" "Default AWS profile" $aws_profiles (index $aws_profiles 0) -}}
 
 {{ $system_updates := list "yes" "no" -}}
-{{ $system_update := promptChoiceOnce . "instance.system_updates" "Enable system updates" $system_updates (index $system_updates 0) -}}
+{{ $system_update := promptChoiceOnce . "instance.system_updates" "Enable system package installations" $system_updates (index $system_updates 0) -}}
 
 umask = 0o077
 
