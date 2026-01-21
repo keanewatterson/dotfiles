@@ -9,7 +9,7 @@ set -euo pipefail
 
 {{ if hasKey $section "cargo" -}}
 
-{{   if stat (joinPath .chezmoi.homeDir ".cargo" "bin") -}}
+{{ if stat (joinPath .chezmoi.homeDir ".cargo" "bin") -}}
 
 _t0=$(date +%s.%N)
 
@@ -26,7 +26,7 @@ _sec=$(printf "%.3f" "$(echo "$_t1 - $_t0" | bc -l)")
 
 log_info "Cargo installations completed: seconds: ${_sec}"
 
-{{   else -}}
+{{ else -}}
 log_info "Cargo is not enabled"
 {{   end -}}
 

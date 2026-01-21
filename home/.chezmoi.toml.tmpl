@@ -54,19 +54,18 @@
 {{ $user_name := promptStringOnce . "instance.user_name" "User name" $identity_name -}}
 
 {{ $candidate_alias := $user_name | lower | replace " " "." -}}
-{{ $email_alias := promptStringOnce . "instance.email_alias" "Email alias" $candidate_alias -}}
+{{ $email_alias := promptStringOnce . "instance.user_email_alias" "Email alias" $candidate_alias -}}
 
 {{ $email_domains := list "olilo.io" "proton.me" -}}
-{{ $email_domain := promptChoiceOnce . "instance.email_domain" "Email domain" $email_domains (index $email_domains 0) -}}
+{{ $email_domain := promptChoiceOnce . "instance.user_email_domain" "Email domain" $email_domains (index $email_domains 0) -}}
 
-{{ $sign_keys_git := list "dev-olilo.pub" "id_ed25519.pub" "none" -}}
-{{ $sign_key_git := promptChoiceOnce . "instance.user_sign_key_git" "Git signing key" $sign_keys_git (index $sign_keys_git 0) -}}
+{{ $signingkeys_git := list "dev-olilo.pub" "id_ed25519.pub" "none" -}}
+{{ $signingkey_git := promptChoiceOnce . "instance.user_signingkey_git" "Git signing key" $signingkeys_git (index $signingkeys_git 0) -}}
 
 {{ $aws_profiles := list "sandbox-iiot" "none" -}}
 {{ $aws_profile := promptChoiceOnce . "instance.user_aws_profile" "Default AWS profile" $aws_profiles (index $aws_profiles 0) -}}
 
-{{ $system_updates := list "yes" "no" -}}
-{{ $system_update := promptChoiceOnce . "instance.system_updates" "Enable system package installations" $system_updates (index $system_updates 0) -}}
+{{ $enable_system_update := promptBoolOnce . "instance.enable_system_update" "Enable system package installations" true }}
 
 umask = 0o077
 
@@ -77,7 +76,7 @@ encryption = "age"
     recipient = "age168xpfe8ypjgdqncm6eavqq8rwlu5scpacnpemgj6eed2743lw9ys7xysus"
 
 [data.instance]
-    enable_system_update = {{ eq $system_update "yes" }}
+    enable_system_update = {{ $enable_system_update }}
 
     is_machine_headless = {{ $is_machine_headless }}
     is_machine_virtual = {{ $is_machine_virtual }}
@@ -85,16 +84,19 @@ encryption = "age"
     package_index = {{ $package_index | quote }}
 
     user_aws_profile = {{ $aws_profile | quote }}
+    user_email_alias = {{ $email_alias | quote }}
+    user_email_domain = {{ $email_domain | quote }}
     user_email_git = {{ printf "%s@%s" $email_alias $email_domain | quote }}
     user_github_account = {{ $user_name | lower | replace " " "" | quote }}
     user_name = {{ $user_name | quote }}
-    {{ if ne $sign_key_git "none" }}
-    user_sign_key_git = {{ printf "~/.ssh/%s" $sign_key_git | quote }}
-    {{ else }}
-    user_sign_key_git = "none"
-    {{ end }}
+    {{ if ne $signingkey_git "none" }}
+    {{ $signingkey_git_path := printf "~/.ssh/%s" (trimPrefix "~/.ssh/" $signingkey_git) -}}
+    user_signingkey_git = {{ $signingkey_git_path | quote }}
+    {{- else }}
+    user_signingkey_git = "none"
+    {{- end }}
 
-    {{ include (printf ".chezmoitemplates/packages-%s.toml" $os_distro) }}
+{{ include (printf ".chezmoitemplates/packages-%s.toml" $os_distro) }}
 
 [git]
     autoCommit = false
