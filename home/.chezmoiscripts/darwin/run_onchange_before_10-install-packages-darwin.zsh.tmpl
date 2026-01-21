@@ -9,18 +9,16 @@ set -euo pipefail
 
 _t0=$(date +%s.%N)
 
-log_info "Installing Homebrew packages"
-
+{{- if .instance.is_machine_virtual -}}
+# more permissive mode for non-admin use
 umask 022
+{{- end -}}
+
+log_info "Installing Homebrew packages"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-{{ $scope := "desktop" -}}
-{{ if .instance.is_machine_virtual -}}
-{{   $scope = "ephemeral" -}}
-{{ end -}}
-
-{{ $section := index .instance.packages.darwin $scope -}}
+{{ $section := index .instance.packages .instance.os_distro .instance.package_index -}}
 {{ $brew := $section.brew | sortAlpha | uniq -}}
 {{ $cask := $section.cask | sortAlpha | uniq -}}
 
@@ -36,11 +34,19 @@ cask "{{ . }}"
 {{- end }}
 EOF
 
+# ensure no compinit security complaints
+{{- if .instance.is_machine_virtual -}}
+find /opt/homebrew -type d -exec chmod 755 {} \;
+{{- else -}}
+chmod 750 /opt/homebrew/share
+{{- end -}}
+
 _t1=$(date +%s.%N)
 _sec=$(printf "%.3f" $((_t1 - _t0)))
 
 log_info "Homebrew packages completed: seconds: ${_sec}"
 
-{{ else }}
+{{- else }}
 log_info "System packages are not enabled for installation"
+
 {{- end }}

@@ -18,12 +18,7 @@ log_info "Root privilege is required"
 {{   $sudo = "" -}}
 {{ end -}}
 
-{{ $scope := "desktop" -}}
-{{ if .instance.is_machine_headless -}}
-{{   $scope = "server" -}}
-{{ end -}}
-
-{{ $section := index .instance.packages .instance.os_distro $scope -}}
+{{ $section := index .instance.packages .instance.os_distro .instance.package_index -}}
 {{ $packages := "" -}}
 
 
@@ -79,6 +74,7 @@ _sec=$(printf "%.3f" "$(echo "$_t1 - $_t0" | bc -l)")
 
 log_info "Linux packages completed: seconds: ${_sec}"
 
-{{ else }}
+{{- else }}
 log_info "System packages are not enabled for installation"
+
 {{- end }}

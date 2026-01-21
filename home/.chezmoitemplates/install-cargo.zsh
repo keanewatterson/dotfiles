@@ -5,13 +5,7 @@ set -euo pipefail
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
 
-
-{{ $scope := "desktop" -}}
-{{ if .instance.is_machine_headless -}}
-{{   $scope = "server" -}}
-{{ end -}}
-
-{{ $section := index .instance.packages .instance.os_distro $scope -}}
+{{ $section := index .instance.packages .instance.os_distro .instance.package_index -}}
 
 {{ if hasKey $section "cargo" -}}
 

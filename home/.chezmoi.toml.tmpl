@@ -32,6 +32,15 @@
 {{ end -}}
 
 
+{{/* installation package index */}}
+{{ $package_index := "desktop" -}}
+{{- if (and (eq .chezmoi.os "darwin") ($is_machine_virtual)) -}}
+{{-     $package_index = "ephemeral" -}}
+{{- else if (and (eq .chezmoi.os "linux") ($is_machine_headless )) -}}
+{{-     $package_index = "server" -}}
+{{- end -}}
+
+
 {{/* user identity */}}
 {{ $identity_name := "" }}
 {{ if eq .chezmoi.os "darwin" }}
@@ -73,6 +82,7 @@ encryption = "age"
     is_machine_headless = {{ $is_machine_headless }}
     is_machine_virtual = {{ $is_machine_virtual }}
     os_distro = {{ $os_distro | quote }}
+    package_index = {{ $package_index | quote }}
 
     user_aws_profile = {{ $aws_profile | quote }}
     user_email_git = {{ printf "%s@%s" $email_alias $email_domain | quote }}
