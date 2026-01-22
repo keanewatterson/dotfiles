@@ -5,7 +5,8 @@ set -euo pipefail
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
 
-{{ $section := index .instance.packages .instance.os_distro .instance.package_index -}}
+{{ $packages := include (printf ".chezmoitemplates/packages-%s.toml" .instance.os_distro) | fromToml -}}
+{{ $section := index $packages "data" "instance" "packages" .instance.os_distro .instance.package_index -}}
 
 {{ if hasKey $section "cargo" -}}
 

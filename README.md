@@ -17,4 +17,5 @@ chezmoi init --source . --config /tmp/test-chezmoi-init.toml
 
 # general case
 chezmoi execute-template < test.tmpl > /tmp/test.txt
+chezmoi apply --dry-run
 ```

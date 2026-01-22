@@ -96,8 +96,6 @@ encryption = "age"
     user_signingkey_git = "none"
     {{- end }}
 
-{{ include (printf ".chezmoitemplates/packages-%s.toml" $os_distro) }}
-
 [git]
     autoCommit = false
     autoPush = false

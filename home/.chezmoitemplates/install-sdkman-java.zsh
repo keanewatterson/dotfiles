@@ -18,7 +18,13 @@ set -efo pipefail
 
 log_info "Installing sdkman Java packages"
 
-{{ $java_distros := .instance.packages.config.sdkman.java_distros -}}
+{{ $packages := include (printf ".chezmoitemplates/packages-%s.toml" .instance.os_distro) | fromToml -}}
+{{ $data := get $packages "data" | default (dict) -}}
+{{ $instance := get $data "instance" | default (dict) -}}
+{{ $packages_root := get $instance "packages" | default (dict) -}}
+{{ $config_root := get $packages_root "config" | default (dict) -}}
+{{ $config := get $config_root "sdkman" | default (dict) -}}
+{{ $java_distros := get $config "java_distros" | default (list) -}}
 
 distros=({{ range $i, $e := $java_distros }}"{{ $e }}" {{ end -}})
 

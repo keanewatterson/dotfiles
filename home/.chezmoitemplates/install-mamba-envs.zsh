@@ -21,11 +21,17 @@ _t0=$(date +%s.%N)
 
 log_info "Installing mamba environments"
 
-{{ $config_envs := .instance.packages.config.mamba.environments -}}
+{{ $packages := include (printf ".chezmoitemplates/packages-%s.toml" .instance.os_distro) | fromToml -}}
+{{ $data := get $packages "data" | default (dict) -}}
+{{ $instance := get $data "instance" | default (dict) -}}
+{{ $packages_root := get $instance "packages" | default (dict) -}}
+{{ $config_root := get $packages_root "config" | default (dict) -}}
+{{ $config := get $config_root "mamba" | default (dict) -}}
+{{ $config_envs := get $config "environments" | default (list) -}}
 
 env_names=({{ range $i, $e := $config_envs }}"{{ $e }}" {{ end -}})
 
-template_dir={{ .instance.packages.config.mamba.template_dir }}
+template_dir={{ get $config "template_dir" | default "" }}
 
 for env_name in "${env_names[@]}"; do
 
