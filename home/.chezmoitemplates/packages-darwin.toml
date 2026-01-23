@@ -2,6 +2,7 @@
 brew = [
   "age",
   "ascii",
+  # "asitop",
   "awscli",
   "bat",
   "btop",
@@ -24,7 +25,6 @@ brew = [
   "oh-my-posh",
   "ripgrep",
   "uv",
-  "wget",
   "xsv",
   "xz",
   "zoxide",
@@ -33,6 +33,7 @@ brew = [
   "zsh-fast-syntax-highlighting"
 ]
 cask = [
+  # "blackhole-16ch",
   "codex",
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
@@ -46,7 +47,6 @@ brew = [
   "bat",
   "btop",
   "chezmoi",
-  "cmake",
   "dust",
   "eza",
   "fd",
@@ -56,10 +56,8 @@ brew = [
   "mise",
   "neovim",
   "oh-my-posh",
-  "protobuf",
   "ripgrep",
   "uv",
-  "wget",
   "zoxide",
   "zsh-autosuggestions",
   "zsh-completions",

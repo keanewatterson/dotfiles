@@ -18,7 +18,7 @@ fi
 paths_rm=("${HOME}/.zsh_history")
 
 if (( ${#paths_rm} > 0 )); then
-    log_info "Remove obsolete files: $paths_rm[@]\n"
+    log_info "Remove obsolete files: $paths_rm[@]"
 fi
 
 for path_rm in "${paths_rm[@]}"; do
@@ -32,11 +32,20 @@ done
 mkdir -p "${HOME}/Projects"
 
 
-# macos specific
-{{ if eq .chezmoi.os "darwin" -}}
+{{/* macos */}}
+{{- if eq .chezmoi.os "darwin" -}}
+
 path_tmp="${HOME}/.local/bin/chezmoi"
 if [[ -f "/opt/homebrew/bin/chezmoi" && -f "${path_tmp}" ]]; then
-    log_info "Remove bootstrap executable: ${path_tmp}\n"
+    log_info "Remove bootstrap executable: ${path_tmp}"
     rm -f "${path_tmp}"
 fi
+
+{{- if (and (.instance.is_machine_virtual) (.instance.enable_system_update)) }}
+
+cname="virtual-$(date +"%Y%m%d")"
+log_info "Set ComputerName: ${cname}"
+sudo scutil --set ComputerName "${cname}"
+{{- end }}
+
 {{- end }}
