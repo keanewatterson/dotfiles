@@ -28,7 +28,7 @@ lt() {
   fi
 
   if (( level >= 3 )); then
-    eza --all --ignore-glob=".git|.venv" --tree --level="${level}" "${fpath}"
+    eza --all --ignore-glob=".git|.venv|__pycache__|.*_cache" --tree --level="${level}" "${fpath}"
   else
     eza --all --tree --level="${level}" "${fpath}"
   fi
