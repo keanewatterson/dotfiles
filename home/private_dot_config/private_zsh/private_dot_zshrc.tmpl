@@ -202,7 +202,6 @@ alias h='history -200'
 {{ if findExecutable "eza" $pathList -}}
 alias ll='eza -aglF --git --time-style long-iso'
 alias ls='eza -aF'
-alias lt='eza -F --tree -L 3'
 {{ else -}}
 alias ls='ls -Fa'
 alias ll='ls -ahl'
@@ -226,6 +225,9 @@ alias ifl='if_list'
 alias obsd="cd ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
 alias pbc='pbcopy'
 alias pbp='pbpaste'
+{{ if findExecutable "sage" $pathList -}}
+alias sageg='sage --notebook=jupyterlab'
+{{ end -}}
 alias sc='cat sp | pbcopy'
 alias tohex='od -An -vtx1'
 alias toctl='od -An -vtu1'

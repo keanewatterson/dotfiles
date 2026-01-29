@@ -1,3 +1,8 @@
+{{- $pathVars := dict -}}
+{{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
+{{- $pathList := index $pathVars "pathList" -}}
+  
+{{ if findExecutable "docker" $pathList }}
 dd_exec() {
     # execute a docker exec command within a project container
 
@@ -28,3 +33,5 @@ dd_exec() {
         >&2 printf "%s <name>\n" "${funcstack[1]}"
     fi
 }
+
+{{- end }}

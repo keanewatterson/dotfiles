@@ -1,3 +1,8 @@
+{{- $pathVars := dict -}}
+{{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
+{{- $pathList := index $pathVars "pathList" -}}
+  
+{{ if findExecutable "docker" $pathList }}
 dd_start_stop() {
     # start or stop a container by name - $1 = name, $2 = project name
 
@@ -14,3 +19,5 @@ dd_start_stop() {
         >&2 printf "%s <start|stop> <name>\n" "${funcstack[1]}"
     fi
 }
+
+{{- end }}

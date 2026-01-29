@@ -5,16 +5,20 @@ set -euo pipefail
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
 
-# general case
-log_info "Configure chezmoi repository for ssh protocol\n"
+log_info "Start finalization"
+
+# git repos
+log_info "Configure chezmoi repository for ssh protocol"
 git -C "${XDG_DATA_HOME}/chezmoi" remote set-url origin git@github.com:{{ .instance.user_github_account }}/dotfiles.git
 
+# instance options
 if ! [[ -f "{{ .chezmoi.sourceDir }}/.chezmoidata/instance-options.toml " ]]; then
     mkdir -p "{{ .chezmoi.sourceDir }}/.chezmoidata"
     cp "{{ .chezmoi.workingTree }}/resources/chezmoi/instance-options.toml" \
         "{{ .chezmoi.sourceDir }}/.chezmoidata/instance-options.toml"
 fi
 
+# file clean-up
 paths_rm=("${HOME}/.zsh_history")
 
 if (( ${#paths_rm} > 0 )); then
@@ -49,3 +53,5 @@ sudo scutil --set ComputerName "${cname}"
 {{- end }}
 
 {{- end }}
+
+log_info "Finalization is complete"

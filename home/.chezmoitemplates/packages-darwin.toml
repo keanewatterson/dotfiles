@@ -2,7 +2,6 @@
 brew = [
   "age",
   "ascii",
-  # "asitop",
   "awscli",
   "bat",
   "btop",
@@ -17,6 +16,7 @@ brew = [
   "jless",
   "jq",
   "libpq",
+  "macmon",
   "mas",
   "mise",
   "mosh",
@@ -33,11 +33,12 @@ brew = [
   "zsh-fast-syntax-highlighting"
 ]
 cask = [
-  # "blackhole-16ch",
+  "blackhole-16ch",
   "codex",
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
-  "font-stardos-stencil"
+  "font-stardos-stencil",
+  "sage"
 ]
 
 
