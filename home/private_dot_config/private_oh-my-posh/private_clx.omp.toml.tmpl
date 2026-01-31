@@ -1,7 +1,11 @@
 # chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
 "$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
 version = 3
+#{{ if not .instance.is_machine_virtual -}}#
 console_title_template = '{{.HostName}}:{{.PWD}}'
+#{{- else -}}#
+console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
+#{{- end }}#
 # final_space = true
 
 #{{ if ne .chezmoi.os "darwin" -}}#
