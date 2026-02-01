@@ -39,6 +39,3 @@ cargo = [ ]
 snap = [
   "vivaldi"
 ]
-snap-classic = [
-  "aws-cli"
-]
