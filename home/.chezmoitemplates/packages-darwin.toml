@@ -13,11 +13,8 @@ brew = [
   "fzf",
   "git-delta",
   "glow",
-  "gnu-units",
   "jless",
   "jq",
-  "just",
-  "libpq",
   "macmon",
   "mas",
   "mise",
@@ -25,10 +22,9 @@ brew = [
   "neovim",
   "octave",
   "oh-my-posh",
+  "qsv",
   "ripgrep",
   "uv",
-  "xsv",
-  "xz",
   "zoxide",
   "zsh-autosuggestions",
   "zsh-completions",
@@ -36,10 +32,11 @@ brew = [
 ]
 cask = [
   "blackhole-16ch",
-  "codex",
+  "font-charis",
+  "font-gentium",
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
-  "font-stardos-stencil",
+  "macdown-3000",
   "sage"
 ]
 
@@ -69,23 +66,12 @@ brew = [
 ]
 cask = [
   "appcleaner",
-  "codex",
-  "font-charis",
-  "font-gentium",
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
   "ghostty",
   "iTerm2",
+  "macdown-3000",
   "obsidian",
   "visual-studio-code",
   "vivaldi"
 ]
-
-
-[data.instance.packages.config.mamba]
-environments = [ ]
-template_dir = "${XDG_DATA_HOME}/chezmoi/resources/mamba"
-
-
-[data.instance.packages.config.sdkman]
-java_distros = [ ]

@@ -1,115 +1,123 @@
-# Rationale & Philosophy
+# Global Agent Operating Contract
 
-This workspace treats AI agents as *long-lived collaborators*, not disposable autocomplete engines.
+This document defines **global, language-agnostic rules** for AI agents.
+It establishes behavioral, architectural, and verification invariants that apply
+across all projects unless explicitly overridden by a project-scoped `agents.md`.
 
-The purpose of this contract is to prevent three systemic failures that emerge in AI-assisted engineering:
-
-1. **Entropy** — gradual architectural erosion caused by “just this once” shortcuts
-2. **Drift** — agents reverting to generic, legacy, or lowest-common-denominator practices
-3. **Hallucinated Authority** — confident but unverifiable claims about tools, APIs, or behavior
-
-These rules exist to ensure that:
-
-* Outputs are *production-grade by default*
-* Architecture accumulates rather than decays
-* Knowledge is *grounded in verifiable sources*
-* Every artifact is safe to extend, refactor, and automate against
-
-Agents are expected to behave like senior engineers embedded in a real codebase:
-conservative with assumptions, explicit about tradeoffs, and intolerant of silent ambiguity.
-
-This document encodes those expectations.
+This file is intentionally concise. Tooling, language standards, and framework
+details belong in project-level contracts.
 
 ---
 
-# Agent Operating Contract
+## 1. Normative Language
 
-This document defines **mandatory defaults** and **decision rules** for all agents operating in this workspace.
+The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** in this document are
+normative.
 
-It is not advisory. These rules override generic model behavior unless explicitly superseded in a task prompt.
-
----
-
-## 1. Tooling & Knowledge Acquisition
-
-### Context7 MCP
-
-**Always use Context7 MCP** when any of the following are true:
-
-* The task involves:
-
-  * Library or API usage
-  * Framework configuration
-  * Package setup
-  * Build, install, or environment steps
-  * Non-trivial code generation
-* The request references a third-party dependency by name.
-* The request implies uncertainty about current best practice.
-
-Context7 is *not optional* in these cases.
-Do **not** rely on prior model knowledge for APIs or tooling details.
+- **MUST / MUST NOT**: mandatory requirement
+- **SHOULD / SHOULD NOT**: strong default; deviations require explicit justification
+- **MAY**: optional behavior
 
 ---
 
-## 2. Python Standards (Hard Requirements)
+## 2. Purpose
 
-All Python output must conform to the following unless the user explicitly overrides:
+Agents are treated as **long-lived collaborators**, not disposable autocomplete tools.
 
-* **Language**: Assume Python ≥ 3.14
-* **Style**:
+This contract exists to prevent:
 
-  * Modern, idiomatic, object-oriented
-  * Type-annotated
-  * PEP 8 compliant
-  * No legacy patterns (e.g., `argparse`, global state, script-only layouts)
-* **Project Model**:
-
-  * Treat all code as part of an **installable package**
-  * Use a `src/` layout by default
-  * Include `pyproject.toml` when scaffolding
-* **Tooling**:
-
-  * Use `uv` for environment and dependency management
-  * Use `cyclopts` for all CLI interfaces
-  * Use `logging` for diagnostics (never `print`)
-* **Concurrency**:
-
-  * Prefer async / concurrent libraries when I/O-bound
-  * Do not block the event loop
-  * Design for composability and parallelism
-
-If a request conflicts with these rules, **ask for clarification before proceeding**.
+1. Architectural entropy
+2. Practice drift toward lowest-common-denominator solutions
+3. Hallucinated authority and unverifiable claims
 
 ---
 
-## 3. Output Semantics
+## 3. Behavioral Invariants
 
-When generating artifacts:
+Agents MUST:
 
-* Provide:
+- Prefer clarification over guessing when constraints are ambiguous
+- Verify claims about APIs, tools, and behavior before asserting them
+- Preserve existing architecture unless explicitly instructed to refactor
+- Make tradeoffs explicit when multiple viable approaches exist
+- Treat all output as production-grade by default
 
-  * Clear file boundaries
-  * Directory layout
-  * Entry points
-  * Minimal but sufficient comments
-* Assume outputs will be:
+Agents MUST NOT:
 
-  * Checked into version control
-  * Reused by other agents
-  * Extended over time
-
-Avoid:
-
-* One-off scripts
-* Monolithic files
-* Hidden assumptions about environment
-* “Demo-only” shortcuts
+- Invent requirements, versions, or constraints
+- Assume deployment, scale, or security posture without confirmation
+- Introduce breaking architectural changes implicitly
 
 ---
 
-## 4. Decision Hierarchy
+## 4. Output Expectations
 
-When tradeoffs arise, prioritize in this order:
+All non-trivial outputs MUST include:
+
+- Clear file boundaries and intended locations
+- Minimal, reviewable diffs aligned with the existing codebase
+- Separation of concerns (I/O, domain logic, configuration)
+- Artifacts suitable for version control and future extension
+
+Agents SHOULD avoid:
+
+- One-off scripts for reusable systems
+- Monolithic files that collapse multiple responsibilities
+- Hidden global state or implicit environment assumptions
+
+---
+
+## 5. Verification & Quality (Global)
+
+All non-trivial changes MUST be **verifiable**.
+
+Agents MUST ensure that:
+
+- A testing strategy exists (unit, integration, or both)
+- Tests are deterministic and runnable
+- Boundaries between pure logic and side effects are explicit
+
+If a project lacks tests, the agent MUST either:
+
+- Add a minimal, appropriate test harness, or
+- Explicitly flag the absence and propose a concrete strategy
+
+Tooling and exact standards are defined at the project level.
+
+---
+
+## 6. Security Guardrails (Minimum)
+
+Agents MUST NOT:
+
+- Hardcode secrets, tokens, credentials, or private keys
+- Log sensitive data by default
+- Generate insecure-by-default configurations without warning
+
+Agents MUST flag and seek clarification when tasks involve:
+
+- Authentication or authorization
+- Cryptography or key management
+- Public exposure of services or data
+- Injection-prone surfaces (shell, SQL, templates)
+
+---
+
+## 7. Architecture Discipline
+
+Agents MUST:
+
+- Respect existing architectural boundaries
+- Avoid introducing new layers, services, or patterns without justification
+- Document significant structural decisions explicitly
+
+Architecture MUST be driven by **stated constraints**, not agent preference.
+
+---
+
+## 8. Decision Hierarchy
+
+When tradeoffs arise, agents MUST prioritize:
 
 1. Correctness
 2. Reproducibility
@@ -121,78 +129,43 @@ Brevity is never a justification for architectural erosion.
 
 ---
 
-## 5. Clarification Policy
+## 9. Clarification Policy
 
-Before acting, pause and ask questions if:
+Agents MUST pause and ask questions when:
 
-* Requirements conflict with this contract
-* The task implies hidden constraints (scale, security, deployment)
-* The user’s intent is ambiguous in a way that affects architecture
+- Requirements conflict
+- Scale, deployment, or security assumptions are unclear
+- User intent materially affects architecture or verification
 
-Do **not** guess in these cases.
-
----
-
-## 6. Failure Modes & Anti-Patterns
-
-Agents must actively avoid the following failure modes. These are considered *contract violations* unless explicitly requested.
-
-### 6.1 Knowledge & Tooling Failures
-
-* **API hallucination**
-  Using undocumented methods, parameters, or behaviors without invoking Context7.
-* **Stale practice drift**
-  Falling back to legacy patterns (e.g., `setup.py`, `argparse`, `requirements.txt`) when modern tooling is required.
-* **Implicit assumptions**
-  Guessing library behavior, versions, or defaults instead of verifying.
-
-### 6.2 Architectural Anti-Patterns
-
-* **Scriptification**
-  Producing single-file “scripts” for anything that is conceptually a tool, pipeline, or reusable system.
-* **Monolith collapse**
-  Combining CLI, business logic, I/O, and configuration into one module.
-* **Hidden state**
-  Relying on global variables, implicit environment state, or side effects that are not surfaced in interfaces.
-* **Unbounded growth**
-  Writing code that cannot be extended without rewriting (e.g., hard-coded paths, magic constants, fixed schemas).
-
-### 6.3 Python-Specific Violations
-
-* Using `print()` for diagnostics instead of `logging`
-* Omitting type hints in non-trivial code
-* Blocking in async contexts
-* Mixing sync and async I/O without a boundary layer
-* Returning ad-hoc dicts where structured types are appropriate
-
-### 6.4 UX & Interface Failures
-
-* CLIs without:
-
-  * Help text
-  * Subcommands
-  * Deterministic exit codes
-* Interfaces that:
-
-  * Require reading source code to understand usage
-  * Change behavior based on implicit context
-  * Encode policy in comments instead of code
-
-### 6.5 Process Failures
-
-* Proceeding when:
-
-  * Requirements conflict with this contract
-  * The scale or deployment model is unclear
-  * The user intent materially affects architecture
-
-In these cases, the agent must **pause and ask clarifying questions** rather than guessing.
+Proceeding without clarification in these cases is a contract violation.
 
 ---
 
-These failure modes exist to prevent *architectural entropy* and *agent drift*.
-Avoiding them is as important as satisfying the primary task.
+## 10. External Documentation Policy
+
+For tasks involving external libraries, frameworks, or tooling, agents SHOULD use
+**Context7 MCP** as the primary source of truth for API behavior, configuration,
+and setup steps.
+
+Agents MUST use Context7 when any of the following are true:
+
+- Library or API usage is required
+- Framework configuration is required
+- Package setup, build, install, or environment steps are required
+- Non-trivial code generation depends on external APIs
+- A third-party dependency is referenced by name
+- The request depends on current best practices that may have changed
+
+If Context7 is unavailable or insufficient, agents MUST:
+
+- Fall back to official primary documentation (vendor docs, standards, RFCs)
+- Explicitly state that fallback occurred
+- Avoid relying solely on model memory for version-sensitive details
 
 ---
 
-This contract is binding for all agents operating in this workspace.
+## 11. Traceability for Version-Sensitive Claims
+
+For non-trivial, version-sensitive technical guidance, agents MUST provide source
+traceability (for example: documentation references, links, or explicit source
+identification) and MUST clearly label assumptions when exact versions are unknown.

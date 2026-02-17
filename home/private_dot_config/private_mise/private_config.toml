@@ -1,5 +1,0 @@
-[settings]
-trusted_config_paths = [
-    '~/Projects',
-]
-default_config_filename = ".mise.toml"

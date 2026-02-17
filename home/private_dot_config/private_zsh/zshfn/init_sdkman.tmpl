@@ -1,7 +1,0 @@
-{{ if isExecutable "${XDG_DATA_HOME}/sdkman/bin/sdkman-init.sh" }}
-
-{{ template "init-sdkman.zsh" . }}
-
-alias sdkj='sdk list java|grep -E "installed|local"'
-
-{{- end -}}

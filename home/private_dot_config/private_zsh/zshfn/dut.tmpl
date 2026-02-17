@@ -1,0 +1,37 @@
+{{- $pathVars := dict -}}
+{{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
+{{- $pathList := index $pathVars "pathList" -}}
+  
+{{ if findExecutable "dust" $pathList }}
+dut() {
+  local depth fpath
+
+  if (( $# == 0 )); then
+    fpath="."
+    depth=""
+
+  elif (( $# == 1 )); then
+    if [[ "$1" == <-> ]]; then
+      # single numeric argument
+      fpath="."
+      depth="$1"
+    else
+      # single string argument
+      fpath="$1"
+      depth=""
+    fi
+
+  else
+    # two or more arguments: use first two
+    depth="$1"
+    fpath="$2"
+  fi
+
+  if [[ "${depth}" == <-> ]]; then
+    dust --limit-filesystem --bars-on-right --reverse --depth "${depth}" "${fpath}"
+  else
+    dust --limit-filesystem --bars-on-right --reverse "${fpath}"
+  fi
+}
+
+{{- end }}

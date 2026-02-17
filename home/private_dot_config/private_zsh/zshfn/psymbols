@@ -1,4 +1,4 @@
-glyphs() {
+psymbols() {
     # print occasionally required symbols
     printf "-- common ------------------------------\n"
     printf "AEQ:\t\t≈\n"

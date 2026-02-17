@@ -33,5 +33,7 @@ chezmoi init --source . --config /tmp/test-chezmoi-init.toml
 
 # general case
 chezmoi execute-template < /tmp/test.tmpl
-chezmoi apply --dry-run
+chezmoi edit /path/to/encrypted-template
+
+chezmoi -v apply --dry-run
 ```

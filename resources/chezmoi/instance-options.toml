@@ -17,3 +17,8 @@ serial-console = [
   "alias s96='screen /dev/ttyUSB0 9600'",
   "alias s115='screen /dev/ttyUSB0 115200'"
 ]
+
+ubuntu-tegra = [
+  "# -- TODO: tegra oddity",
+  "unset LESS",
+]

@@ -195,9 +195,6 @@ alias cza='chezmoi apply'
 alias czhd='cdl -s ${XDG_DATA_HOME}/chezmoi/home'
 alias czsd='cdl -s ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
 alias czs='chezmoi status'
-{{ if findExecutable "dust" $pathList -}}
-alias dust='dust -Br'
-{{ end -}}
 alias grep='grep --color=auto'
 alias h='history -200'
 {{ if findExecutable "eza" $pathList -}}
@@ -207,7 +204,7 @@ alias ls='eza -aF'
 alias ls='ls -Fa'
 alias ll='ls -ahl'
 {{ end -}}
-alias ppi='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-python.git"'
+alias ctp='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-python.git"'
 alias s='ssh'
 alias -g sp='/tmp/.scratchpad'
 alias ss='sx; ${VISUAL} sp; sort -du sp'
@@ -220,14 +217,18 @@ alias vi='nvim'
 alias view='nvim -R'
 {{ end -}}
 
-{{ if eq .chezmoi.os "darwin" -}}
+{{ if eq .chezmoi.os "darwin" }}
+# -- macos
 alias caf='caffeinate'
 alias ifl='if_list'
+{{ if findExecutable "macdown" $pathList -}}
+alias md='macdown'
+{{ end -}}
 alias obsd="cd ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 {{ if findExecutable "sage" $pathList -}}
-alias sageg='sage --notebook=jupyterlab'
+alias sageg='export TERM=xterm-256color; sage --notebook=jupyterlab'
 {{ end -}}
 alias sc='cat sp | pbcopy'
 alias tohex='od -An -vtx1'
@@ -247,7 +248,8 @@ alias -s csv='open -a Microsoft\ Excel'
 alias -s html='open -a Safari'
 alias -s xlsx='open -a Microsoft\ Excel'
 
-{{- else if eq .chezmoi.os "linux" -}}
+{{- else if eq .chezmoi.os "linux" }}
+# -- linux
 alias pbc='xsel --clipboard --input'
 alias pbp='xsel --clipboard --output'
 alias sc='cat sp | xsel --clipboard --input'
@@ -322,13 +324,7 @@ export path=($path ${HOME}/.cargo/bin)
   {{- end -}}
 {{- else }}
 # -- none
-{{- end -}}
-
-
-{{ if eq .instance.os_distro "ubuntu-tegra" -}}
-# tegra anomaly
-unset LESS
-{{- end}}
+{{- end }}
 
 
 # output detailed profiling

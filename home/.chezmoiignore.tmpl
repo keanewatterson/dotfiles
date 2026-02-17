@@ -1,10 +1,15 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
 .codex
+.iex.exs
 .pgpass
 .ssh/id_ed25519*
 {{ end }}
 
 {{ if ne .chezmoi.os "linux" }}
 .chezmoiscripts/linux/**
+{{ end }}
+
+{{ if eq .instance.user_aws_profile "none" }}
+.aws
 {{ end }}
