@@ -5,7 +5,7 @@ set -euo pipefail
 
 {{- $pathVars := dict -}}
 {{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
-{{- $pathList := index $pathVars "pathList" -}}
+{{- $pathList := index $pathVars "pathList" }}
 
 {{ template "init-env.sh" . }}
 {{ template "util-log.sh" . }}
