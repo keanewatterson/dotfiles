@@ -168,7 +168,8 @@ _mise_lazy_init
 # -- zoxide
 {{ if findExecutable "zoxide" $pathList -}}
 export _ZO_DATA_DIR="${XDG_DATA_HOME}/zoxide"
-_zoxide_init="${_ZO_DATA_DIR}/zoxide_init.zsh"
+_zoxide_version="$(zoxide --version 2>/dev/null)"
+_zoxide_init="${_ZO_DATA_DIR}/zoxide_init_${_zoxide_version// /_}.zsh"
 
 if [[ ! -f "${_zoxide_init}" ]]; then
   mkdir -p "${_ZO_DATA_DIR}"
