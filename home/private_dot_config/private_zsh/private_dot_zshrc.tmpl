@@ -63,6 +63,7 @@ zstyle ':completion:*:complete:*' use-cache 1
 setopt AUTO_CD
 setopt COMPLETE_IN_WORD
 setopt CORRECT
+setopt EXTENDED_HISTORY
 setopt HIST_FIND_NO_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_DUPS
@@ -74,7 +75,7 @@ setopt SHARE_HISTORY
 HISTFILE=${ZDOTDIR}/.zsh_history
 HISTSIZE=5000
 SAVEHIST=${HISTSIZE}
-HISTORY_IGNORE='(..|...|c3|cd|cd ..|gs|h|ls|ll|lt(| *)|ps(| *)|pwd|u)'
+HISTORY_IGNORE='(..|...|c3|cd|cd ..|gs|h|ls|ll|lt(| *)|ps(| *)|pwd|u|which)'
 zshaddhistory() { [[ ${1%%$'\n'} != ${~HISTORY_IGNORE} ]] }
 
 
@@ -104,7 +105,7 @@ fi
 
 {{ if eq .chezmoi.os "darwin" -}}
 # -- command-not-found
-HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
+HOMEBREW_COMMAND_NOT_FOUND_HANDLER="/opt/homebrew/Library/Homebrew/command-not-found/handler.sh"
 if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
   source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
 fi
@@ -112,7 +113,6 @@ fi
 
 # -- zsh-autosuggestions
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-export ZSH_AUTOSUGGEST_USE_ASYNC=1
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 
@@ -152,7 +152,8 @@ _mise_project_root() {
 
 _mise_lazy_init() {
   if _mise_project_root; then
-    unset -f _mise_lazy_init
+    add-zsh-hook -d chpwd _mise_lazy_init
+    unset -f _mise_lazy_init _mise_project_root
     eval "$(mise activate zsh)"
   fi
 }
@@ -184,7 +185,7 @@ unset _zoxide_init
 # -- user functions -----------------------------------------------------------
 _zshfn_dir="${ZDOTDIR}/zshfn"
 if [[ -d "${_zshfn_dir}" ]]; then
-  fpath=($fpath  "${_zshfn_dir}")
+  fpath=($fpath "${_zshfn_dir}")
   autoload -Uz "${_zshfn_dir}"/*(:t)
 fi
 unset _zshfn_dir
