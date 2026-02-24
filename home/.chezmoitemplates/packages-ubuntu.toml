@@ -7,6 +7,7 @@ apt = [
   "fd-find",
   "fzf",
   "git-delta",
+  "neovim",
   "ripgrep",
   "shellcheck",
   "unzip",
@@ -15,6 +16,9 @@ apt = [
   "zsh"
 ]
 cargo = [ ]
+ppa = [
+  "ppa:neovim-ppa/unstable"
+]
 snap = [ ]
 snap-classic = [
   "aws-cli" 
@@ -30,6 +34,8 @@ apt = [
   "fd-find",
   "fzf",
   "git-delta",
+  "neovim",
+  "openssh-server",
   "ripgrep",
   "shellcheck",
   "unzip",
@@ -38,6 +44,9 @@ apt = [
   "zsh"
 ]
 cargo = [ ]
+ppa = [
+  "ppa:neovim-ppa/unstable"
+]
 snap = [
   "vivaldi"
 ]
