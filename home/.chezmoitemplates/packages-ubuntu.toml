@@ -11,6 +11,7 @@ apt = [
   "ripgrep",
   "shellcheck",
   "unzip",
+  "wtmpdb",
   "zip",
   "zoxide",
   "zsh"
@@ -20,9 +21,7 @@ ppa = [
   "ppa:neovim-ppa/unstable"
 ]
 snap = [ ]
-snap-classic = [
-  "aws-cli" 
-]
+snap-classic = [ ]
 
 
 [data.instance.packages.ubuntu.desktop]
@@ -39,6 +38,7 @@ apt = [
   "ripgrep",
   "shellcheck",
   "unzip",
+  "wtmpdb",
   "zip",
   "zoxide",
   "zsh"
@@ -49,4 +49,7 @@ ppa = [
 ]
 snap = [
   "vivaldi"
+]
+snap-classic = [
+  "ghostty" 
 ]
