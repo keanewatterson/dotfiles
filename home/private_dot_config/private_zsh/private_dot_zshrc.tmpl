@@ -207,6 +207,9 @@ alias c3='cal -3'
 {{ if findExecutable "bat" $pathList -}}
 alias cat='bat'
 alias catsa='bat --show-all'
+{{- else if findExecutable "batcat" $pathList -}}
+alias cat='batcat'
+alias catsa='batcat --show-all'
 {{ else -}}
 alias catsa='cat -ent'
 {{ end -}}
