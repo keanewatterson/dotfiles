@@ -25,7 +25,8 @@ export path=(
 {{ end -}}
 )
 
-export LESS='-R --use-color -Dd+r$Du+b$'
+export LESS='-XRF --use-color --quit-at-eof -Dd+r$Du+b$'
+
 export EDITOR="vi"
 {{ if findExecutable "nvim" $pathList -}}
 export VISUAL="nvim"
@@ -206,16 +207,19 @@ alias ....='cdl -s ../../..'
 alias c3='cal -3'
 {{ if findExecutable "bat" $pathList -}}
 alias cat='bat'
-alias catsa='bat --show-all'
+alias catp='bat -pp'
+alias cata='bat --show-all'
 {{- else if findExecutable "batcat" $pathList -}}
 alias cat='batcat'
-alias catsa='batcat --show-all'
+alias catp='batcat -pp'
+alias cata='batcat --show-all'
 {{ else -}}
 alias catsa='cat -ent'
 {{ end -}}
 alias cl='cdl -l'
 alias cs='cdl -s'
 alias ct='cdl -t'
+alias ctp='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-python.git"'
 alias cz='chezmoi'
 alias cza='chezmoi apply'
 alias czhd='cdl -s ${XDG_DATA_HOME}/chezmoi/home'
@@ -230,7 +234,7 @@ alias ls='eza -aF'
 alias ls='ls -Fa'
 alias ll='ls -ahl'
 {{ end -}}
-alias ctp='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-python.git"'
+alias rg='rg --hidden --one-file-system'
 alias s='ssh'
 alias -g sp='/tmp/.scratchpad'
 alias ss='sx; ${VISUAL} sp; sort -du sp'
@@ -250,7 +254,8 @@ alias ifl='if_list'
 {{ if findExecutable "macdown" $pathList -}}
 alias md='macdown'
 {{ end -}}
-alias obsd="cd ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
+alias obsd="cs ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
+alias obsdo="open ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 {{ if findExecutable "sage" $pathList -}}
@@ -276,9 +281,11 @@ alias -s xlsx='open -a Microsoft\ Excel'
 
 {{- else if eq .chezmoi.os "linux" }}
 # -- linux
+{{ if findExecutable "xsel" $pathList -}}
 alias pbc='xsel --clipboard --input'
 alias pbp='xsel --clipboard --output'
 alias sc='cat sp | xsel --clipboard --input'
+{{- end }}
 {{- end }}
 
 

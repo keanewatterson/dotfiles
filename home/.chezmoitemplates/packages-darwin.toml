@@ -24,6 +24,7 @@ brew = [
   "oh-my-posh",
   "qsv",
   "ripgrep",
+  "sops",
   "uv",
   "zoxide",
   "zsh-autosuggestions",
