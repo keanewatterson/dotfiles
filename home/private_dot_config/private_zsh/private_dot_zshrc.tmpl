@@ -27,12 +27,9 @@ export path=(
 
 export LESS='-XRF --use-color --quit-at-eof -Dd+r$Du+b$'
 
-export EDITOR="vi"
-{{ if findExecutable "nvim" $pathList -}}
-export VISUAL="nvim"
-{{- else -}}
-export VISUAL="vi"
-{{- end }}
+{{ $_editor := findExecutable "nvim" $pathList | base | trimPrefix "." | default "vi" -}}
+export EDITOR="{{ $_editor }}"
+export VISUAL="{{ $_editor }}"
 
 if [[ -n "$SSH_CONNECTION" && "$TERM" == "xterm-ghostty" ]]; then
   export TERM=xterm-256color
@@ -205,16 +202,13 @@ alias ..='cdl -s ..'
 alias ...='cdl -s ../..'
 alias ....='cdl -s ../../..'
 alias c3='cal -3'
-{{ if findExecutable "bat" $pathList -}}
-alias cat='bat'
-alias cap='bat -pp'
-alias caa='bat --show-all'
-{{- else if findExecutable "batcat" $pathList -}}
-alias cat='batcat'
-alias cap='batcat -pp'
-alias caa='batcat --show-all'
+{{ $_cat := ((findOneExecutable (list "bat" "batcat") $pathList) | base | trimPrefix ".") | default "cat" -}}
+{{ if ne $_cat "cat" -}}
+alias cat='{{ $_cat }}'
+alias cap='{{ $_cat }} -pp'
+alias caa='{{ $_cat }} --show-all'
 {{ else -}}
-alias catsa='cat -ent'
+alias caa='{{ $_cat }} -ent'
 {{ end -}}
 alias cl='cdl -l'
 alias cs='cdl -s'
@@ -225,6 +219,10 @@ alias cza='chezmoi apply'
 alias czhd='cdl -s ${XDG_DATA_HOME}/chezmoi/home'
 alias czsd='cdl -s ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
 alias czs='chezmoi status'
+{{ $_fd := ((findOneExecutable (list "fd" "fdfind") $pathList) | base | trimPrefix ".") | default "" -}}
+{{ if ne $_fd "" -}}
+alias fd='{{ $_fd }} --hidden --one-file-system'
+{{ end -}}
 alias grep='grep --color=auto'
 alias h='history -200'
 {{ if findExecutable "eza" $pathList -}}
@@ -237,14 +235,14 @@ alias ll='ls -ahl'
 alias rg='rg --hidden --one-file-system'
 alias s='ssh'
 alias -g sp='/tmp/.scratchpad'
-alias ss='sx; ${VISUAL} sp; sort -du sp'
-alias se='${VISUAL} sp'
-alias sn='sx; ${VISUAL} sp'
+alias ss='sx; {{ $_editor }} sp; sort -du sp'
+alias se='{{ $_editor }} sp'
+alias sn='sx; {{ $_editor }} sp'
 alias sx='[[ -f sp ]] && rm sp'
 alias u='uptime'
 {{ if findExecutable "nvim" $pathList -}}
-alias vi='nvim'
-alias view='nvim -R'
+alias vi="{{ $_editor }}"
+alias view='{{ $_editor }} -R'
 {{ end -}}
 
 {{ if eq .chezmoi.os "darwin" }}
@@ -281,11 +279,11 @@ alias -s xlsx='open -a Microsoft\ Excel'
 
 {{- else if eq .chezmoi.os "linux" }}
 # -- linux
-{{ if findExecutable "xsel" $pathList -}}
-alias pbc='xsel --clipboard --input'
-alias pbp='xsel --clipboard --output'
-alias sc='cat sp | xsel --clipboard --input'
+{{ if findExecutable "fail2ban-client" $pathList -}}
+alias fbstat="sudo sh -c 'fail2ban-client status | sed -n '\"'\"'s/,//g;s/.*Jail list://p'\"'\"' | xargs -n1 fail2ban-client status'"
+alias fbunban='fail2ban-client unban'
 {{- end }}
+alias nftls='sudo nft -a -y list ruleset'
 {{- end }}
 
 
@@ -301,10 +299,6 @@ alias awsl="aws sso login"
 
 # -- docker 
 {{ if findExecutable "docker" $pathList -}}
-# docker run -it --name ubuntu-20.04 -h hadean ubuntu /bin/bash
-# docker scan --file Dockerfile aarch64/aws-iot-greengrass:2.5.3
-# docker run --init -h -p host:container -p x:y --add-host host:a.b.c.d
-
 alias dcl='docker container ls --all'
 alias ddf='docker system df'
 alias dil='docker image ls --all'
