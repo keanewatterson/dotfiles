@@ -1,9 +1,9 @@
 [user]
-    name = {{ .instance.user_name | quote }}
-    email = {{ .instance.user_email_git | quote }}
+    name = {{ .instance.user_name }}
+    email = {{ .instance.user_email_git }}
 
     {{- if ne .instance.user_signingkey_git "none" }}
-    signingkey = {{ .instance.user_signingkey_git | quote }}
+    signingkey = {{ .instance.user_signingkey_git }}
     {{- end }}
 
 [gpg]
