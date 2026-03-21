@@ -302,7 +302,9 @@ alias awsl="aws sso login"
 alias dcl='docker container ls --all'
 alias ddf='docker system df'
 alias dil='docker image ls --all'
-alias dps='docker ps'
+alias dlog='docker log -f'
+alias dps='docker ps -a'
+alias duns='rg dock /etc/sub*'
 {{- else -}}
 # -- none
 {{- end }}
