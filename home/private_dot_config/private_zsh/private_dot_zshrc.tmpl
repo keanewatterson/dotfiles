@@ -31,6 +31,16 @@ export LESS='-XRF --use-color --quit-at-eof -Dd+r$Du+b$'
 export EDITOR="{{ $_editor }}"
 export VISUAL="{{ $_editor }}"
 
+{{ if eq .chezmoi.os "linux" -}}
+if command -v gpgconf >/dev/null 2>&1; then
+  _gpg_ssh_sock="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)"
+  if [[ -n "$_gpg_ssh_sock" ]]; then
+    export SSH_AUTH_SOCK="$_gpg_ssh_sock"
+  fi
+  unset _gpg_ssh_sock
+fi
+{{- end }}
+
 if [[ -n "$SSH_CONNECTION" && "$TERM" == "xterm-ghostty" ]]; then
   export TERM=xterm-256color
 fi
