@@ -32,12 +32,12 @@ export EDITOR="{{ $_editor }}"
 export VISUAL="{{ $_editor }}"
 
 {{ if eq .chezmoi.os "linux" -}}
-if command -v gpgconf >/dev/null 2>&1; then
-  _gpg_ssh_sock="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)"
-  if [[ -n "$_gpg_ssh_sock" ]]; then
-    export SSH_AUTH_SOCK="$_gpg_ssh_sock"
+if [[ -z "${SSH_AUTH_SOCK:-}" || "$SSH_AUTH_SOCK" == *gnupg* || ! -S "${SSH_AUTH_SOCK:-/dev/null}" ]]; then
+  if [[ -S "$XDG_RUNTIME_DIR/ssh-agent.socket" ]]; then
+    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+  else
+    eval "$(ssh-agent -s)" >/dev/null
   fi
-  unset _gpg_ssh_sock
 fi
 {{- end }}
 
@@ -277,9 +277,11 @@ alias toctl='od -An -vtu1'
 # -- applications
 alias dbv='open -a DBeaver'
 alias code='open -a Visual\ Studio\ Code'
+alias cursor='open a Cursor.app'
 alias ds='open -a Docker'
 alias dx='osascript -e ''quit app "Docker"'''
 alias spt='open -a Spotify'
+alias wbr='open -a "Google Chrome.app"'
 
 
 # -- file extensions

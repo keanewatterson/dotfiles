@@ -1,5 +1,12 @@
-{{ if and (eq .chezmoi.os "darwin") (ne .instance.user_signingkey_git "none") -}}
+{{- if ne .instance.user_signingkey_git "none" -}}
+
+{{- $signingKey := trimSuffix ".pub" .instance.user_signingkey_git -}}
 lsk() {
-    ssh-add --apple-use-keychain {{ trimSuffix ".pub" .instance.user_signingkey_git }} >/dev/null 2>&1 || true
+{{ if eq .chezmoi.os "darwin" -}}
+  ssh-add --apple-use-keychain {{ $signingKey }} >/dev/null 2>&1 || true
+{{- else }}
+    ssh-add {{ $signingKey }} >/dev/null 2>&1 || true
+{{- end }}
 }
+
 {{- end }}
