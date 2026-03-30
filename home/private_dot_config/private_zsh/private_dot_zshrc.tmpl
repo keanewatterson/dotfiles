@@ -220,6 +220,7 @@ alias caa='{{ $_cat }} --show-all'
 {{ else -}}
 alias caa='{{ $_cat }} -ent'
 {{ end -}}
+alias ccert='nmap -Pn --script ssl-cert -p 443'
 alias cl='cdl -l'
 alias cs='cdl -s'
 alias ct='cdl -t'
@@ -292,8 +293,8 @@ alias -s xlsx='open -a Microsoft\ Excel'
 {{- else if eq .chezmoi.os "linux" }}
 # -- linux
 {{ if findExecutable "fail2ban-client" $pathList -}}
-alias fbstat="sudo sh -c 'fail2ban-client status | sed -n '\"'\"'s/,//g;s/.*Jail list://p'\"'\"' | xargs -n1 fail2ban-client status'"
-alias fbunban='fail2ban-client unban'
+alias fbs="sudo sh -c 'fail2ban-client status | sed -n '\"'\"'s/,//g;s/.*Jail list://p'\"'\"' | xargs -n1 fail2ban-client status'"
+alias fbun='sudo fail2ban-client unban'
 {{- end }}
 alias nftls='sudo nft -a -y list ruleset'
 {{- end }}
@@ -311,11 +312,17 @@ alias awsl="aws sso login"
 
 # -- docker 
 {{ if findExecutable "docker" $pathList -}}
-alias dcl='docker container ls --all'
+alias dc='docker compose'
+alias dcd='docker compose down'
+alias dcu='docker compose up -d'
+alias dcl='docker compose logs -f'
+alias dcps='docker compose ps'
 alias ddf='docker system df'
-alias dil='docker image ls --all'
-alias dlog='docker logs -f'
+alias dlc='docker container ls --all'
+alias dli='docker image ls --all'
+alias drmi='docker rmi'
 alias dps='docker ps -a'
+alias dst='docker stats --no-stream'
 alias duns='rg dock /etc/sub*'
 {{- else -}}
 # -- none

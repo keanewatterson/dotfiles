@@ -9,6 +9,7 @@ apt = [
   "git-delta",
   "glow",
   "neovim",
+  "nmap",
   "ripgrep",
   "shellcheck",
   "unzip",

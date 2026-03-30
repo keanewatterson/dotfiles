@@ -20,6 +20,7 @@ brew = [
   "mise",
   "mosh",
   "neovim",
+  "nmap",
   "octave",
   "oh-my-posh",
   "qsv",
