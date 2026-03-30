@@ -1,7 +1,8 @@
 {{- if ne .instance.user_signingkey_git "none" -}}
 
 {{- $signingKey := trimSuffix ".pub" .instance.user_signingkey_git -}}
-lsk() {
+{{/* register an SSH key */}}
+ska() {
 {{ if eq .chezmoi.os "darwin" -}}
   ssh-add --apple-use-keychain {{ $signingKey }} >/dev/null 2>&1 || true
 {{- else }}
