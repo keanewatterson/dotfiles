@@ -27,6 +27,7 @@ brew = [
   "ripgrep",
   "sops",
   "uv",
+  "yq",
   "zoxide",
   "zsh-autosuggestions",
   "zsh-completions",
@@ -38,6 +39,7 @@ cask = [
   "font-gentium",
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
+  "gcloud-cli",
   "macdown-3000",
   "sage"
 ]
