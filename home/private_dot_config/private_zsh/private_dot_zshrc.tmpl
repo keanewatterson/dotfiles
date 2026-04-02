@@ -33,10 +33,10 @@ export VISUAL="{{ $_editor }}"
 
 {{ if eq .chezmoi.os "linux" -}}
 if [[ -z "${SSH_AUTH_SOCK:-}" || "$SSH_AUTH_SOCK" == *gnupg* || ! -S "${SSH_AUTH_SOCK:-/dev/null}" ]]; then
-  if [[ -S "$XDG_RUNTIME_DIR/ssh-agent.socket" ]]; then
-    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-  else
-    eval "$(ssh-agent -s)" >/dev/null
+  export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR:-$HOME/.ssh}/ssh-agent.socket"
+
+  if [[ ! -S "$SSH_AUTH_SOCK" ]]; then
+    eval "$(ssh-agent -a "$SSH_AUTH_SOCK" -s)" >/dev/null
   fi
 fi
 {{- end }}
