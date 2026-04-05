@@ -1,0 +1,25 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+
+#{{- $pathVars := dict -}}#
+#{{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}#
+#{{- $pathList := index $pathVars "pathList" -}}#
+
+#{{ if (and (findExecutable "docker" $pathList) (eq .chezmoi.os "linux") ) }}#
+
+dcpuw() {
+  emulate -L zsh
+  local container=$1 interval=${2:-1}
+  if [[ -z $container ]]; then
+    print -u2 'usage: docker-cpu-watch <container> [interval_seconds]'
+    return 1
+  fi
+  if ! command -v watch >/dev/null; then
+    print -u2 'docker-cpu-watch: watch(1) not found (e.g. procps)'
+    return 1
+  fi
+  export WATCH_CONTAINER=$container
+  watch -n "$interval" \
+    'pid=$(docker inspect -f "{{.State.Pid}}" "$WATCH_CONTAINER") && cg=$(sed -n "s/^0:://p" /proc/$pid/cgroup) && printf "%s\n" "container=$WATCH_CONTAINER pid=$pid cgroup=$cg" && cat "/sys/fs/cgroup${cg}/cpu.stat"'
+  unset WATCH_CONTAINER
+}
+#{{- end }}#

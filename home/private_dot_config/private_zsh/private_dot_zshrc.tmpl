@@ -315,8 +315,9 @@ alias awsl="aws sso login"
 alias dc='docker compose'
 alias dcd='docker compose down'
 alias dcu='docker compose up -d'
-alias dcl='docker compose logs -f'
-alias dcps='docker compose ps'
+alias dcl='docker compose logs -tail=0 -f'
+alias dcls="docker compose ps -q | xargs docker inspect --format='{{.Name}} -> {{.LogPath}}'"
+alias dcps='docker compose ps -a'
 alias ddf='docker system df'
 alias dlc='docker container ls --all'
 alias dli='docker image ls --all'

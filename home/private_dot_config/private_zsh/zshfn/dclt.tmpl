@@ -1,0 +1,15 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+
+#{{- $pathVars := dict -}}#
+#{{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}#
+#{{- $pathList := index $pathVars "pathList" -}}#
+
+#{{ if findExecutable "docker" $pathList }}#
+dclt() {
+  if [[ -n "$1" ]]; then
+    docker compose ps -aq "$1" | sudo xargs -r -I {} sh -c 'truncate -s 0 "$(docker inspect --format="{{.LogPath}}" {})"'
+  else
+    docker compose ps -aq | sudo xargs -r -I {} sh -c 'truncate -s 0 "$(docker inspect --format="{{.LogPath}}" {})"'
+  fi
+}
+#{{- end }}#
