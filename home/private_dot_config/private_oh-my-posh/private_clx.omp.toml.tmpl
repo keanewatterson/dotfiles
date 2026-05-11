@@ -120,14 +120,22 @@ console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
       display_mode = 'context'
 
   [[blocks.segments]]
-    type = 'julia'
+    type = "gcp"
     foreground = 'foreground'
     background = 'transparent'
-    template = '  {{ .Full }} '
+    template = ' 󱇶  {{.Project}} '
+    template = '{{ if .Project }} 󱇶 {{ if eq .Project "curewiseai" }}prd{{ end }}{{ end }} '
     style = 'plain'
 
-    [blocks.segments.properties]
-      display_mode = 'context'
+  # [[blocks.segments]]
+    # type = 'julia'
+    # foreground = 'foreground'
+    # background = 'transparent'
+    # template = '  {{ .Full }} '
+    # style = 'plain'
+
+    # [blocks.segments.properties]
+      # display_mode = 'context'
 
   # [[blocks.segments]]
     # type = 'node'

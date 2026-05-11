@@ -260,6 +260,15 @@ alias view='{{ $_editor }} -R'
 {{ if eq .chezmoi.os "darwin" }}
 # -- macos
 alias caf='caffeinate'
+{{ if findExecutable "gcloud" $pathList -}}
+alias gca='gcloud auth login'
+alias gcadc='gcloud auth application-default login'
+alias gcpg='gcloud config get project'
+alias gcpl='gcloud projects list'
+alias gcplog='gcloud logging read --limit=50'
+alias gcps='gcloud config set project'
+alias gcpu='gcloud config unset project'
+{{ end -}}
 alias ifl='if_list'
 {{ if findExecutable "macdown" $pathList -}}
 alias md='macdown'

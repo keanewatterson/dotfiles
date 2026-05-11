@@ -13,6 +13,9 @@ psymbols() {
     printf "Sigma:\t\t∑\tσ\n"
     printf "Subtotal\t◊\n"
 
+    printf "-- language ----------------------------\n"
+    printf "A-acute:\tÁ\tá\n"
+    printf "O-acute:\tÓ\tó\n"
     printf "-- other -------------------------------\n"
     printf "Recycle:\t♺\n"
     printf "Shrug:\t\t¯\_(ツ)_/¯\n"
