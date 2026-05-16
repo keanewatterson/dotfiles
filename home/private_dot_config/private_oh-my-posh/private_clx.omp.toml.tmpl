@@ -123,8 +123,7 @@ console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
     type = "gcp"
     foreground = 'foreground'
     background = 'transparent'
-    template = ' 󱇶  {{.Project}} '
-    template = '{{ if .Project }} 󱇶 {{ if eq .Project "curewiseai" }}prd{{ end }}{{ end }} '
+    template = '{{ if .Project }} 󱇶 {{ if eq .Project "curewiseai" }}prd {{ end }}{{ end }} '
     style = 'plain'
 
   # [[blocks.segments]]
