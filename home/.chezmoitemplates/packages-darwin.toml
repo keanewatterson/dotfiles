@@ -3,6 +3,7 @@ brew = [
   "age",
   "ascii",
   "awscli",
+  "bash",
   "bat",
   "btop",
   "chezmoi",
@@ -16,6 +17,7 @@ brew = [
   "hf",
   "jless",
   "jq",
+  "llama.cpp",
   "macmon",
   "mas",
   "mcp-toolbox",
@@ -42,6 +44,7 @@ cask = [
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
   "gcloud-cli",
+  "llamabarn",
   "macdown-3000",
   "sage"
 ]
