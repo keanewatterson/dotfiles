@@ -52,13 +52,6 @@ leader:bind({}, 'escape', function() exitLeader(false) end)
 
 -- ── Helpers ───────────────────────────────────────────────────────────
 
-local function app(name)
-  return function()
-    exitLeader(false)
-    hs.application.launchOrFocus(name)
-  end
-end
-
 local function shell(cmd)
   return function()
     exitLeader(false)
@@ -72,8 +65,46 @@ local function shQuote(s)
   return "'" .. tostring(s):gsub("'", "'\\''") .. "'"
 end
 
+-- Bundles under /System/Applications: use explicit paths for open(), and a
+-- stricter "already running" check (see appIsRunning) because hs.application.get
+-- can match background-only processes so w/p would skip launch while z/q still work.
+local defaultAppPaths = {
+  Calendar = '/System/Applications/Calendar.app',
+  Messages = '/System/Applications/Messages.app',
+  Mail     = '/System/Applications/Mail.app',
+}
+
 local function appIsRunning(name)
-  return hs.application.get(name) ~= nil
+  local app = hs.application.get(name)
+  if not app then
+    return false
+  end
+  if defaultAppPaths[name] then
+    local wins = app:allWindows() or {}
+    return #wins > 0
+  end
+  return true
+end
+
+-- Short-name hs.application.launchOrFocus can miss apps whose default bundle
+-- is under /System/Applications; map those above and use open-by-path.
+
+local function launchAppByNameOrPath(name, opts)
+  opts = opts or {}
+  local path = opts.appPath or defaultAppPaths[name]
+  if path and hs.fs.attributes(path) then
+    hs.application.open(path, false)
+  else
+    hs.application.launchOrFocus(name)
+  end
+end
+
+local function app(name, opts)
+  opts = opts or {}
+  return function()
+    exitLeader(false)
+    launchAppByNameOrPath(name, opts)
+  end
 end
 
 local function hideAppByName(name)
@@ -85,28 +116,62 @@ local function hideAppByName(name)
   return false
 end
 
+-- One hide-retry campaign per app name (avoids stacked timers on repeated hotkeys).
+local hideCampaignByApp = {}
+
+local function cancelHideAppCampaign(name)
+  local c = hideCampaignByApp[name]
+  if not c then return end
+  if c.startTimer then c.startTimer:stop() end
+  if c.repeatTimer then c.repeatTimer:stop() end
+  hideCampaignByApp[name] = nil
+end
+
 local function hideAppRepeatedly(name, opts)
   opts = opts or {}
 
+  cancelHideAppCampaign(name)
+
   local interval   = opts.interval or 0.5
-  local maxSeconds = opts.maxSeconds or 12
+  local maxSeconds = opts.maxSeconds or 8
+  local startDelay = opts.startDelay or 0
   local elapsed    = 0
 
-  local timer
-  timer = hs.timer.doEvery(interval, function()
-    elapsed = elapsed + interval
+  local function armRepeat()
+    local repeatTimer
+    repeatTimer = hs.timer.doEvery(interval, function()
+      elapsed = elapsed + interval
 
-    -- Electron apps often activate a window several seconds after the
-    -- process appears. Re-hide repeatedly during the startup window.
+      -- Electron apps often activate a window several seconds after the
+      -- process appears. Re-hide repeatedly during the startup window.
+      hideAppByName(name)
+
+      if elapsed >= maxSeconds then
+        repeatTimer:stop()
+        cancelHideAppCampaign(name)
+      end
+    end)
+
+    -- Try once immediately too, in case Launch Services already registered it.
     hideAppByName(name)
 
-    if elapsed >= maxSeconds then
-      timer:stop()
-    end
-  end)
+    local entry = hideCampaignByApp[name] or {}
+    entry.repeatTimer = repeatTimer
+    hideCampaignByApp[name] = entry
+  end
 
-  -- Try once immediately too, in case Launch Services already registered it.
-  hideAppByName(name)
+  if startDelay > 0 then
+    local startTimer = hs.timer.doAfter(startDelay, function()
+      local entry = hideCampaignByApp[name]
+      if not entry or not entry.startTimer then return end
+      entry.startTimer = nil
+      armRepeat()
+    end)
+    hideCampaignByApp[name] = { startTimer = startTimer }
+  else
+    hideCampaignByApp[name] = {}
+    armRepeat()
+  end
 end
 
 local function launchHiddenIfNotRunning(name, opts)
@@ -116,89 +181,15 @@ local function launchHiddenIfNotRunning(name, opts)
     return false
   end
 
-  hs.application.launchOrFocus(name)
+  launchAppByNameOrPath(name, opts)
 
   hideAppRepeatedly(name, {
-    interval = opts.interval or 0.5,
-    maxSeconds = opts.maxSeconds or 12,
+    interval   = opts.interval or 0.5,
+    maxSeconds = opts.maxSeconds or 8,
+    startDelay = opts.startDelay or 0,
   })
 
   return true
-end
-
--- Slack is stubborn on launch. Keep this intentionally conservative.
--- The previous aggressive version could mistake a partial Slack process for
--- a fully running app and skip launch behavior. This version:
---   1. Checks specifically for visible Slack windows.
---   2. If Slack has no visible windows, calls `open -a Slack`.
---   3. After a delay, repeatedly asks macOS to hide Slack.
---   4. Does not minimize windows or activate Slack/press Cmd-H.
-local function slackWindowCount()
-  local output = hs.execute([[/usr/bin/osascript -e 'tell application "System Events"
-    if exists process "Slack" then
-      return count of windows of process "Slack"
-    else
-      return 0
-    end if
-  end tell']], true)
-
-  return tonumber(output) or 0
-end
-
-local function slackHasWindows()
-  return slackWindowCount() > 0
-end
-
-local function safeHideSlackRepeatedly(opts)
-  opts = opts or {}
-
-  local interval   = opts.interval or 1.0
-  local maxSeconds = opts.maxSeconds or 30
-  local startDelay = opts.startDelay or 4.0
-  local elapsed    = 0
-
-  local function hideOnce()
-    local app = hs.application.get('Slack')
-    if app then app:hide() end
-
-    hs.task.new('/usr/bin/osascript', nil, {
-      '-e', 'tell application "System Events" to if exists process "Slack" then set visible of process "Slack" to false'
-    }):start()
-  end
-
-  hs.timer.doAfter(startDelay, function()
-    local timer
-    timer = hs.timer.doEvery(interval, function()
-      elapsed = elapsed + interval
-      hideOnce()
-
-      if elapsed >= maxSeconds then
-        timer:stop()
-      end
-    end)
-
-    hideOnce()
-  end)
-end
-
-local function launchSlackHiddenIfNotRunning(opts)
-  opts = opts or {}
-
-  -- If Slack has real windows, treat it as already running and leave it alone.
-  -- If only helper/background processes exist, still ask macOS to open Slack.
-  if not slackHasWindows() then
-    hs.execute('/usr/bin/open -a Slack', true)
-
-    safeHideSlackRepeatedly({
-      startDelay = opts.startDelay or 5.0,
-      interval = opts.interval or 1.0,
-      maxSeconds = opts.maxSeconds or 30,
-    })
-
-    return true
-  end
-
-  return false
 end
 
 -- ── Claude / Anthropic profiles ───────────────────────────────────────
@@ -261,7 +252,7 @@ local function launchClaude(profile, opts)
   if opts.hideAfterLaunch and not hadAnyClaude then
     hideAppRepeatedly('Claude', {
       interval = opts.hideInterval or 0.5,
-      maxSeconds = opts.hideMaxSeconds or 15,
+      maxSeconds = opts.hideMaxSeconds or 10,
     })
   end
 
@@ -269,14 +260,13 @@ local function launchClaude(profile, opts)
 end
 
 -- ── Apps ──────────────────────────────────────────────────────────────
-
-leader:bind({}, 'g', app('Ghostty'))
 leader:bind({}, 'f', app('Finder'))
+leader:bind({}, 'g', app('Ghostty'))
+leader:bind({}, 'h', app('Hermes'))
 leader:bind({}, 'm', app('Mail'))
 leader:bind({}, 'o', app('Obsidian'))
 leader:bind({}, 's', app('Safari'))
 leader:bind({}, 'c', app('Cursor'))
-leader:bind({}, 'v', app('Cursor')) -- optional alias; remove once muscle memory settles
 
 -- CureWise work session:
 --   - Launches missing apps only.
@@ -286,15 +276,18 @@ leader:bind({}, 'v', app('Cursor')) -- optional alias; remove once muscle memory
 leader:bind({}, 'w', function()
   exitLeader(false)
 
-  launchHiddenIfNotRunning('Linear',   { maxSeconds = 8  })
-  launchSlackHiddenIfNotRunning({ startDelay = 5, maxSeconds = 30 })
-  launchHiddenIfNotRunning('Mail',     { maxSeconds = 8  })
-  launchHiddenIfNotRunning('Calendar', { maxSeconds = 8  })
-  launchHiddenIfNotRunning('Obsidian', { maxSeconds = 10 })
+  launchHiddenIfNotRunning('Mail',     { maxSeconds = 5  })
+  launchHiddenIfNotRunning('Calendar', { maxSeconds = 5  })
+  launchHiddenIfNotRunning('Messages', { maxSeconds = 5  })
+
+  launchHiddenIfNotRunning('Linear',   { maxSeconds = 5  })
+  launchHiddenIfNotRunning('Obsidian', { maxSeconds = 5 })
+  launchHiddenIfNotRunning('Slack',    { maxSeconds = 5  })
+
 
   launchClaude('curewise', {
     hideAfterLaunch = true,
-    hideMaxSeconds = 15,
+    hideMaxSeconds = 10,
   })
 
   hs.alert.show('CureWise work apps checked', 0.8)
@@ -306,19 +299,18 @@ leader:bind({}, 'p', function()
 
   -- Personal and work overlap intentionally. These launch only if missing;
   -- already-running apps are left as-is.
-  launchHiddenIfNotRunning('Mail',     { maxSeconds = 8  })
-  launchHiddenIfNotRunning('Calendar', { maxSeconds = 8  })
+  launchHiddenIfNotRunning('Mail',     { maxSeconds = 5  })
+  launchHiddenIfNotRunning('Calendar', { maxSeconds = 5  })
+  launchHiddenIfNotRunning('Messages', { maxSeconds = 5  })
+
+  launchHiddenIfNotRunning('Obsidian', { maxSeconds = 5 })
+  launchHiddenIfNotRunning('ChatGPT',  { maxSeconds = 5  })
+  launchHiddenIfNotRunning('Spotify',  { maxSeconds = 5  })
 
   launchClaude('personal', {
     hideAfterLaunch = true,
-    hideMaxSeconds = 15,
+    hideMaxSeconds = 10,
   })
-
-  launchHiddenIfNotRunning('Obsidian', { maxSeconds = 10 })
-  launchHiddenIfNotRunning('ChatGPT',  { maxSeconds = 8  })
-  launchHiddenIfNotRunning('Messages', { maxSeconds = 8  })
-  launchHiddenIfNotRunning('Hermes',   { maxSeconds = 8  })
-  launchHiddenIfNotRunning('Spotify',  { maxSeconds = 8  })
 
   hs.alert.show('Personal apps checked', 0.8)
 end)
