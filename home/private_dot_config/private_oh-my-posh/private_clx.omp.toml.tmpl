@@ -126,15 +126,15 @@ console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
     template = '{{ if .Project }} 󱇶 {{ if eq .Project "curewiseai" }}prd {{ else if or (eq .Project "curewisestaging") (eq .Project "curewise-staging") }}stg {{ else if eq .Project "curewise-app-dev" }}dev {{ end }}{{ end }} '
     style = 'plain'
 
-  # [[blocks.segments]]
-    # type = 'julia'
-    # foreground = 'foreground'
-    # background = 'transparent'
-    # template = '  {{ .Full }} '
-    # style = 'plain'
+  [[blocks.segments]]
+    type = 'julia'
+    foreground = 'foreground'
+    background = 'transparent'
+    template = '  {{ .Full }} '
+    style = 'plain'
 
-    # [blocks.segments.properties]
-      # display_mode = 'context'
+    [blocks.segments.properties]
+      display_mode = 'context'
 
   # [[blocks.segments]]
     # type = 'node'
