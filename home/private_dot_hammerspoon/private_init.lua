@@ -263,7 +263,7 @@ end
 leader:bind({}, 'f', app('Finder'))
 leader:bind({}, 'g', app('Ghostty'))
 leader:bind({}, 'h', app('Hermes'))
-leader:bind({}, 'm', app('Mail'))
+leader:bind({}, 'm', app('Microsoft Outlook'))
 leader:bind({}, 'o', app('Obsidian'))
 leader:bind({}, 's', app('Safari'))
 leader:bind({}, 'c', app('Cursor'))
@@ -276,12 +276,13 @@ leader:bind({}, 'c', app('Cursor'))
 leader:bind({}, 'w', function()
   exitLeader(false)
 
-  launchHiddenIfNotRunning('Mail',     { maxSeconds = 5  })
-  launchHiddenIfNotRunning('Calendar', { maxSeconds = 5  })
+  -- launchHiddenIfNotRunning('Mail',     { maxSeconds = 5  })
+  -- launchHiddenIfNotRunning('Calendar', { maxSeconds = 5  })
   launchHiddenIfNotRunning('Messages', { maxSeconds = 5  })
 
   launchHiddenIfNotRunning('Linear',   { maxSeconds = 5  })
   launchHiddenIfNotRunning('Obsidian', { maxSeconds = 5 })
+  launchHiddenIfNotRunning('Microsoft Outlook', { maxSeconds = 5 })
   launchHiddenIfNotRunning('Slack',    { maxSeconds = 5  })
 
 
@@ -299,10 +300,11 @@ leader:bind({}, 'p', function()
 
   -- Personal and work overlap intentionally. These launch only if missing;
   -- already-running apps are left as-is.
-  launchHiddenIfNotRunning('Mail',     { maxSeconds = 5  })
-  launchHiddenIfNotRunning('Calendar', { maxSeconds = 5  })
+  -- launchHiddenIfNotRunning('Mail',     { maxSeconds = 5  })
+  -- launchHiddenIfNotRunning('Calendar', { maxSeconds = 5  })
   launchHiddenIfNotRunning('Messages', { maxSeconds = 5  })
 
+  launchHiddenIfNotRunning('Microsoft Outlook', { maxSeconds = 5 })
   launchHiddenIfNotRunning('Obsidian', { maxSeconds = 5 })
   launchHiddenIfNotRunning('ChatGPT',  { maxSeconds = 5  })
   launchHiddenIfNotRunning('Spotify',  { maxSeconds = 5  })
@@ -330,7 +332,7 @@ end)
 leader:bind({}, 'a', function()
   exitLeader(false)
   anthropicMode:enter()
-  hs.alert.show('anthropic: [c]ureWise  ·  wait=personal', 1.5)
+  hs.alert.show('anthropic: [c]ureWise  ·  wait=personal', 1.2)
   anthropicTimer = hs.timer.doAfter(1.5, function()
     launchClaude('personal')
   end)
