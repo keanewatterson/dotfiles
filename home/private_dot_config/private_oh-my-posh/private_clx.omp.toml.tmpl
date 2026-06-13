@@ -103,7 +103,7 @@ console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
     # type = 'bun'
     # foreground = 'foreground'
     # background = 'transparent'
-    # template = '  {{ .Full }} '
+    # template = ' {{ .Full }} '
     # style = 'plain'
     
     # [blocks.segments.properties]
@@ -113,7 +113,7 @@ console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
     type = 'elixir'
     foreground = 'foreground'
     background = 'transparent'
-    template = '  {{ .Full }} '
+    template = ' {{ .Full }} '
     style = 'plain'
     
     [blocks.segments.properties]
@@ -123,24 +123,25 @@ console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
     type = "gcp"
     foreground = 'foreground'
     background = 'transparent'
-    template = '{{ if .Project }} 󱇶 {{ if eq .Project "curewiseai" }}prd {{ else if or (eq .Project "curewisestaging") (eq .Project "curewise-staging") }}stg {{ else if eq .Project "curewise-app-dev" }}dev {{ end }}{{ end }} '
+    template = '{{ if .Project }}󱇶 {{ if eq .Project "curewiseai" }}prd {{ else if or (eq .Project "curewisestaging") (eq .Project "curewise-staging") }}stg {{ else if eq .Project "curewise-app-dev" }}dev {{ end }}{{ end }} '
     style = 'plain'
 
   [[blocks.segments]]
     type = 'julia'
     foreground = 'foreground'
     background = 'transparent'
-    template = '  {{ .Full }} '
+    template = ' {{ .Major }}.{{ .Minor }} '
     style = 'plain'
 
     [blocks.segments.properties]
       display_mode = 'context'
+      extensions = ['*.jl', 'Project.toml', 'Manifest.toml']
 
   # [[blocks.segments]]
     # type = 'node'
     # foreground = 'foreground'
     # background = 'transparent'
-    # template = '  {{ .Major }}.{{ .Minor }} '
+    # template = ' {{ .Major }}.{{ .Minor }} '
     # style = 'plain'
     
     # [blocks.segments.properties]
@@ -165,7 +166,7 @@ console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
     style = 'plain'
     foreground = 'foreground'
     background = 'transparent'
-    template = '  {{ .Full }} '
+    template = ' {{ .Full }} '
   
     [blocks.segments.properties]
       display_mode = 'context'
