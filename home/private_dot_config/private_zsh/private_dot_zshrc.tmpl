@@ -83,8 +83,37 @@ setopt SHARE_HISTORY
 HISTFILE=${ZDOTDIR}/.zsh_history
 HISTSIZE=5000
 SAVEHIST=${HISTSIZE}
-HISTORY_IGNORE='(..|...|c3|cd|cd ..|gs|h|ls|ll|lt(| *)|ps(| *)|pwd|u|which)'
-zshaddhistory() { [[ ${1%%$'\n'} != ${~HISTORY_IGNORE} ]] }
+HISTORY_IGNORE='(
+  ..|...|....|
+  alias|alias( *)|ag|
+  c3|
+  cd|cd ..|cd -|cl|cs|ct|
+  clear|
+  cat|cap|man|
+  env|env( *)|env|grep( *)|
+  which( *)|
+  h|ls|ll|lt(| *)|ps(| *)|pwd|u
+)'
+
+zshaddhistory() {
+  local cmd="${1%%$'\n'}"
+
+  # existing pattern block
+  [[ "$cmd" == ${~HISTORY_IGNORE} ]] && return 1
+
+  # block very short commands (under 4 chars) — bare nav/lookup
+  (( ${#cmd} < 4 )) && return 1
+
+  # block git add without a compound (no && or ;)
+  # keeps: git add src/ && git commit -m "..."
+  # drops: git add ., git add -A, git add file.py
+  [[ "$cmd" =~ ^git\ add && ! "$cmd" =~ '&&|;' ]] && return 1
+
+  # block 'alias | grep ...' patterns not caught by the base rule
+  [[ "$cmd" =~ ^alias.*\| ]] && return 1
+
+  return 0
+}
 
 
 # -- prompt -------------------------------------------------------------------
@@ -211,6 +240,7 @@ compinit -C
 alias ..='cdl -s ..'
 alias ...='cdl -s ../..'
 alias ....='cdl -s ../../..'
+alias ag='alias | grep'
 alias c3='cal -3'
 {{ $_cat := ((findOneExecutable (list "bat" "batcat") $pathList) | base | trimPrefix ".") | default "cat" -}}
 {{ if ne $_cat "cat" -}}
@@ -221,6 +251,7 @@ alias caa='{{ $_cat }} --show-all'
 alias caa='{{ $_cat }} -ent'
 {{ end -}}
 alias ccert='nmap -Pn --script ssl-cert -p 443'
+alias chx='chmod -R u=rwX,go='
 alias cl='cdl -l'
 alias cs='cdl -s'
 alias ct='cdl -t'
@@ -263,7 +294,7 @@ alias view='{{ $_editor }} -R'
 alias caf='caffeinate'
 {{ if findExecutable "gcloud" $pathList -}}
 alias gca='gcloud auth login'
-alias gcadc='gcloud auth application-default login'
+alias gcaa='gcloud auth application-default login'
 alias gcpg='gcloud config get project'
 alias gcpl='gcloud projects list'
 alias gcplog='gcloud logging read --limit=50'
@@ -289,7 +320,6 @@ alias toctl='od -An -vtu1'
 
 # -- applications
 alias dbv='open -a DBeaver'
-alias code='open -a Visual\ Studio\ Code'
 alias ds='docker desktop start'
 alias dx='docker desktop stop'
 alias spt='open -a Spotify'

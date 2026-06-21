@@ -4,12 +4,26 @@
 
 [instance.options]
 # include-zshrc = ["docker-postgis"]
+# include-zshrc = ["julia"]
 
 docker-postgis = [
   "# -- postgis-docker",
   "alias depg='docker exec -it postgis /bin/bash'",
   "alias dspg='docker start postgis'",
   "alias dxpg='docker stop postgis'"
+]
+
+gcloud = [
+  "# -- gcloud",
+  "alias gcdev='gcloud config set project dev'",
+  "alias gcstg='gcloud config set project stg'",
+  "alias gcprd='gcloud config set project prd'"
+]
+
+julia = [
+  "# -- julia",
+  '''alias jd='julia --startup-file=no -e "using DaemonMode; serve()"'''',
+  '''alias jc='julia --startup-file=no -e "using DaemonMode; runargs()"''''
 ]
 
 serial-console = [
