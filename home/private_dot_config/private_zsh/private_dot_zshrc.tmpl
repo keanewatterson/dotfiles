@@ -83,34 +83,24 @@ setopt SHARE_HISTORY
 HISTFILE=${ZDOTDIR}/.zsh_history
 HISTSIZE=5000
 SAVEHIST=${HISTSIZE}
-HISTORY_IGNORE='(
-  ..|...|....|
-  alias|alias( *)|ag|
-  c3|
-  cd|cd ..|cd -|cl|cs|ct|
-  clear|
-  cat|cap|man|
-  env|env( *)|env|grep( *)|
-  which( *)|
-  h|ls|ll|lt(| *)|ps(| *)|pwd|u
-)'
+HISTORY_IGNORE='(..|...|....|ag|alias|alias( *)|c3|cap|cat|cd|cd ..|cd -|cl|cs|ct|clear|h|ls|ll|lt(| *)|man|ps(| *)|pwd|u|which( *))'
 
 zshaddhistory() {
   local cmd="${1%%$'\n'}"
 
-  # existing pattern block
+  # block patterns in HISTORY_IGNORE
   [[ "$cmd" == ${~HISTORY_IGNORE} ]] && return 1
 
-  # block very short commands (under 4 chars) — bare nav/lookup
+  # block very short commands (under 4 chars)
   (( ${#cmd} < 4 )) && return 1
 
-  # block git add without a compound (no && or ;)
+  # block bare git add (no compound — no && or ;)
   # keeps: git add src/ && git commit -m "..."
   # drops: git add ., git add -A, git add file.py
-  [[ "$cmd" =~ ^git\ add && ! "$cmd" =~ '&&|;' ]] && return 1
+  [[ "$cmd" =~ '^git add' && ! "$cmd" =~ '(&&|;)' ]] && return 1
 
-  # block 'alias | grep ...' patterns not caught by the base rule
-  [[ "$cmd" =~ ^alias.*\| ]] && return 1
+  # block alias piped to grep/rg: "alias | grep ..."
+  [[ "$cmd" =~ '^alias.*\|' ]] && return 1
 
   return 0
 }
