@@ -64,11 +64,13 @@
     autocorrect = prompt
 
 [alias]
+    alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
     st = status -sb
     co = checkout
     br = branch
     ci = commit
     ca = commit -a
+    cm = commit -m
     amend = commit --amend --no-edit
     undo = reset HEAD~
     unstage = reset HEAD --

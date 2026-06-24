@@ -1,0 +1,69 @@
+fext() {
+  local mode ext fpath dest limit
+  local copied=0
+
+  if (( $# == 0 )); then
+    echo "usage:"
+    echo "  fext EXT [DIR]"
+    echo "  fext cp EXT [DIR] [DEST] [LIMIT]"
+    return 1
+  fi
+
+  mode="find"
+
+  if [[ "$1" == "cp" || "$1" == "copy" ]]; then
+    mode="copy"
+    shift
+  fi
+
+  ext="${1#.}"
+  fpath="${2:-.}"
+  dest="${3:-/tmp/${ext:l}}"
+  limit="${4}"
+
+  if [[ -z "$ext" ]]; then
+    echo "error: extension required"
+    return 1
+  fi
+
+  #
+  # FIND MODE
+  #
+  if [[ "$mode" == "find" ]]; then
+    find "$fpath" -type f -iname "*.${ext}"
+    return
+  fi
+
+  #
+  # COPY MODE
+  #
+  mkdir -p "$dest"
+
+  while IFS= read -r file; do
+
+    cp -n "$file" "$dest/"
+
+    # count only successful copies
+    if (( $? == 0 )); then
+      (( copied++ ))
+    fi
+
+    if [[ "$limit" == <-> ]] && (( copied >= limit )); then
+      break
+    fi
+
+  done < <(
+    find "$fpath" -type f -iname "*.${ext}"
+  )
+
+  echo "copied ${copied} .$ext file(s) to $dest"
+
+  if [[ "$limit" == <-> ]]; then
+    echo "requested limit: $limit"
+  fi
+
+  local actual
+  actual=$(find "$dest" -maxdepth 1 -type f -iname "*.${ext}" | wc -l | tr -d ' ')
+
+  echo "destination contains ${actual} .$ext file(s)"
+}
