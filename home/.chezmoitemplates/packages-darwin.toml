@@ -51,7 +51,6 @@ cask = [
   "hammerspoon",
   "karabiner-elements",
   "llamabarn",
-  "macdown-3000",
   "sage"
 ]
 
@@ -85,7 +84,6 @@ cask = [
   "font-meslo-lg-nerd-font",
   "ghostty",
   "iTerm2",
-  "macdown-3000",
   "obsidian",
   "visual-studio-code",
   "vivaldi"

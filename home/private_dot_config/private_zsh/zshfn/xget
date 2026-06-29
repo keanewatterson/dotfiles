@@ -1,0 +1,105 @@
+xget() {
+  local mode="find"
+  local ext fpath dest limit
+  local copied=0
+
+  if (( $# == 0 )); then
+    echo "usage:"
+    echo "  xget EXT [DIR]"
+    echo "  xget cp EXT [DIR] [DEST] [LIMIT]"
+    echo
+    echo "examples:"
+    echo "  xget xml"
+    echo "  xget xml records"
+    echo "  xget cp xml xml-files"
+    echo "  xget cp xml . xml-files 100"
+    return 1
+  fi
+
+  if [[ "$1" == "cp" || "$1" == "copy" ]]; then
+    mode="copy"
+    shift
+  fi
+
+  ext="${1#.}"
+
+  if [[ -z "$ext" ]]; then
+    echo "error: extension required"
+    return 1
+  fi
+
+  #
+  # FIND MODE
+  #
+  if [[ "$mode" == "find" ]]; then
+    fpath="${2:-.}"
+
+    if [[ ! -d "$fpath" ]]; then
+      echo "error: '$fpath' is not a directory"
+      return 1
+    fi
+
+    find "$fpath" -type f -iname "*.${ext}"
+    return
+  fi
+
+  #
+  # COPY MODE
+  #
+  case $# in
+    1)
+      # xget cp xml
+      fpath="."
+      dest="/tmp/${ext:l}"
+      ;;
+
+    2)
+      # If arg2 is an existing directory, treat it as the source.
+      # Otherwise assume the user meant the destination.
+      if [[ -d "$2" ]]; then
+        fpath="$2"
+        dest="/tmp/${ext:l}"
+      else
+        fpath="."
+        dest="$2"
+      fi
+      ;;
+
+    *)
+      # Traditional syntax
+      fpath="${2:-.}"
+      dest="${3:-/tmp/${ext:l}}"
+      limit="$4"
+      ;;
+  esac
+
+  if [[ ! -d "$fpath" ]]; then
+    echo "error: source directory '$fpath' does not exist"
+    return 1
+  fi
+
+  mkdir -p "$dest"
+
+  while IFS= read -r file; do
+    if cp -n "$file" "$dest/"; then
+      ((copied++))
+    fi
+
+    if [[ "$limit" == <-> ]] && (( copied >= limit )); then
+      break
+    fi
+  done < <(
+    find "$fpath" -type f -iname "*.${ext}"
+  )
+
+  echo "copied ${copied} .$ext file(s) to $dest"
+
+  if [[ "$limit" == <-> ]]; then
+    echo "requested limit: $limit"
+  fi
+
+  local actual
+  actual=$(find "$dest" -maxdepth 1 -type f -iname "*.${ext}" | wc -l | tr -d ' ')
+
+  echo "destination contains ${actual} .$ext file(s)"
+}

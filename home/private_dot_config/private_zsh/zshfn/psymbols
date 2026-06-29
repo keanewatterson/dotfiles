@@ -10,6 +10,7 @@ psymbols() {
     printf "Infinity:\t∞\n"
     printf "LTE:\t\t≤\n"
     printf "Member:\t\t∈\n"
+    printf "Section:\t\t§\n"
     printf "Sigma:\t\t∑\tσ\n"
     printf "Subtotal\t◊\n"
 

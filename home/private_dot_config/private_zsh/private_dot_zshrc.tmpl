@@ -81,7 +81,7 @@ setopt HIST_SAVE_NO_DUPS
 setopt SHARE_HISTORY
 
 HISTFILE=${ZDOTDIR}/.zsh_history
-HISTSIZE=3000
+HISTSIZE=5000
 SAVEHIST=${HISTSIZE}
 
 {{- if not (findExecutable "atuin" $pathList) -}}
@@ -259,9 +259,11 @@ alias cl='cdl -l'
 alias cs='cdl -s'
 alias ct='cdl -t'
 alias ctp='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-python.git"'
+alias ctc='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-curwise.git"'
 alias cz='chezmoi'
 alias cza='chezmoi apply'
-alias czhd='cdl -s ${XDG_DATA_HOME}/chezmoi/home'
+alias czh='cdl -s ${XDG_DATA_HOME}/chezmoi/home'
+alias czp='git -C ${XDG_DATA_HOME}/chezmoi/home pull'
 alias czsd='cdl -s ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
 alias czs='chezmoi status'
 {{ $_fd := ((findOneExecutable (list "fd" "fdfind") $pathList) | base | trimPrefix ".") | default "" -}}
@@ -269,7 +271,7 @@ alias czs='chezmoi status'
 alias fd='{{ $_fd }} --hidden --one-file-system'
 {{ end -}}
 alias grep='grep --color=auto'
-alias h='history -200'
+alias h='atuin history list | head -250'
 {{ if findExecutable "eza" $pathList -}}
 alias ll='eza -aglF --git --time-style long-iso'
 alias ls='eza -aF'
@@ -306,7 +308,6 @@ alias gcpu='gcloud config unset project'
 {{ end -}}
 alias ifl='if_list'
 {{ if findExecutable "macdown" $pathList -}}
-alias md='macdown'
 {{ end -}}
 alias obsd="cs ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
 alias obsdo="open ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
