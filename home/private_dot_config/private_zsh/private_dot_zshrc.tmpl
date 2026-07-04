@@ -71,6 +71,13 @@ zstyle ':completion:*:complete:*' use-cache 1
 setopt AUTO_CD
 setopt COMPLETE_IN_WORD
 setopt CORRECT
+
+{{- if findExecutable "atuin" $pathList }}
+# Atuin owns persistent history. macOS /etc/zshrc may set native history first.
+unset HISTFILE
+SAVEHIST=0
+unsetopt SHARE_HISTORY INC_APPEND_HISTORY INC_APPEND_HISTORY_TIME APPEND_HISTORY
+{{- else }}
 setopt EXTENDED_HISTORY
 setopt HIST_FIND_NO_DUPS
 setopt HIST_IGNORE_ALL_DUPS

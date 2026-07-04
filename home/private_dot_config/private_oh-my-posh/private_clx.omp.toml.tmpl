@@ -99,15 +99,16 @@ console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
   alignment = 'right'
 
 #{{ if eq .chezmoi.os "darwin" -}}#
-  # [[blocks.segments]]
-    # type = 'bun'
-    # foreground = 'foreground'
-    # background = 'transparent'
-    # template = ' {{ .Full }} '
-    # style = 'plain'
+  [[blocks.segments]]
+    type = 'bun'
+    foreground = 'foreground'
+    background = 'transparent'
+    template = ' {{ .Major }}.{{ .Minor }} '
+    style = 'plain'
     
-    # [blocks.segments.properties]
-      # display_mode = 'context'
+    [blocks.segments.properties]
+      display_mode = 'context'
+      extensions = ['*.ts', 'bun.lock', 'bun.lockb']
   
   [[blocks.segments]]
     type = 'elixir'
