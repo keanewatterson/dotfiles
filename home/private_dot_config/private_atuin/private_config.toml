@@ -44,12 +44,12 @@
 
 ## which search mode to use
 ## possible values: prefix, fulltext, fuzzy, skim
-# search_mode = "fuzzy"
+search_mode = "fuzzy"
 
 ## which filter mode to use by default
 ## possible values: "global", "host", "session", "session-preload", "directory", "workspace"
 ## consider using search.filters to customize the enablement and order of filter modes
-# filter_mode = "global"
+filter_mode = "workspace"
 
 ## With workspace filtering enabled, Atuin will filter for commands executed
 ## in any directory within a git repository tree (default: false).
@@ -57,30 +57,30 @@
 ## To use workspace mode by default when available, set this to true and
 ## set filter_mode to "workspace" or leave it unspecified and
 ## set search.filters to include "workspace" before other filter modes.
-# workspaces = false
+workspaces = true
 
 ## which filter mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "filter_mode"
 ## leave unspecified to use same mode set in "filter_mode"
-# filter_mode_shell_up_key_binding = "global"
+filter_mode_shell_up_key_binding = "directory"
 
 ## which search mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "search_mode"
 ## leave unspecified to use same mode set in "search_mode"
-# search_mode_shell_up_key_binding = "fuzzy"
+search_mode_shell_up_key_binding = "prefix"
 
 ## which style to use
 ## possible values: auto, full, compact
-# style = "auto"
+style = "compact"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
-# inline_height = 0
+inline_height = 20
 
 ## the maximum number of lines the interface should take up
 ## when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "inline_height"
-# inline_height_shell_up_key_binding = 0
+inline_height_shell_up_key_binding = 12
 
 ## Invert the UI - put the search bar at the top , Default to `false`
 # invert = false
@@ -130,17 +130,43 @@
 history_filter = [
   # navigation (zoxide tracks this better anyway)
   "^cd(\\s.*)?$",
-  "^cl$", "^cs$", "^ct$",
-  "^\\.\\.$", "^\\.\\.\\.$", "^\\.\\.\\.\\.\\$",
+  "^cl(\\s.*)?$", "^cs(\\s.*)?$", "^ct(\\s.*)?$",
+  "^\\.{2,4}$",
 
-  # lookup / status
+  # lookup, status, and shell bookkeeping
   "^ls(\\s.*)?$", "^ll(\\s.*)?$", "^lt(\\s.*)?$",
   "^cat(\\s.*)?$", "^cap(\\s.*)?$",
-  "^man(\\s.*)?$", "^which(\\s.*)?$",
+  "^man(\\s.*)?$", "^which(\\s.*)?$", "^type(\\s.*)?$", "^command -v(\\s.*)?$",
   "^clear$", "^pwd$",
   "^ps(\\s.*)?$",
   "^alias(\\s.*)?$", "^ag$",
   "^u$", "^c3$",
+  "^history(\\s.*)?$",
+
+  # vcs/status aliases that are easy to retype and noisy in search
+  "^git (s|st|status|diff|log|branch|rev-parse)(\\s.*)?$",
+  "^git remote(\\s+(-v|show))?$",
+  "^git add(\\s+[^;&|]+)?$",
+  "^git init$",
+  "^git pull$",
+
+  # history/search tooling should not make the history noisier
+  "^atuin (history list|search|stats|status|doctor)(\\s.*)?$",
+  "^h$",
+
+  # scratch/editor openers
+  "^code \\.$",
+  "^cursor \\.$",
+  "^open \\.$",
+  "^pb(copy|paste)(\\s.*)?$",
+  "^pb[cp](\\s.*)?$",
+  "^s[ceqxn](\\s.*)?$",
+
+  # local benchmarking/profiling noise
+  "zsh-bench",
+  "human-bench",
+  "ZSH_PROFILE",
+  "zprof",
 
   # anything under 4 chars
   "^.{1,3}$",
@@ -187,10 +213,10 @@ history_filter = [
 ## whereas tab will put the command in the prompt for editing.
 ## If set to false, both enter and tab will place the command in the prompt for editing.
 ## This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
-enter_accept = true
+enter_accept = false
 
 ## Defaults to false. If enabled, when triggered after &&, || or |, Atuin will complete commands to chain rather than replace the current line.
-# command_chaining = false
+command_chaining = true
 
 ## Defaults to "emacs".  This specifies the keymap on the startup of `atuin
 ## search`.  If this is set to "auto", the startup keymap mode in the Atuin
@@ -217,39 +243,52 @@ enter_accept = true
 
 [stats]
 ## Set commands where we should consider the subcommand for statistics. Eg, kubectl get vs just kubectl
-# common_subcommands = [
-#   "apt",
-#   "cargo",
-#   "composer",
-#   "dnf",
-#   "docker",
-#   "dotnet",
-#   "git",
-#   "go",
-#   "ip",
-#   "jj",
-#   "kubectl",
-#   "nix",
-#   "nmcli",
-#   "npm",
-#   "pecl",
-#   "pnpm",
-#   "podman",
-#   "port",
-#   "systemctl",
-#   "tmux",
-#   "yarn",
-# ]
+common_subcommands = [
+  "atuin",
+  "bun",
+  "cargo",
+  "chezmoi",
+  "docker",
+  "gcloud",
+  "git",
+  "jj",
+  "julia",
+  "kubectl",
+  "mise",
+  "npm",
+  "pnpm",
+  "uv",
+  "uvx",
+]
 
 ## Set commands that should be totally stripped and ignored from stats
-# common_prefix = ["sudo"]
+common_prefix = ["sudo"]
 
 ## Set commands that will be completely ignored from stats
-# ignored_commands = [
-#   "cd",
-#   "ls",
-#   "vi"
-# ]
+ignored_commands = [
+  "ag",
+  "alias",
+  "cat",
+  "cd",
+  "cl",
+  "clear",
+  "code",
+  "cs",
+  "ct",
+  "cursor",
+  "h",
+  "history",
+  "ll",
+  "ls",
+  "lt",
+  "open",
+  "pwd",
+  "rg",
+  "rg1",
+  "u",
+  "vi",
+  "view",
+]
 
 [keys]
 # Defaults to true. If disabled, using the up/down key won't exit the TUI when scrolled past the first/last entry.
@@ -329,7 +368,7 @@ records = true
 ## The list of enabled filter modes, in order of priority.
 ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
 ## Default filter mode can be overridden with the filter_mode setting.
-# filters = [ "global", "host", "session", "session-preload", "workspace", "directory" ]
+filters = ["workspace", "directory", "session", "host", "global"]
 
 [tmux]
 ## Enable using atuin with tmux popup (requires tmux >= 3.2)
