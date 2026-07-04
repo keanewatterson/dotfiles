@@ -4,7 +4,9 @@
 
 # -- .zshrc -------------------------------------------------------------------
 # enable detailed profiling
-# zmodload zsh/zprof
+if [[ -n "${ZSH_PROFILE:-}" ]]; then
+  zmodload zsh/zprof
+fi
 
 
 # -- environment --------------------------------------------------------------
@@ -95,11 +97,25 @@ SAVEHIST=${HISTSIZE}
 HISTORY_IGNORE='(..|...|....|ag|alias|alias( *)|c3|cap|cat|cd|cd ..|cd -|cl|cs|ct|clear|h|ls|ll|lt(| *)|man|ps(| *)|pwd|u|which( *))'
 # ${ZDOTDIR}/zshfn/zshaddhistory()
 {{- end}}
+{{- end }}
 
 
 # -- prompt -------------------------------------------------------------------
 {{ if findExecutable "oh-my-posh" $pathList -}}
-eval "$(oh-my-posh init zsh --config ${XDG_CONFIG_HOME}/oh-my-posh/clx.omp.toml)"
+_omp_config="${XDG_CONFIG_HOME}/oh-my-posh/clx.omp.toml"
+_omp_init="${XDG_CACHE_HOME}/oh-my-posh/init.zsh"
+_omp_bin="${commands[oh-my-posh]}"
+if [[ ! -s "$_omp_init" || "$_omp_bin" -nt "$_omp_init" || "$_omp_config" -nt "$_omp_init" ]]; then
+  mkdir -p "${_omp_init:h}"
+  _omp_tmp="${_omp_init}.$$"
+  if oh-my-posh init zsh --config "$_omp_config" >| "$_omp_tmp"; then
+    mv -f "$_omp_tmp" "$_omp_init"
+  else
+    rm -f "$_omp_tmp"
+  fi
+fi
+[[ -r "$_omp_init" ]] && source "$_omp_init"
+unset _omp_bin _omp_config _omp_init _omp_tmp
 {{- else -}}
 # -- none
 {{- end }}
@@ -132,15 +148,19 @@ fi
 
 # -- atuin
 {{ if findExecutable "atuin" $pathList -}}
-_atuin_version="$(atuin --version 2>/dev/null)"
-_atuin_init="${XDG_DATA_HOME}/atuin/atuin_init_${_atuin_version// /_}.zsh"
-if [[ ! -f "$_atuin_init" ]]; then
+_atuin_init="${XDG_DATA_HOME}/atuin/atuin_init.zsh"
+_atuin_bin="${commands[atuin]}"
+if [[ ! -s "$_atuin_init" || "$_atuin_bin" -nt "$_atuin_init" ]]; then
   mkdir -p "${XDG_DATA_HOME}/atuin"
-  atuin init zsh > "$_atuin_init"
-  echo create
+  _atuin_tmp="${_atuin_init}.$$"
+  if atuin init zsh >| "$_atuin_tmp"; then
+    mv -f "$_atuin_tmp" "$_atuin_init"
+  else
+    rm -f "$_atuin_tmp"
+  fi
 fi
-source "$_atuin_init"
-unset _atuin_version _atuin_init
+[[ -r "$_atuin_init" ]] && source "$_atuin_init"
+unset _atuin_bin _atuin_init _atuin_tmp
 {{- else -}}
 # -- none
 {{- end }}
@@ -168,13 +188,19 @@ source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-high
 
 # -- fzf
 {{ if findExecutable "fzf" $pathList -}}
-_fzf_init="${XDG_CACHE_HOME}/fzf/fzf_init_$(fzf --version 2>/dev/null | awk '{print $1}').zsh"
-if [[ ! -f "$_fzf_init" ]]; then
+_fzf_init="${XDG_CACHE_HOME}/fzf/fzf_init.zsh"
+_fzf_bin="${commands[fzf]}"
+if [[ ! -s "$_fzf_init" || "$_fzf_bin" -nt "$_fzf_init" ]]; then
   mkdir -p "${_fzf_init:h}"
-  fzf --zsh > "$_fzf_init"
+  _fzf_tmp="${_fzf_init}.$$"
+  if fzf --zsh >| "$_fzf_tmp"; then
+    mv -f "$_fzf_tmp" "$_fzf_init"
+  else
+    rm -f "$_fzf_tmp"
+  fi
 fi
-source "$_fzf_init"
-unset _fzf_init
+[[ -r "$_fzf_init" ]] && source "$_fzf_init"
+unset _fzf_bin _fzf_init _fzf_tmp
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 {{- else -}}
@@ -215,16 +241,21 @@ _mise_lazy_init
 # -- zoxide
 {{ if findExecutable "zoxide" $pathList -}}
 export _ZO_DATA_DIR="${XDG_DATA_HOME}/zoxide"
-_zoxide_version="$(zoxide --version 2>/dev/null)"
-_zoxide_init="${_ZO_DATA_DIR}/zoxide_init_${_zoxide_version// /_}.zsh"
+_zoxide_init="${_ZO_DATA_DIR}/zoxide_init.zsh"
+_zoxide_bin="${commands[zoxide]}"
 
-if [[ ! -f "${_zoxide_init}" ]]; then
+if [[ ! -s "${_zoxide_init}" || "$_zoxide_bin" -nt "$_zoxide_init" ]]; then
   mkdir -p "${_ZO_DATA_DIR}"
-  zoxide init --cmd cd zsh > "${_zoxide_init}"
+  _zoxide_tmp="${_zoxide_init}.$$"
+  if zoxide init --cmd cd zsh >| "$_zoxide_tmp"; then
+    mv -f "$_zoxide_tmp" "$_zoxide_init"
+  else
+    rm -f "$_zoxide_tmp"
+  fi
 fi
 
-source "${_zoxide_init}"
-unset _zoxide_init
+[[ -r "$_zoxide_init" ]] && source "$_zoxide_init"
+unset _zoxide_bin _zoxide_init _zoxide_tmp
 {{- else -}}
 # -- none
 {{- end }}
@@ -428,4 +459,6 @@ export path=($path ${HOME}/.cargo/bin)
 
 
 # output detailed profiling
-# zprof
+if [[ -n "${ZSH_PROFILE:-}" ]]; then
+  zprof
+fi
