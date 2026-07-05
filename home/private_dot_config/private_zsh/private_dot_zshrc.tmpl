@@ -75,7 +75,8 @@ setopt COMPLETE_IN_WORD
 setopt CORRECT
 
 {{- if findExecutable "atuin" $pathList }}
-# Atuin owns persistent history. macOS /etc/zshrc may set native history first.
+# -- atuin owns persistent history
+# -- darwin /etc/zshrc may set native history first
 unset HISTFILE
 SAVEHIST=0
 unsetopt SHARE_HISTORY INC_APPEND_HISTORY INC_APPEND_HISTORY_TIME APPEND_HISTORY
