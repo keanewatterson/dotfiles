@@ -74,7 +74,7 @@ setopt AUTO_CD
 setopt COMPLETE_IN_WORD
 setopt CORRECT
 
-{{- if findExecutable "atuin" $pathList }}
+{{- if findExecutable "ZZZatuin" $pathList }}
 # -- atuin owns persistent history
 # -- darwin /etc/zshrc may set native history first
 unset HISTFILE
@@ -282,7 +282,7 @@ compinit -C
 alias ..='cdl -s ..'
 alias ...='cdl -s ../..'
 alias ....='cdl -s ../../..'
-alias ag='alias | grep'
+alias ag='alias | grep -i'
 alias c3='cal -3'
 {{ $_cat := ((findOneExecutable (list "bat" "batcat") $pathList) | base | trimPrefix ".") | default "cat" -}}
 {{ if ne $_cat "cat" -}}

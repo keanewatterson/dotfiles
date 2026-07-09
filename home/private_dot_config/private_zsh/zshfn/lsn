@@ -1,0 +1,17 @@
+lsn() {
+    local dir=${1:-.}
+    local -a items dirs
+
+    [[ -d $dir ]] || {
+        print -u2 "fget: not a directory: $dir"
+        return 1
+    }
+
+    items=("$dir"/*(DN))
+    dirs=("$dir"/*(DN/))
+
+    printf 'files=%d dirs=%d total=%d\n' \
+        $(( ${#items} - ${#dirs} )) \
+        ${#dirs} \
+        ${#items}
+}
