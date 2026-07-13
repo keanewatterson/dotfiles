@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(~/.juliaup/bin/julia --project -e ' *)",
+      "Bash(git commit -m ' *)",
+      "Bash(julia --project -e 'using Pkg; Pkg.test\\(\\)')",
+      "Read(//Users/keane/.juliaup/bin/**)",
+      "Read(//usr/local/bin/**)",
+      "Bash(git --no-pager diff --stat)",
+      "Bash(git --no-pager diff --staged --stat)",
+      "Bash(git --no-pager diff)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(command -v julia)",
+      "Read(//Users/keane/.local/bin/**)",
+      "Bash(bun --version)",
+      "Bash(rustc --version)",
+      "Bash(cargo --version)",
+      "Bash(mise --version)",
+      "Bash(cargo tauri *)",
+      "Bash(mise registry *)",
+      "Bash(mise latest *)",
+      "Bash(mise install *)",
+      "Bash(mise exec *)",
+      "Bash(mise run *)",
+      "Bash(echo \"EXIT=$?\")",
+      "Read(//Users/keane/Projects/**)",
+      "Bash(mise tasks *)",
+      "Bash(xargs cat)",
+      "Skill(artifact-design)",
+      "Skill(artifact-design:*)",
+      "Read(//Users/keane/.claude/**)",
+      "Skill(update-config)",
+      "Skill(update-config:*)"
+    ]
+  },
+  "model": "sonnet",
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "session-report@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true
+  },
+  "effortLevel": "medium"
+}
