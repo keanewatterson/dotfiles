@@ -297,8 +297,7 @@ alias chx='chmod -R u=rwX,go='
 alias cl='cdl -l'
 alias cs='cdl -s'
 alias ct='cdl -t'
-alias ctp='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-python.git"'
-alias ctc='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-curewise.git"'
+alias ctp='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-agent-project.git"'
 alias cz='chezmoi'
 alias cza='chezmoi apply'
 alias czh='cdl -s ${XDG_DATA_HOME}/chezmoi/home'
@@ -336,6 +335,7 @@ alias view='{{ $_editor }} -R'
 {{ if eq .chezmoi.os "darwin" }}
 # -- macos
 alias caf='caffeinate'
+alias cwd='pwd | pbcopy'
 {{ if findExecutable "gcloud" $pathList -}}
 alias gca='gcloud auth login'
 alias gcaa='gcloud auth application-default login'
