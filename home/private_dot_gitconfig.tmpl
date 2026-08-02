@@ -66,25 +66,25 @@
 [alias]
     alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
     co = checkout
-    br = branch
+    br = branch -a
     ci = commit
     ca = commit -a
-    cm = commit -m
     amend = commit --amend --no-edit
     undo = reset HEAD~
     unstage = reset HEAD --
     last = log -1 --stat
-    lg = log --graph --pretty=format:'%C(auto)%h%d %s %C(black)%cr' --abbrev-commit
-    lga = log --graph --decorate --all --pretty=format:'%C(auto)%h%d %s %C(black)%cr' --abbrev-commit
+    lg = log --graph --decorate --all --pretty=format:'%C(auto)%h%d %s %C(black)%cr' --abbrev-commit
     s = status --short --branch
     d = diff
     lso = ls-files --others
     ds = diff --staged
-    fixup = commit --fixup
     squash = commit --squash
     pr = pull --rebase
+    rv = remote -v
+    sl = stash list
+    sp = stash pop
+    st = stash push -m
     sw = switch
-    swc = switch --create
     root = rev-parse --show-toplevel
     ours = "!f() { git checkout --ours -- \"$@\"; }; f"
     theirs = "!f() { git checkout --theirs -- \"$@\"; }; f"
