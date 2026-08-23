@@ -211,6 +211,8 @@ export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 # -- mise
 {{ if findExecutable "mise" $pathList -}}
+export MISE_DEFAULT_CONFIG_FILENAME=".mise.toml"
+
 autoload -Uz add-zsh-hook
 
 _mise_project_root() {
@@ -336,6 +338,7 @@ alias view='{{ $_editor }} -R'
 # -- macos
 alias caf='caffeinate'
 alias cwd='pwd | pbcopy'
+alias cwd='printf "$PWD" | pbcopy'
 {{ if findExecutable "gcloud" $pathList -}}
 alias gca='gcloud auth login'
 alias gcaa='gcloud auth application-default login'
@@ -352,6 +355,7 @@ alias obsd="cs ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/ol
 alias obsdo="open ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
 alias pbc='pbcopy'
 alias pbp='pbpaste'
+alias psect='printf "§" | pbcopy'
 {{ if findExecutable "sage" $pathList -}}
 alias sageg='export TERM=xterm-256color; sage --notebook=jupyterlab'
 {{ end -}}
@@ -371,6 +375,7 @@ alias wbr='open -a "Google Chrome.app"'
 # -- file extensions
 alias -s csv='open -a Microsoft\ Excel'
 alias -s html='open -a Safari'
+alias -s md='open -a Typora'
 alias -s xlsx='open -a Microsoft\ Excel'
 
 {{- else if eq .chezmoi.os "linux" }}

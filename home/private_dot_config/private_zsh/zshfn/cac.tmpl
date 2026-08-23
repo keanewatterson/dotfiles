@@ -1,0 +1,7 @@
+{{ if eq .chezmoi.os "darwin" }}
+cac() {
+  (( $# == 1 )) || { print -u2 'usage: cac <file>'; return 2; }
+  [[ -r $1 ]] || { print -u2 "cac: cannot read: $1"; return 1; }
+  pbcopy < "$1"
+}
+{{- end }}
