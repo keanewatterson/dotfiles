@@ -1,0 +1,27 @@
+{{ if eq .chezmoi.os "darwin" }}
+iss() {
+  local base="${HOME}/Projects/CureWise/linear"
+  local target="$base"
+
+  if (( $# > 1 )); then
+    echo "Usage: lcd [issue]"
+    return 2
+  fi
+
+  if (( $# == 1 )); then
+    if [[ "$1" =~ '^[0-9]+$' ]]; then
+      local matches=("$base"/*"$1"(N/))
+      (( ${#matches[@]} > 0 )) && target="${matches[1]}"
+    else
+      target="$base/$1"
+    fi
+  fi
+
+  if [[ -d "$target" ]]; then
+    builtin cd "$target" && eza -aglF --git --time-style long-iso
+  else
+    echo "Directory not found: $target"
+    eza -aglF --git --time-style long-iso "$base"
+  fi
+}
+{{- end }}
