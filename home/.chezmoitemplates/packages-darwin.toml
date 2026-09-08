@@ -3,7 +3,6 @@ brew = [
   "age",
   "ascii",
   "atuin",
-  "awscli",
   "bash",
   "bat",
   "btop",
@@ -24,16 +23,12 @@ brew = [
   "llama.cpp",
   "macmon",
   "mas",
-  "mcp-toolbox",
   "mise",
-  "mosh",
   "neovim",
   "nmap",
-  "octave",
   "oh-my-posh",
   "qsv",
   "ripgrep",
-  "sops",
   "uv",
   "yq",
   "zoxide",
@@ -43,16 +38,11 @@ brew = [
 ]
 cask = [
   "blackhole-16ch",
-  "codex",
   "font-charis",
   "font-gentium",
   "font-jetbrains-mono-nerd-font",
   "font-meslo-lg-nerd-font",
-  "gcloud-cli",
-  "hammerspoon",
-  "karabiner-elements",
-  "llamabarn",
-  "sage"
+  "gcloud-cli"
 ]
 
 
@@ -86,6 +76,5 @@ cask = [
   "ghostty",
   "iTerm2",
   "obsidian",
-  "visual-studio-code",
-  "vivaldi"
+  "visual-studio-code"
 ]
