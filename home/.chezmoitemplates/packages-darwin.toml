@@ -38,6 +38,8 @@ brew = [
 ]
 cask = [
   "blackhole-16ch",
+  "claude-code",
+  "codex",
   "font-charis",
   "font-gentium",
   "font-jetbrains-mono-nerd-font",

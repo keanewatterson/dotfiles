@@ -1,0 +1,18 @@
+{{ if eq .chezmoi.os "darwin" }}
+cpl() {
+  local profile="${1:-keane}"
+
+  case "$profile" in
+    keane|curewise) ;;
+    *)
+      print -u2 "Usage: $0 [keane|curewise]"
+      return 1
+      ;;
+  esac
+
+  /usr/bin/open -n \
+    --env "CLAUDE_CONFIG_DIR=${HOME}/.claude/${profile}-claude-code" \
+    "/Applications/Claude.app" \
+    --args "--user-data-dir=${HOME}/.claude/${profile}-app"
+}
+{{- end }}

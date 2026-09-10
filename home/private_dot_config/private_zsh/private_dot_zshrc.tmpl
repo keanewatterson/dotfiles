@@ -22,9 +22,13 @@ export path=(
   $path
   "/usr/sbin"
   "${HOME}/.local/bin"
-{{- if findExecutable "cargo" $pathList }}
-  "${HOME}/.cargo/bin"
-{{ end -}}
+{{- $execs := list "cargo" "docker" -}}
+{{- range $execs -}}
+  {{- $exec := findExecutable . $pathList -}}
+  {{- if $exec }}
+  {{ dir $exec | quote }}
+  {{- end -}}
+{{- end }}
 )
 
 export LESS='-XRF --use-color --quit-at-eof -Dd+r$Du+b$'
@@ -413,6 +417,10 @@ alias drmi='docker rmi'
 alias dps='docker ps -a'
 alias dst='docker stats --no-stream'
 alias duns='rg dock /etc/sub*'
+
+fpath=(${HOME}/.docker/completions $fpath)
+autoload -Uz compinit
+(( ${+_comps[docker]} )) || compinit
 {{- else -}}
 # -- none
 {{- end }}

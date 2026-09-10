@@ -3,8 +3,10 @@
 
 
 [instance.options]
-# include-zshrc = ["docker-postgis"]
-# include-zshrc = ["julia"]
+# include-zshrc = [
+#   "docker-postgis",
+#   "gcloud"
+# ]
 
 docker-postgis = [
   "# -- postgis-docker",
@@ -20,19 +22,8 @@ gcloud = [
   "alias gcprd='gcloud config set project prd'"
 ]
 
-julia = [
-  "# -- julia",
-  '''alias jd='julia --startup-file=no -e "using DaemonMode; serve()"'''',
-  '''alias jc='julia --startup-file=no -e "using DaemonMode; runargs()"''''
-]
-
 serial-console = [
   "# -- serial-console",
   "alias s96='screen /dev/ttyUSB0 9600'",
   "alias s115='screen /dev/ttyUSB0 115200'"
-]
-
-ubuntu-tegra = [
-  "# -- TODO: tegra oddity",
-  "unset LESS",
 ]
