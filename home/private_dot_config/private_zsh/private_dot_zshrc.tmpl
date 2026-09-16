@@ -191,6 +191,14 @@ source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-high
 {{- end }}
 
 
+# -- claude
+{{ if findExecutable "claude" $pathList -}}
+export CLAUDE_CONFIG_DIR=${HOME}/.claude/${USER}/claude-code
+{{- else -}}
+# -- none
+{{- end }}
+
+
 # -- fzf
 {{ if findExecutable "fzf" $pathList -}}
 _fzf_init="${XDG_CACHE_HOME}/fzf/fzf_init.zsh"
@@ -306,10 +314,11 @@ alias ct='cdl -t'
 alias ctp='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-agent-project.git"'
 alias cz='chezmoi'
 alias cza='chezmoi apply'
-alias czh='cdl -s ${XDG_DATA_HOME}/chezmoi/home'
+alias czh='cdl -s ${XDG_DATA_HOME}/chezmoi'
 alias czp='git -C ${XDG_DATA_HOME}/chezmoi/home pull'
 alias czsd='cdl -s ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
 alias czs='chezmoi status'
+alias eg='env | grep -i'
 {{ $_fd := ((findOneExecutable (list "fd" "fdfind") $pathList) | base | trimPrefix ".") | default "" -}}
 {{ if ne $_fd "" -}}
 alias fd='{{ $_fd }} --hidden --one-file-system'
@@ -346,11 +355,11 @@ alias cwd='printf "$PWD" | pbcopy'
 {{ if findExecutable "gcloud" $pathList -}}
 alias gca='gcloud auth login'
 alias gcaa='gcloud auth application-default login'
+alias gccl='gcloud config configurations list'
+alias gccn='gcloud config configurations activate NONE'
 alias gcpg='gcloud config get project'
 alias gcpl='gcloud projects list'
 alias gcplog='gcloud logging read --limit=50'
-alias gcps='gcloud config set project'
-alias gcpu='gcloud config unset project'
 {{ end -}}
 alias ifl='if_list'
 {{ if findExecutable "macdown" $pathList -}}

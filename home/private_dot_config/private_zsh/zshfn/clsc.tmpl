@@ -1,0 +1,22 @@
+{{- $pathVars := dict -}}
+{{- template "path-list.tmpl" (dict "Root" . "Vars" $pathVars) -}}
+{{- $pathList := index $pathVars "pathList" -}}
+
+{{ if findExecutable "claude" $pathList }}
+
+clsc() {
+    local arg="${1:-}"
+
+    if [[ -z "$arg" ]]; then
+        export CLAUDE_CONFIG_DIR="${HOME}/.claude/${USER}/claude-code"
+    elif [[ "$arg" == "keane" || "$arg" == "curewise" ]]; then
+        export CLAUDE_CONFIG_DIR="${HOME}/.claude/${arg}/claude-code"
+    else
+        echo "Usage: claude_config_dir [keane|curewise]" >&2
+        return 1
+    fi
+
+    echo "CLAUDE_CONFIG_DIR set to: $CLAUDE_CONFIG_DIR"
+}
+
+{{- end -}}

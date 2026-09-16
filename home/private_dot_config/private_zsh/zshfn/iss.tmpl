@@ -1,19 +1,54 @@
 {{ if eq .chezmoi.os "darwin" }}
 iss() {
+  emulate -L zsh
+  setopt extended_glob null_glob
+
   local base="${HOME}/Projects/CureWise/linear"
+  local archive="${base}/archive"
   local target="$base"
 
   if (( $# > 1 )); then
-    echo "Usage: lcd [issue]"
+    echo "Usage: iss [issue]"
     return 2
   fi
 
   if (( $# == 1 )); then
-    if [[ "$1" =~ '^[0-9]+$' ]]; then
-      local matches=("$base"/*"$1"(N/))
-      (( ${#matches[@]} > 0 )) && target="${matches[1]}"
+    local pattern=""
+
+    if [[ "$1" =~ '^([A-Za-z]+)-([0-9]+)$' ]]; then
+      local letters="${match[1]}"
+      local num="${match[2]}"
+      pattern="(#i)*${letters}*-${num}"
+    elif [[ "$1" =~ '^[0-9]+$' ]]; then
+      pattern="*$1"
+    fi
+
+    if [[ -n "$pattern" ]]; then
+      local matches=("$base"/${~pattern}(N/))
+      if (( ${#matches[@]} > 1 )); then
+        echo "Multiple matches for '$1':"
+        printf '  %s\n' "${matches[@]:t}"
+        return 1
+      elif (( ${#matches[@]} == 1 )); then
+        target="${matches[1]}"
+      else
+        local archive_matches=("$archive"/${~pattern}(N/))
+        if (( ${#archive_matches[@]} > 1 )); then
+          echo "Multiple matches for '$1' in archive:"
+          printf '  %s\n' "${archive_matches[@]:t}"
+          return 1
+        elif (( ${#archive_matches[@]} == 1 )); then
+          target="${archive_matches[1]}"
+        fi
+      fi
     else
-      target="$base/$1"
+      if [[ -d "$base/$1" ]]; then
+        target="$base/$1"
+      elif [[ -d "$archive/$1" ]]; then
+        target="$archive/$1"
+      else
+        target="$base/$1"
+      fi
     fi
   fi
 

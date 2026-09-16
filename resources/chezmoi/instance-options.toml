@@ -17,9 +17,9 @@ docker-postgis = [
 
 gcloud = [
   "# -- gcloud",
-  "alias gcdev='gcloud config set project dev'",
-  "alias gcstg='gcloud config set project stg'",
-  "alias gcprd='gcloud config set project prd'"
+  "alias gcdev='gcloud config configurations activate dev'",
+  "alias gcstg='gcloud config configurations activate stg'",
+  "alias gcprd='gcloud config configurations activate prd'"
 ]
 
 serial-console = [

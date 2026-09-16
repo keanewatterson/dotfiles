@@ -165,6 +165,16 @@ console_title_template = '{{.UserName}}@{{.HostName}}:{{.PWD}}'
   
     [blocks.segments.properties]
       display_mode = 'context'
+  
+  [[blocks.segments]]
+    type = 'tauri'
+    style = 'plain'
+    foreground = 'foreground'
+    background = 'transparent'
+    template = ' {{ .Major }}.{{ .Minor }} '
+  
+    [blocks.segments.properties]
+      display_mode = 'context'
 
   [[blocks.segments]]
     type = "gcp"

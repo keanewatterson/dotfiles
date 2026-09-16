@@ -1,5 +1,5 @@
 {{ if eq .chezmoi.os "darwin" }}
-cpl() {
+cllp() {
   local profile="${1:-keane}"
 
   case "$profile" in
@@ -11,8 +11,8 @@ cpl() {
   esac
 
   /usr/bin/open -n \
-    --env "CLAUDE_CONFIG_DIR=${HOME}/.claude/${profile}-claude-code" \
+    --env "CLAUDE_CONFIG_DIR=${HOME}/.claude/${profile}/claude-code" \
     "/Applications/Claude.app" \
-    --args "--user-data-dir=${HOME}/.claude/${profile}-app"
+    --args "--user-data-dir=${HOME}/.claude/${profile}/app"
 }
 {{- end }}

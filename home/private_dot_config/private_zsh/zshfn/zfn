@@ -1,0 +1,12 @@
+zfn() {
+    local dir="$ZDOTDIR/zshfn"
+
+    if [[ -z "$1" ]]; then
+        print -c $dir/*(.N:t)
+        return
+    fi
+
+    local file="$dir/$1"
+    [[ -f "$file" ]] || { echo "Function '$1' not found in $dir" >&2; return 1 }
+    cat "$file"
+}
