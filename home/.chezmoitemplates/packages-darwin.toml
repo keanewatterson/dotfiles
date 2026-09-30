@@ -27,6 +27,7 @@ brew = [
   "neovim",
   "nmap",
   "oh-my-posh",
+  "pandoc",
   "qsv",
   "ripgrep",
   "uv",
