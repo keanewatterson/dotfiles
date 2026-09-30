@@ -1,5 +1,6 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
+Library
 .config/gcloud/configurations
 .iex.exs
 .pgpass
@@ -9,6 +10,10 @@
 
 {{ if ne .chezmoi.os "linux" }}
 .chezmoiscripts/linux/**
+{{ end }}
+
+{{ if eq .instance.user_signingkey_git "none" }}
+Library/LaunchAgents/com.keane.ska.plist
 {{ end }}
 
 {{ if eq .instance.user_aws_profile "none" }}

@@ -1,0 +1,16 @@
+{{- if ne .instance.user_signingkey_git "none" -}}
+#!/bin/zsh
+
+set -euo pipefail
+
+{{ template "util-log.sh" . }}
+
+# plist hash: {{ include "private_Library/private_LaunchAgents/com.keane.ska.plist.tmpl" | sha256sum }}
+
+_plist="$HOME/Library/LaunchAgents/com.keane.ska.plist"
+_domain="gui/$(id -u)"
+
+log_info "Loading signing-key LaunchAgent"
+launchctl bootout "$_domain/com.keane.ska" 2>/dev/null || true
+launchctl bootstrap "$_domain" "$_plist"
+{{- end }}

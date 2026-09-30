@@ -1,0 +1,17 @@
+{{- $signingKey := trimSuffix ".pub" (trimPrefix "~/.ssh/" .instance.user_signingkey_git) -}}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.keane.ska</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/ssh-add</string>
+    <string>--apple-use-keychain</string>
+    <string>{{ .chezmoi.homeDir }}/.ssh/{{ $signingKey }}</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+</dict>
+</plist>
