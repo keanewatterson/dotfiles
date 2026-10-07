@@ -16,6 +16,10 @@ Library
 Library/LaunchAgents/com.keane.ska.plist
 {{ end }}
 
+{{ if not .instance.enable_system_update }}
+Library/LaunchAgents/com.keane.brew-upgrade.plist
+{{ end }}
+
 {{ if eq .instance.user_aws_profile "none" }}
 .aws
 {{ end }}

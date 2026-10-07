@@ -1,0 +1,16 @@
+{{- if .instance.enable_system_update -}}
+#!/bin/zsh
+
+set -euo pipefail
+
+{{ template "util-log.sh" . }}
+
+# plist hash: {{ include "private_Library/private_LaunchAgents/com.keane.brew-upgrade.plist.tmpl" | sha256sum }}
+
+_plist="$HOME/Library/LaunchAgents/com.keane.brew-upgrade.plist"
+_domain="gui/$(id -u)"
+
+log_info "Loading brew-upgrade LaunchAgent"
+launchctl bootout "$_domain/com.keane.brew-upgrade" 2>/dev/null || true
+launchctl bootstrap "$_domain" "$_plist"
+{{- end }}
