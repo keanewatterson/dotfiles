@@ -1,11 +1,10 @@
 {{ if eq .chezmoi.os "darwin" }}
 cllp() {
-  local profile="${1:-keane}"
+  local profile="${1:-${USER}}"
 
   case "$profile" in
-    keane|curewise) ;;
-    *)
-      print -u2 "Usage: $0 [keane|curewise]"
+    ''|*[!a-zA-Z0-9_-]*)
+      print -u2 "Usage: $0 [profile: letters, numbers, underscores, hyphens]"
       return 1
       ;;
   esac

@@ -20,14 +20,15 @@
 
 set -euo pipefail
 
-CLAUDE_APP="/Applications/Claude.app"
-DEST="${HOME}/Applications"
+CLAUDE_APP="${CLAUDE_APP:-/Applications/Claude.app}"
+DEST="${CLAUDE_LAUNCHER_DIR:-${HOME}/Applications}"
 PROFILE_ROOT="${HOME}/.claude"
-BUNDLE_ID_PREFIX="local.keane.claude-launcher"
+BUNDLE_ID_PREFIX="local.${USER}.claude-launcher"
+PERSONAL_NAME="$(printf '%s' "${USER:0:1}" | tr '[:lower:]' '[:upper:]')${USER:1}"
 
 # slug|Bundle display name
 PROFILES=(
-  "keane|Claude (Keane)"
+  "${USER}|Claude (${PERSONAL_NAME})"
   "curewise|Claude (CureWise)"
 )
 

@@ -3,7 +3,7 @@ iss() {
   emulate -L zsh
   setopt extended_glob null_glob
 
-  local base="${HOME}/Projects/CureWise/linear"
+  local base="${ISSUES_DIR:-${HOME}/Projects/CureWise/linear}"
   local archive="${base}/archive"
   local target="$base"
 

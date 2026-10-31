@@ -5,16 +5,14 @@
 {{ if findExecutable "claude" $pathList }}
 
 clsc() {
-    local arg="${1:-}"
-
-    if [[ -z "$arg" ]]; then
-        export CLAUDE_CONFIG_DIR="${HOME}/.claude/${USER}/claude-code"
-    elif [[ "$arg" == "keane" || "$arg" == "curewise" ]]; then
-        export CLAUDE_CONFIG_DIR="${HOME}/.claude/${arg}/claude-code"
-    else
-        echo "Usage: claude_config_dir [keane|curewise]" >&2
-        return 1
-    fi
+    local profile="${1:-${USER}}"
+    case "$profile" in
+        ''|*[!a-zA-Z0-9_-]*)
+            print -u2 "Usage: $0 [profile: letters, numbers, underscores, hyphens]"
+            return 1
+            ;;
+    esac
+    export CLAUDE_CONFIG_DIR="${HOME}/.claude/${profile}/claude-code"
 
     echo "CLAUDE_CONFIG_DIR set to: $CLAUDE_CONFIG_DIR"
 }

@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 # history-cull.py — stop gap cruft remover
 
+import os
 import re
 from pathlib import Path
 
-HISTFILE = Path.home() / ".config/zsh/.zsh_history"
+# Follow zsh's configured history file, including alternate XDG/ZDOTDIR layouts.
+_config_home = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config")
+_zdotdir = Path(os.environ.get("ZDOTDIR") or _config_home / "zsh")
+HISTFILE = Path(os.environ.get("HISTFILE") or _zdotdir / ".zsh_history").expanduser()
 
 # Extended noise patterns for post-hoc removal
 NOISE_PATTERNS = [

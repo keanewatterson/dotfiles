@@ -317,9 +317,9 @@ alias ct='cdl -t'
 alias ctp='uvx --with copier-template-extensions copier copy --trust "git@github.com:{{ .instance.user_github_account }}/template-agent-project.git"'
 alias cz='chezmoi'
 alias cza='chezmoi apply'
-alias czh='cdl -s ${XDG_DATA_HOME}/chezmoi'
-alias czp='git -C ${XDG_DATA_HOME}/chezmoi/home pull'
-alias czsd='cdl -s ${XDG_DATA_HOME}/chezmoi/home/.chezmoiscripts/{{- .chezmoi.os -}}'
+alias czh={{ printf "cdl -s %q" .chezmoi.workingTree | quote }}
+alias czp={{ printf "git -C %q pull" .chezmoi.workingTree | quote }}
+alias czsd={{ printf "cdl -s %q" (joinPath .chezmoi.sourceDir ".chezmoiscripts" .chezmoi.os) | quote }}
 alias czs='chezmoi status'
 alias eg='env | grep -i'
 {{ $_fd := ((findOneExecutable (list "fd" "fdfind") $pathList) | base | trimPrefix ".") | default "" -}}
@@ -366,8 +366,8 @@ alias gcplog='gcloud logging read --limit=50'
 alias ifl='if_list'
 {{ if findExecutable "macdown" $pathList -}}
 {{ end -}}
-alias obsd="cs ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
-alias obsdo="open ${HOME}/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/olilo"
+alias obsd='cs "${OBSIDIAN_VAULT_DIR:-${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/olilo}"'
+alias obsdo='open "${OBSIDIAN_VAULT_DIR:-${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/olilo}"'
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 alias psect='printf "§" | pbcopy'

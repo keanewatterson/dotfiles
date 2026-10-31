@@ -25,6 +25,16 @@ serial-console = [
 ]
 ```
 
+
+## Portable paths and profiles
+
+User paths resolve from `${HOME}`, `${USER}`, and XDG variables. Chezmoi helpers
+use the configured working tree and source directory, including custom checkout
+locations. Existing instance options are preserved during finalization.
+
+Set optional shell exports in the local instance options or iin the calling environment.
+
+
 ## Development
 Evaluate template modifications based on chezmoi mode.
 ```sh
@@ -37,3 +47,5 @@ chezmoi edit /path/to/encrypted-template
 
 chezmoi -v apply --dry-run
 ```
+
+

@@ -9,10 +9,10 @@ log_info "Start finalization"
 
 # git repos
 log_info "Configure chezmoi repository for ssh protocol"
-git -C "${XDG_DATA_HOME}/chezmoi" remote set-url origin git@github.com:{{ .instance.user_github_account }}/dotfiles.git
+git -C {{ .chezmoi.workingTree | quote }} remote set-url origin git@github.com:{{ .instance.user_github_account }}/dotfiles.git
 
 # instance options
-if ! [[ -f "{{ .chezmoi.sourceDir }}/.chezmoidata/instance-options.toml " ]]; then
+if ! [[ -f "{{ .chezmoi.sourceDir }}/.chezmoidata/instance-options.toml" ]]; then
     mkdir -p "{{ .chezmoi.sourceDir }}/.chezmoidata"
     cp "{{ .chezmoi.workingTree }}/resources/chezmoi/instance-options.toml" \
         "{{ .chezmoi.sourceDir }}/.chezmoidata/instance-options.toml"

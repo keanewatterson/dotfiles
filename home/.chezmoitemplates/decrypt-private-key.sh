@@ -10,7 +10,7 @@ if [[ ! -f "${XDG_CONFIG_HOME}/chezmoi/key-dotfiles.txt" ]]; then
     log_info "Decrypting dotfile key"
     chezmoi age decrypt \
         --output "${XDG_CONFIG_HOME}/chezmoi/key-dotfiles.txt" \
-        --passphrase "${XDG_DATA_HOME}/chezmoi/resources/keys/key-dotfiles.txt.age"
+        --passphrase {{ joinPath .chezmoi.workingTree "resources/keys/key-dotfiles.txt.age" | quote }}
 
     chmod 600 "${XDG_CONFIG_HOME}/chezmoi/key-dotfiles.txt"
 fi
