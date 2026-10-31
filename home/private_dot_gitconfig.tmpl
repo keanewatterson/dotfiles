@@ -19,7 +19,6 @@
     gpgsign = true
 
 [core]
-    editor = code --wait
     pager = delta
     autocrlf = input
     whitespace = fix,-indent-with-non-tab,trailing-space
@@ -28,8 +27,10 @@
 [init]
     defaultBranch = main
 
+[fetch]
+    prune = true
+
 [pull]
-    rebase = true
     ff = only
 
 [rebase]
@@ -66,7 +67,7 @@
 [alias]
     alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
     co = checkout
-    br = branch -a
+    br = branch -av
     ci = commit
     ca = commit -a
     amend = commit --amend --no-edit
@@ -85,6 +86,7 @@
     sp = stash pop
     st = stash push -m
     sw = switch
+    swm = switch main
     root = rev-parse --show-toplevel
     ours = "!f() { git checkout --ours -- \"$@\"; }; f"
     theirs = "!f() { git checkout --theirs -- \"$@\"; }; f"

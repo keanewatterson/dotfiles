@@ -193,7 +193,7 @@ source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-high
 
 # -- claude
 {{ if findExecutable "claude" $pathList -}}
-export CLAUDE_CONFIG_DIR=${HOME}/.claude/${USER}/claude-code
+export CLAUDE_CONFIG_DIR="${CLAUDE_CONFIG_DIR:-${HOME}/.claude/${USER}/claude-code}"
 {{- else -}}
 # -- none
 {{- end }}
@@ -324,7 +324,7 @@ alias eg='env | grep -i'
 alias fd='{{ $_fd }} --hidden --one-file-system'
 {{ end -}}
 alias grep='grep --color=auto'
-alias h='atuin history list | head -250'
+alias h='atuin history list | tail -20'
 {{ if findExecutable "eza" $pathList -}}
 alias ll='eza -aglF --git --time-style long-iso'
 alias ls='eza -aF=auto'
@@ -349,7 +349,6 @@ alias view='{{ $_editor }} -R'
 
 {{ if eq .chezmoi.os "darwin" }}
 # -- macos
-alias caf='caffeinate'
 alias cwd='pwd | pbcopy'
 alias cwd='printf "$PWD" | pbcopy'
 {{ if findExecutable "gcloud" $pathList -}}
