@@ -172,7 +172,10 @@ unset _atuin_bin _atuin_init _atuin_tmp
 
 
 # -- zsh-autosuggestions
-{{ if findExecutable "atuin" $pathList -}}
+{{/* # Use native history while Atuin collects the broad-capture experiment. */ -}}
+{{/* # Keep this after Atuin init, which otherwise selects its own strategy. */ -}}
+{{/* Change _atuin to atuin to enable Atuin autosuggestions, then chezmoi apply. */ -}}
+{{ if findExecutable "_atuin" $pathList -}}
 export ZSH_AUTOSUGGEST_STRATEGY=(atuin completion)
 {{- else -}}
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
